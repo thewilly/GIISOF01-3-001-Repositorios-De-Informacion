@@ -32,7 +32,7 @@ import java.util.Map;
 import alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientesGateway;
+import uo.ri.persistence.ClientsGateway;
 
 public class FindAllClients {
 
@@ -45,7 +45,7 @@ public class FindAllClients {
 		try {
 			c = Jdbc.getConnection();
 
-			ClientesGateway cGate = PersistenceFactory.getClientesGateway();
+			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
 			cGate.setConnection( c );
 
 			map = cGate.findAllClients();

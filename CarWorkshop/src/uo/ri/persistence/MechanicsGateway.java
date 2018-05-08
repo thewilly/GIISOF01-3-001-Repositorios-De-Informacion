@@ -24,22 +24,21 @@
 package uo.ri.persistence;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import uo.ri.common.BusinessException;
 
-public interface FacturasGateway {
+public interface MechanicsGateway {
 
-	void setConnection( Connection conection );
+	void setConnection( Connection con );
 
-	void vincularAveriaFactura( long idFactura, List<Long> idsAveria ) throws BusinessException;
+	void save( String nombre, String apellidos ) throws BusinessException;
 
-	void save( long numeroFactura, Date fechaFactura, double iva, double totalConIva )
-			throws BusinessException;
+	void remove( long idMechanic ) throws BusinessException;
 
-	long recuperarClaveGenerada( long numeroFactura ) throws BusinessException;
+	List<Map<String, Object>> findAllMechanics() throws BusinessException;
 
-	Long ultimoNumeroFactura() throws BusinessException;
+	void update( String nombre, String apellidos, long idClient ) throws BusinessException;
 
 }

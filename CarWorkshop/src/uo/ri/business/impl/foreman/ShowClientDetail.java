@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientesGateway;
+import uo.ri.persistence.ClientsGateway;
 
 public class ShowClientDetail {
 
@@ -47,7 +47,7 @@ public class ShowClientDetail {
 		try {
 			c = Jdbc.getConnection();
 
-			ClientesGateway cGate = PersistenceFactory.getClientesGateway();
+			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
 			cGate.setConnection( c );
 
 			details = cGate.showClient( idClient );

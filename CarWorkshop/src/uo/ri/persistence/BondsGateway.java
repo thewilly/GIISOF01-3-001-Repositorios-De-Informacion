@@ -28,7 +28,7 @@ import java.util.List;
 
 import uo.ri.common.BusinessException;
 
-public interface BonosGateway {
+public interface BondsGateway {
 
 	void setConnection( Connection conection );
 
@@ -40,7 +40,7 @@ public interface BonosGateway {
 	 * @return
 	 * @throws BusinessException
 	 */
-	List<Long> getVehiculosByIdCliente( Long idCliente ) throws BusinessException;
+	List<Long> findVehiclesIdsByClientId( Long idCliente ) throws BusinessException;
 
 	/**
 	 * Devuelve una lista con los ids de las averias de un vehículo que se le
@@ -50,6 +50,6 @@ public interface BonosGateway {
 	 * @return
 	 * @throws BusinessException
 	 */
-	List<Long> getAveriasByIdVehiculo( Long idVehiculo ) throws BusinessException;
+	List<Long> findFailuresIdsByVehicleId( Long idVehiculo ) throws BusinessException;
 
 }

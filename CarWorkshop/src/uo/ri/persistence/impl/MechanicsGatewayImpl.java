@@ -35,9 +35,9 @@ import java.util.Map;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.MecanicosGateway;
+import uo.ri.persistence.MechanicsGateway;
 
-public class MecanicosGatewayImpl implements MecanicosGateway {
+public class MechanicsGatewayImpl implements MechanicsGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;
@@ -69,7 +69,7 @@ public class MecanicosGatewayImpl implements MecanicosGateway {
 	}
 
 	@Override
-	public void delete( long idMechanic ) throws BusinessException {
+	public void remove( long idMechanic ) throws BusinessException {
 
 		if (existMechanic( idMechanic )) {
 			try {

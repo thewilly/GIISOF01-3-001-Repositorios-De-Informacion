@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.MecanicosGateway;
+import uo.ri.persistence.MechanicsGateway;
 
 /**
  * 
@@ -73,7 +73,7 @@ public class AddMechanic {
 			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			MecanicosGateway mechanicsGW = PersistenceFactory.getMecanicosGateway();
+			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
 			mechanicsGW.setConnection( connection );
 
 			// Invoke the save method to persist the data.

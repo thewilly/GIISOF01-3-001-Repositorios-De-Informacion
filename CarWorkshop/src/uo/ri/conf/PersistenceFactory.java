@@ -23,45 +23,45 @@
  ******************************************************************************/
 package uo.ri.conf;
 
-import uo.ri.persistence.AveriasGateway;
-import uo.ri.persistence.BonosGateway;
-import uo.ri.persistence.ClientesGateway;
-import uo.ri.persistence.FacturasGateway;
-import uo.ri.persistence.MecanicosGateway;
-import uo.ri.persistence.MediospagoGateway;
-import uo.ri.persistence.impl.AveriasGatewayImpl;
-import uo.ri.persistence.impl.BonosGatewayImpl;
-import uo.ri.persistence.impl.ClientesGatewayImpl;
-import uo.ri.persistence.impl.FacturasGatewayImpl;
-import uo.ri.persistence.impl.MecanicosGatewayImpl;
-import uo.ri.persistence.impl.MediospagoGatewayImp;
+import uo.ri.persistence.FailuresGateway;
+import uo.ri.persistence.BondsGateway;
+import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.InvoicesGateway;
+import uo.ri.persistence.MechanicsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
+import uo.ri.persistence.impl.FailuresGatewayImpl;
+import uo.ri.persistence.impl.BondsGatewayImpl;
+import uo.ri.persistence.impl.ClientsGatewayImpl;
+import uo.ri.persistence.impl.InvoicesGatewayImpl;
+import uo.ri.persistence.impl.MechanicsGatewayImpl;
+import uo.ri.persistence.impl.PaymentMethodsGatewayImp;
 
 public class PersistenceFactory {
 
 	public PersistenceFactory() {}
 
-	public static MecanicosGateway getMecanicosGateway() {
-		return new MecanicosGatewayImpl();
+	public static MechanicsGateway getMechanicsGateway() {
+		return new MechanicsGatewayImpl();
 	}
 
-	public static FacturasGateway getFacturasGateway() {
-		return new FacturasGatewayImpl();
+	public static InvoicesGateway getInvoicesGateway() {
+		return new InvoicesGatewayImpl();
 	}
 
-	public static AveriasGateway getAveriasGateway() {
-		return new AveriasGatewayImpl();
+	public static FailuresGateway getFailuresGateway() {
+		return new FailuresGatewayImpl();
 	}
 
-	public static ClientesGateway getClientesGateway() {
-		return new ClientesGatewayImpl();
+	public static ClientsGateway getClientsGateway() {
+		return new ClientsGatewayImpl();
 	}
 
-	public static BonosGateway getBonosGateway() {
-		return new BonosGatewayImpl();
+	public static BondsGateway getBondsGateway() {
+		return new BondsGatewayImpl();
 	}
 
-	public static MediospagoGateway getMediospagoGateway() {
-		return new MediospagoGatewayImp();
+	public static PaymentMethodsGateway getPaymentMethodsGateway() {
+		return new PaymentMethodsGatewayImp();
 	}
 
 }

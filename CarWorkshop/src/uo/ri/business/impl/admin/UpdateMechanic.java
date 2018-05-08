@@ -28,40 +28,68 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.MecanicosGateway;
+import uo.ri.persistence.MechanicsGateway;
 
+/**
+ * 
+ * UpdateMechanic.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805081327
+ * @since 201805081327
+ * @formatter Oviedo Computing Community
+ */
 public class UpdateMechanic {
 
-	private long id;
-	private String nombre;
-	private String apellidos;
+	private long mechanicId;
+	private String name, surname;
 
-	public UpdateMechanic( long id, String nombre, String apellidos ) {
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.id = id;
+	/**
+	 * Action to update the mechanic name and surname. The mechanic where the
+	 * update will take place is the one who's id is provided as first
+	 * parameter.
+	 * 
+	 * @param mechanicId is the id of the mechanic to update.
+	 * @param name is the new name for the mechanic.
+	 * @param surname is the new surname for the mechanic.
+	 */
+	public UpdateMechanic( long mechanicId, String name, String surname ) {
+		this.name = name;
+		this.surname = surname;
+		this.mechanicId = mechanicId;
 	}
 
+	/**
+	 * For the given mechanic id will update the name and the surname with the
+	 * ones provided.
+	 * 
+	 * @throws BusinessException if any error occurs during the mechanic update
+	 *             or during persistence.
+	 */
 	public void execute() throws BusinessException {
-		Connection c = null;
+		Connection connection = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			MecanicosGateway mGate = PersistenceFactory.getMecanicosGateway();
-			mGate.setConnection( c );
+			// Creating the data gateway.
+			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
+			mechanicsGW.setConnection( connection );
 
-			mGate.update( nombre, apellidos, id );
+			// Updating the mechanic.
+			mechanicsGW.update( name, surname, mechanicId );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst, c );
+			// Closing the connection, the prepared statement and the result set.
+			close( rs, pst, connection );
 		}
 	}
 

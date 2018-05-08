@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientesGateway;
+import uo.ri.persistence.ClientsGateway;
 
 public class AddClientWithRecomendator {
 
@@ -61,7 +61,7 @@ public class AddClientWithRecomendator {
 		try {
 			c = Jdbc.getConnection();
 
-			ClientesGateway cGate = PersistenceFactory.getClientesGateway();
+			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
 			cGate.setConnection( c );
 
 			cGate.saveWithRecomendator( dni, nombre, apellidos, zipcode, telefono, correo,

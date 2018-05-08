@@ -29,7 +29,7 @@ import java.util.Map;
 
 import uo.ri.common.BusinessException;
 
-public interface ClientesGateway {
+public interface ClientsGateway {
 
 	void setConnection( Connection con );
 
@@ -76,7 +76,7 @@ public interface ClientesGateway {
 	 * @return
 	 * @throws BusinessException
 	 */
-	List<Long> findAllClientsId() throws BusinessException;
+	List<Long> findAllClientsIds() throws BusinessException;
 
 	/**
 	 * Devuelve una lista con todos los clientes que han sido recomendados por

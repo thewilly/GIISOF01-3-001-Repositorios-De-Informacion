@@ -32,9 +32,9 @@ import java.util.List;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.AveriasGateway;
+import uo.ri.persistence.FailuresGateway;
 
-public class AveriasGatewayImpl implements AveriasGateway {
+public class FailuresGatewayImpl implements FailuresGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;
@@ -47,7 +47,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public void verificarEstadoAveria( List<Long> idsAveria ) throws BusinessException {
+	public void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException {
 		try {
 
 			pst = conection.prepareStatement( Conf.get( "SQL_VERIFICAR_ESTADO_AVERIA" ) );
@@ -75,7 +75,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public void actualizarEstadoAveria( List<Long> idsAveria, String status )
+	public void updateFailuresStatus( List<Long> idsAveria, String status )
 			throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_ACTUALIZAR_ESTADO_AVERIA" ) );
@@ -96,7 +96,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public void actualizarImporteAveria( Long idAveria, double totalAveria )
+	public void updateAmountForFailure( Long idAveria, double totalAveria )
 			throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_UPDATE_IMPORTE_AVERIA" ) );
@@ -113,7 +113,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public double importeRepuestos( Long idAveria ) throws BusinessException {
+	public double getReplacementCostsForFailure( Long idAveria ) throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_IMPORTE_REPUESTOS" ) );
 			pst.setLong( 1, idAveria );
@@ -133,7 +133,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public double importeManoObra( Long idAveria ) throws BusinessException {
+	public double getHumanCostsForFailure( Long idAveria ) throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_IMPORTE_MANO_OBRA" ) );
 			pst.setLong( 1, idAveria );
@@ -153,7 +153,7 @@ public class AveriasGatewayImpl implements AveriasGateway {
 	}
 
 	@Override
-	public void insertBonoAveria( Long idAveria ) throws BusinessException {
+	public void setFailureAsBondUsed( Long idAveria ) throws BusinessException {
 
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_INSERT_BONO_AVERIA" ) );

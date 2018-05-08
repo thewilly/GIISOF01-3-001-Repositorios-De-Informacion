@@ -24,21 +24,28 @@
 package uo.ri.persistence;
 
 import java.sql.Connection;
-import java.util.List;
-import java.util.Map;
 
 import uo.ri.common.BusinessException;
 
-public interface MecanicosGateway {
+public interface PaymentMethodsGateway {
 
-	void setConnection( Connection con );
+	void setConnection( Connection conection );
 
-	void save( String nombre, String apellidos ) throws BusinessException;
+	/**
+	 * Crea un bono de tipo TMetalico en la tabla TMediospago
+	 * 
+	 * @param idCLiente
+	 * @param codigo
+	 * @throws BusinessException
+	 */
+	void createBonos( Long idCLiente, String codigo ) throws BusinessException;
 
-	void delete( long idMechanic ) throws BusinessException;
-
-	List<Map<String, Object>> findAllMechanics() throws BusinessException;
-
-	void update( String nombre, String apellidos, long idClient ) throws BusinessException;
+	/**
+	 * Devuelve el código del último bono de tipo TMetálico
+	 * 
+	 * @return
+	 * @throws BusinessException
+	 */
+	String getLastBonoCode() throws BusinessException;
 
 }

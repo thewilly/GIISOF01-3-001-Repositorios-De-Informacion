@@ -35,9 +35,9 @@ import java.util.Map;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.ClientesGateway;
+import uo.ri.persistence.ClientsGateway;
 
-public class ClientesGatewayImpl implements ClientesGateway {
+public class ClientsGatewayImpl implements ClientsGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;
@@ -257,7 +257,7 @@ public class ClientesGatewayImpl implements ClientesGateway {
 	}
 
 	@Override
-	public List<Long> findAllClientsId() throws BusinessException {
+	public List<Long> findAllClientsIds() throws BusinessException {
 
 		List<Long> ids = new ArrayList<Long>();
 
@@ -561,7 +561,7 @@ public class ClientesGatewayImpl implements ClientesGateway {
 	 */
 	private boolean existIdCliente( long idCliente ) throws BusinessException {
 
-		List<Long> clientes = findAllClientsId();
+		List<Long> clientes = findAllClientsIds();
 		for (Long l : clientes) {
 			if (l == idCliente) {
 				return true;

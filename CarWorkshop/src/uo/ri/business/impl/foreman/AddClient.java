@@ -29,7 +29,7 @@ import java.sql.SQLException;
 import alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientesGateway;
+import uo.ri.persistence.ClientsGateway;
 
 public class AddClient {
 
@@ -57,7 +57,7 @@ public class AddClient {
 		try {
 			c = Jdbc.getConnection();
 
-			ClientesGateway cGate = PersistenceFactory.getClientesGateway();
+			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
 			cGate.setConnection( c );
 
 			cGate.save( dni, nombre, apellidos, zipcode, telefono, correo );

@@ -33,9 +33,9 @@ import java.util.List;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.FacturasGateway;
+import uo.ri.persistence.InvoicesGateway;
 
-public class FacturasGatewayImpl implements FacturasGateway {
+public class InvoicesGatewayImpl implements InvoicesGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;
@@ -48,7 +48,7 @@ public class FacturasGatewayImpl implements FacturasGateway {
 	}
 
 	@Override
-	public void vincularAveriaFactura( long idFactura, List<Long> idsAveria )
+	public void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria )
 			throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_VINCULAR_AVERIA_FACTURA" ) );
@@ -90,7 +90,7 @@ public class FacturasGatewayImpl implements FacturasGateway {
 	}
 
 	@Override
-	public long recuperarClaveGenerada( long numeroFactura ) throws BusinessException {
+	public long getGeneratedKey( long numeroFactura ) throws BusinessException {
 		try {
 			pst = conection.prepareStatement( Conf.get( "SQL_RECUPERAR_CLAVE_GENERADA" ) );
 			pst.setLong( 1, numeroFactura );

@@ -32,7 +32,7 @@ import java.util.Map;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.MecanicosGateway;
+import uo.ri.persistence.MechanicsGateway;
 
 /**
  * 
@@ -67,7 +67,7 @@ public class FindAllMechanics {
 			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			MecanicosGateway mechanicsGW = PersistenceFactory.getMecanicosGateway();
+			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
 			mechanicsGW.setConnection( connection );
 
 			// Invoke the findAllMechanics method from the gateway to get all the mechanics.

@@ -27,14 +27,14 @@ import java.util.List;
 import java.util.Map;
 
 import uo.ri.business.CashService;
-import uo.ri.business.impl.cash.CreateInvoiceFor;
+import uo.ri.business.impl.cash.GenerateInvoiceForFailures;
 import uo.ri.common.BusinessException;
 
 public class CashServiceImpl implements CashService {
 
 	@Override
 	public Map<String, Object> generateInvoiceForFailures( List<Long> list ) throws BusinessException {
-		CreateInvoiceFor c = new CreateInvoiceFor( list );
+		GenerateInvoiceForFailures c = new GenerateInvoiceForFailures( list );
 		return c.execute();
 	}
 

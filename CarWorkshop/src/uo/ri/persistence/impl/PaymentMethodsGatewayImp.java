@@ -31,9 +31,9 @@ import java.sql.SQLException;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.MediospagoGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
-public class MediospagoGatewayImp implements MediospagoGateway {
+public class PaymentMethodsGatewayImp implements PaymentMethodsGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;

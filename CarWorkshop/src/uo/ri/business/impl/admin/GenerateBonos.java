@@ -31,10 +31,10 @@ import java.util.List;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.AveriasGateway;
-import uo.ri.persistence.BonosGateway;
-import uo.ri.persistence.ClientesGateway;
-import uo.ri.persistence.MediospagoGateway;
+import uo.ri.persistence.FailuresGateway;
+import uo.ri.persistence.BondsGateway;
+import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
 /**
  * 
@@ -80,14 +80,14 @@ public class GenerateBonos {
 			connection = getConnection();
 
 			// Creating the needed gateways and setting the connections.
-			BonosGateway bondsGW = PersistenceFactory.getBonosGateway();
-			ClientesGateway clientsGW = PersistenceFactory.getClientesGateway();
+			BondsGateway bondsGW = PersistenceFactory.getBondsGateway();
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
 			bondsGW.setConnection( connection );
 			clientsGW.setConnection( connection );
 
 			// clientsIds will be a list with all the id's of the clients
 			// registered in the system.
-			clientsIds = clientsGW.findAllClientsId();
+			clientsIds = clientsGW.findAllClientsIds();
 
 			// For each client id in the previous list of id's
 			for (Long clientId : clientsIds) {
@@ -95,12 +95,12 @@ public class GenerateBonos {
 				allFailuresforClient = new ArrayList<Long>();
 
 				// Another list for all the vehicles id's of the client.
-				vehiclesIds = bondsGW.getVehiculosByIdCliente( clientId );
+				vehiclesIds = bondsGW.findVehiclesIdsByClientId( clientId );
 
 				// For each vehicle id of the client.
 				for (Long vehicleId : vehiclesIds) {
 					// Get all the failures of that vehicle.
-					failuresIds = bondsGW.getAveriasByIdVehiculo( vehicleId );
+					failuresIds = bondsGW.findFailuresIdsByVehicleId( vehicleId );
 
 					// And for each failure of that vehicle.
 					for (Long failureId : failuresIds) {
@@ -140,8 +140,8 @@ public class GenerateBonos {
 			throws BusinessException {
 
 		// Creating the gateways and setting the connection.
-		AveriasGateway failuresGW = PersistenceFactory.getAveriasGateway();
-		MediospagoGateway paymentMethodGW = PersistenceFactory.getMediospagoGateway();
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		PaymentMethodsGateway paymentMethodGW = PersistenceFactory.getPaymentMethodsGateway();
 		failuresGW.setConnection( connection );
 		paymentMethodGW.setConnection( connection );
 
@@ -156,7 +156,7 @@ public class GenerateBonos {
 		// For each failure, update the persist data to say it is used in the
 		// bond.
 		for (int i = 0; i < numberOfFailures; i++) {
-			failuresGW.insertBonoAveria( failuresIds.get( i ) );
+			failuresGW.setFailureAsBondUsed( failuresIds.get( i ) );
 		}
 
 		// For the number of bonds to create we create and insert a bond in the

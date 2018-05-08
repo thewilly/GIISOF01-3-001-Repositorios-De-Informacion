@@ -24,28 +24,24 @@
 package uo.ri.persistence;
 
 import java.sql.Connection;
+import java.util.List;
 
 import uo.ri.common.BusinessException;
 
-public interface MediospagoGateway {
+public interface FailuresGateway {
 
 	void setConnection( Connection conection );
 
-	/**
-	 * Crea un bono de tipo TMetalico en la tabla TMediospago
-	 * 
-	 * @param idCLiente
-	 * @param codigo
-	 * @throws BusinessException
-	 */
-	void createBonos( Long idCLiente, String codigo ) throws BusinessException;
+	void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
 
-	/**
-	 * Devuelve el código del último bono de tipo TMetálico
-	 * 
-	 * @return
-	 * @throws BusinessException
-	 */
-	String getLastBonoCode() throws BusinessException;
+	void updateFailuresStatus( List<Long> idsAveria, String status ) throws BusinessException;
+
+	void updateAmountForFailure( Long idAveria, double totalAveria ) throws BusinessException;
+
+	double getReplacementCostsForFailure( Long idAveria ) throws BusinessException;
+
+	double getHumanCostsForFailure( Long idAveria ) throws BusinessException;
+
+	void setFailureAsBondUsed( Long idAveria ) throws BusinessException;
 
 }

@@ -33,9 +33,9 @@ import java.util.List;
 import bin.alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.BonosGateway;
+import uo.ri.persistence.BondsGateway;
 
-public class BonosGatewayImpl implements BonosGateway {
+public class BondsGatewayImpl implements BondsGateway {
 
 	Connection conection = null;
 	PreparedStatement pst = null;
@@ -48,7 +48,7 @@ public class BonosGatewayImpl implements BonosGateway {
 	}
 
 	@Override
-	public List<Long> getVehiculosByIdCliente( Long idCliente ) throws BusinessException {
+	public List<Long> findVehiclesIdsByClientId( Long idCliente ) throws BusinessException {
 
 		List<Long> ids = new ArrayList<Long>();
 
@@ -72,7 +72,7 @@ public class BonosGatewayImpl implements BonosGateway {
 	}
 
 	@Override
-	public List<Long> getAveriasByIdVehiculo( Long idVehiculo ) throws BusinessException {
+	public List<Long> findFailuresIdsByVehicleId( Long idVehiculo ) throws BusinessException {
 		List<Long> ids = new ArrayList<Long>();
 
 		try {
