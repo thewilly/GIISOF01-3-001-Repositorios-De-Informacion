@@ -40,12 +40,6 @@ public class PaymentMethodsGatewayImp implements PaymentMethodsGateway {
 	ResultSet rs = null;
 
 	@Override
-	public void setConnection( Connection conection ) {
-		this.conection = conection;
-
-	}
-
-	@Override
 	public void createBonos( Long idCLiente, String codigo ) throws BusinessException {
 
 		try {
@@ -89,6 +83,12 @@ public class PaymentMethodsGatewayImp implements PaymentMethodsGateway {
 		} finally {
 			Jdbc.close( rs, pst );
 		}
+
+	}
+
+	@Override
+	public void setConnection( Connection conection ) {
+		this.conection = conection;
 
 	}
 

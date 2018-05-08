@@ -30,20 +30,38 @@ import uo.ri.business.impl.AdminServiceImpl;
 import uo.ri.business.impl.CashServiceImpl;
 import uo.ri.business.impl.ForemanServiceImpl;
 
+/**
+ * 
+ * ServicesFactory.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082122
+ * @since 201805082122
+ * @formatter Oviedo Computing Community
+ */
 public class ServicesFactory {
 
-	public ServicesFactory() {}
-
+	/**
+	 * @return new admin service implementation.
+	 */
 	public static AdminService getAdminService() {
 		return new AdminServiceImpl();
 	}
 
+	/**
+	 * @return new cash service implementation.
+	 */
 	public static CashService getCashService() {
 		return new CashServiceImpl();
 	}
 
+	/**
+	 * @return new foreman service implementation.
+	 */
 	public static ForemanService getForemanService() {
 		return new ForemanServiceImpl();
 	}
+
+	private ServicesFactory() {}
 
 }

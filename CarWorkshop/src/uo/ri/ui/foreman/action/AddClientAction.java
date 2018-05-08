@@ -45,11 +45,11 @@ public class AddClientAction implements Action {
 
 		if (recomendacion.equals( "s" )) {
 			long idRecomendador = Console.readLong( "Id del recomendador" );
-			ServicesFactory.getForemanService().addClientWithRecomendator( dni, nombre, apellidos,
+			ServicesFactory.getForemanService().createRecommendedClient( dni, nombre, apellidos,
 					zipcode, telefono,
 					correo, idRecomendador );
 		} else if (recomendacion.equals( "n" )) {
-			ServicesFactory.getForemanService().addClient( dni, nombre, apellidos, zipcode,
+			ServicesFactory.getForemanService().createClient( dni, nombre, apellidos, zipcode,
 					telefono, correo );
 		}
 

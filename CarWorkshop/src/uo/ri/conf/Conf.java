@@ -26,13 +26,38 @@ package uo.ri.conf;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * 
+ * Conf.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082120
+ * @since 201805082120
+ * @formatter Oviedo Computing Community
+ */
 public class Conf {
+	
+	// SATATIC MEMBERS
 
 	private static final String CONF_FILE = "configuration.properties";
 
 	private static Conf instance;
-	private Properties properties; // Es el import correco?
+	
+	public static String get( String key ) {
+		return getInstance().getProperty( key );
+	}
 
+	private static Conf getInstance() {
+		if (instance == null) {
+			instance = new Conf();
+		}
+		return instance;
+	}
+
+	// NON-STATIC MEMEBERS 
+	
+	private Properties properties;
+	
 	private Conf() {
 		properties = new Properties();
 		try {
@@ -42,23 +67,12 @@ public class Conf {
 		}
 	}
 
-	public static String get( String key ) {
-		return getInstance().getProperty( key );
-	}
-
 	private String getProperty( String key ) {
 		String value = properties.getProperty( key );
 		if (value == null) {
 			throw new RuntimeException( "Properties not found in config file" );
 		}
 		return value;
-	}
-
-	private static Conf getInstance() {
-		if (instance == null) {
-			instance = new Conf();
-		}
-		return instance;
 	}
 
 }

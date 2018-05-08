@@ -26,38 +26,62 @@ package uo.ri.business.impl.foreman;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
-public class ShowClientDetail {
+/**
+ * 
+ * RemoveClient.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805081941
+ * @since 201805081941
+ * @formatter Oviedo Computing Community
+ */
+public class RemoveClient {
 
 	private Long idClient;
 
-	public ShowClientDetail( Long idClient ) {
-		this.idClient = idClient;
+	/**
+	 * Creates an action to remove a client.
+	 * 
+	 * @param clientId is the id of the client to remove from the system.
+	 */
+	public RemoveClient( Long clientId ) {
+		this.idClient = clientId;
 	}
 
-	public String execute() throws BusinessException {
+	/**
+	 * Executes the action of removing the client from the system.
+	 * 
+	 * @throws BusinessException if any error occurs during the removal of the
+	 *             client.
+	 */
+	public void execute() throws BusinessException {
 
-		Connection c = null;
-		String details = "";
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating the gateway and setting the connection.
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
+			clientsGW.setConnection( connection );
 
-			details = cGate.showClient( idClient );
+			// Removing the client from the system.
+			clientsGW.remove( idClient );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			
+			// Closing the connection.
+			close( connection );
 		}
-		return details;
+
 	}
 
 }

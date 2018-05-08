@@ -30,12 +30,21 @@ import uo.ri.business.CashService;
 import uo.ri.business.impl.cash.GenerateInvoiceForFailures;
 import uo.ri.common.BusinessException;
 
+/**
+ * 
+ * CashServiceImpl.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082103
+ * @since 201805082103
+ * @formatter Oviedo Computing Community
+ */
 public class CashServiceImpl implements CashService {
 
 	@Override
 	public Map<String, Object> generateInvoiceForFailures( List<Long> list ) throws BusinessException {
-		GenerateInvoiceForFailures c = new GenerateInvoiceForFailures( list );
-		return c.execute();
+		GenerateInvoiceForFailures generate = new GenerateInvoiceForFailures( list );
+		return generate.execute();
 	}
 
 }

@@ -27,78 +27,81 @@ import java.util.List;
 import java.util.Map;
 
 import uo.ri.business.ForemanService;
-import uo.ri.business.impl.foreman.AddClient;
-import uo.ri.business.impl.foreman.AddClientWithRecomendator;
+import uo.ri.business.impl.foreman.CreateClient;
+import uo.ri.business.impl.foreman.CreateRecommendedClient;
 import uo.ri.business.impl.foreman.FindAllClients;
-import uo.ri.business.impl.foreman.FindAllClientsByRecomendator;
-import uo.ri.business.impl.foreman.DeleteClient;
-import uo.ri.business.impl.foreman.ShowClientDetail;
+import uo.ri.business.impl.foreman.FindClientsByRecommender;
+import uo.ri.business.impl.foreman.RemoveClient;
+import uo.ri.business.impl.foreman.FindClient;
 import uo.ri.business.impl.foreman.UpdateClient;
 import uo.ri.common.BusinessException;
 
+/**
+ * 
+ * ForemanServiceImpl.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082106
+ * @since 201805082106
+ * @formatter Oviedo Computing Community
+ */
 public class ForemanServiceImpl implements ForemanService {
 
 	@Override
-	public void addClient( String dni, String nombre, String apellidos, int zipcode, int telefono,
-			String correo )
-			throws BusinessException {
+	public void createClient( String dni, String name, String surname, int zipCode,
+			int phoneNumber, String email ) throws BusinessException {
 
-		AddClient a = new AddClient( dni, nombre, apellidos, zipcode, telefono, correo );
-		a.execute();
-
-	}
-
-	@Override
-	public void addClientWithRecomendator( String dni, String nombre, String apellidos, int zipcode,
-			int telefono,
-			String correo, long idRecomendador ) throws BusinessException {
-
-		AddClientWithRecomendator aR = new AddClientWithRecomendator( dni, nombre, apellidos,
-				zipcode, telefono, correo,
-				idRecomendador );
-		aR.execute();
+		CreateClient create = new CreateClient( dni, name, surname, zipCode, phoneNumber, email );
+		create.execute();
 
 	}
 
 	@Override
-	public void deleteClient( Long idClient ) throws BusinessException {
+	public void createRecommendedClient( String dni, String name, String surname, int zipCode,
+			int phoneNumber, String email, long recomenderId ) throws BusinessException {
 
-		DeleteClient r = new DeleteClient( idClient );
-		r.execute();
+		CreateRecommendedClient create = new CreateRecommendedClient( dni, name, surname,
+				zipCode, phoneNumber, email, recomenderId );
+		create.execute();
 
 	}
 
 	@Override
 	public List<Map<String, Object>> findAllClients() throws BusinessException {
-
-		FindAllClients f = new FindAllClients();
-		return f.execute();
+		FindAllClients find = new FindAllClients();
+		return find.execute();
 	}
 
 	@Override
-	public List<Map<String, Object>> findAllClientsByRecomendator( Long idRecomendador )
+	public List<Map<String, Object>> findAllClientsByRecomendator( Long recommenderId )
 			throws BusinessException {
 
-		FindAllClientsByRecomendator fR = new FindAllClientsByRecomendator( idRecomendador );
-		return fR.execute();
+		FindClientsByRecommender find = new FindClientsByRecommender( recommenderId );
+		return find.execute();
 	}
 
 	@Override
-	public void updateClient( long idClient, String dni, String nombre, String apellidos,
-			int zipcode, int telefono,
-			String correo ) throws BusinessException {
+	public String findByClientId( Long clientId ) throws BusinessException {
 
-		UpdateClient u = new UpdateClient( idClient, dni, nombre, apellidos, zipcode, telefono,
-				correo );
-		u.execute();
+		FindClient find = new FindClient( clientId );
+		return find.execute();
+	}
+
+	@Override
+	public void removeClient( Long clientId ) throws BusinessException {
+		RemoveClient remove = new RemoveClient( clientId );
+		remove.execute();
 
 	}
 
 	@Override
-	public String showDetailClient( Long idClient ) throws BusinessException {
+	public void updateClient( long clientId, String dni, String name, String surname,
+			int zipCode, int phoneNumber, String email ) throws BusinessException {
 
-		ShowClientDetail s = new ShowClientDetail( idClient );
-		return s.execute();
+		UpdateClient update = new UpdateClient( clientId, dni, name, surname, zipCode, phoneNumber,
+				email );
+		update.execute();
+
 	}
 
 }

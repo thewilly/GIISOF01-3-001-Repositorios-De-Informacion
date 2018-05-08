@@ -36,7 +36,7 @@ public class ShowClientDetailAction implements Action {
 		// Pedir datos
 		Long idClient = Console.readLong( "Id del cliente" );
 
-		System.out.println( ServicesFactory.getForemanService().showDetailClient( idClient ) );
+		System.out.println( ServicesFactory.getForemanService().findByClientId( idClient ) );
 
 	}
 

@@ -64,6 +64,86 @@ public class GenerateInvoiceForFailures {
 	}
 
 	/**
+	 * Changes the status of each failure who's id is on the list provided to
+	 * the status provided.
+	 * 
+	 * @param failuresIds are the id's of the failures to change the status.
+	 * @param statusToSet is the new status of the failures.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	private void changeFailuresStatuses( List<Long> failuresIds, String statusToSet )
+			throws BusinessException {
+
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		failuresGW.setConnection( connection );
+
+		failuresGW.updateFailuresStatus( failuresIds, statusToSet );
+	}
+
+	/**
+	 * Gets the taxes for a given date.
+	 * 
+	 * @param invoiceDate is the date where the invoice was created.
+	 * @return 18.0 if the date is before 1/7/2012. Otherwise 21.0.
+	 */
+	private double computeTaxes( Date invoiceDate ) {
+		return DateUtil.fromString( "1/7/2012" ).before( invoiceDate ) ? 21.0 : 18.0;
+	}
+
+	/**
+	 * Computes the total costs for all the given failures.
+	 * 
+	 * @param failuresIds are the different failures id's to compute the costs.
+	 * @return the total cost of the invoice without taxes.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	protected double computeTotalAmmountForFailures( List<Long> failuresIds )
+			throws BusinessException {
+
+		double totalCostForInvoice = 0.0, humanCosts, replacementCosts, totalCostsForFailure;
+		for (Long failureId : failuresIds) {
+			humanCosts = getHumanCostsForFailure( failureId );
+			replacementCosts = getReplamentCostsForFailure( failureId );
+			totalCostsForFailure = humanCosts + replacementCosts;
+
+			updateAmountForFailure( failureId, totalCostsForFailure );
+
+			totalCostForInvoice += totalCostsForFailure;
+		}
+		return totalCostForInvoice;
+	}
+
+	/**
+	 * Creates an invoice for the given data.
+	 * 
+	 * @param invoiceNumber is the number that will identify the invoice.
+	 * @param invoiceDate is the creation date of the invoice.
+	 * @param taxes are the amount of taxes applied
+	 * @param totalAmountWithTaxes is the total amount of the invoice, that is
+	 *            including taxes.
+	 * @return the generated key for the created invoice.
+	 * @throws BusinessException if any error occurs during the generation of
+	 *             the invoices.
+	 */
+	private long createInvoice( long invoiceNumber, Date invoiceDate, double taxes,
+			double totalAmountWithTaxes )
+			throws BusinessException {
+
+		// Creating the gateway and setting the connection.
+		InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
+		invoicesGW.setConnection( connection );
+
+		// Persisting the invoice.
+		invoicesGW.save( invoiceNumber, invoiceDate, taxes, totalAmountWithTaxes );
+
+		// The id of the new invoice
+		return getGeneratedKey( invoiceNumber );
+
+	}
+
+	/**
 	 * For a given list of the failures id's will generate the corresponding
 	 * invoice and return its data in to a map.
 	 * 
@@ -144,34 +224,6 @@ public class GenerateInvoiceForFailures {
 	}
 
 	/**
-	 * Creates an invoice for the given data.
-	 * 
-	 * @param invoiceNumber is the number that will identify the invoice.
-	 * @param invoiceDate is the creation date of the invoice.
-	 * @param taxes are the amount of taxes applied
-	 * @param totalAmountWithTaxes is the total amount of the invoice, that is
-	 *            including taxes.
-	 * @return the generated key for the created invoice.
-	 * @throws BusinessException if any error occurs during the generation of
-	 *             the invoices.
-	 */
-	private long createInvoice( long invoiceNumber, Date invoiceDate, double taxes,
-			double totalAmountWithTaxes )
-			throws BusinessException {
-
-		// Creating the gateway and setting the connection.
-		InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
-		invoicesGW.setConnection( connection );
-
-		// Persisting the invoice.
-		invoicesGW.save( invoiceNumber, invoiceDate, taxes, totalAmountWithTaxes );
-
-		// The id of the new invoice
-		return getGeneratedKey( invoiceNumber );
-
-	}
-
-	/**
 	 * Generates a new invoice number.
 	 * 
 	 * @return the new invoice number generated.
@@ -184,58 +236,6 @@ public class GenerateInvoiceForFailures {
 		invoicesGW.setConnection( connection );
 
 		return invoicesGW.ultimoNumeroFactura();
-	}
-
-	/**
-	 * Verifies that all the failures who's id's are in the list provided are
-	 * finished.
-	 * 
-	 * @param failuresIds is a list containing all the id's of failures to check
-	 *            that are finished.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private void verifyFailuresAreFinished( List<Long> failuresIds ) throws BusinessException {
-
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		failuresGW.setConnection( connection );
-
-		failuresGW.verifyFailuresAreFinished( failuresIds );
-	}
-
-	/**
-	 * Changes the status of each failure who's id is on the list provided to
-	 * the status provided.
-	 * 
-	 * @param failuresIds are the id's of the failures to change the status.
-	 * @param statusToSet is the new status of the failures.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private void changeFailuresStatuses( List<Long> failuresIds, String statusToSet )
-			throws BusinessException {
-
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		failuresGW.setConnection( connection );
-
-		failuresGW.updateFailuresStatus( failuresIds, statusToSet );
-	}
-
-	/**
-	 * Links the each failure with the invoice where the are billed.
-	 * 
-	 * @param invoiceId is the invoice where the failures are included.
-	 * @param failuresIds are the id's of the failures included in the invoice.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private void linkInvoiceWithFailures( long invoiceId, List<Long> failuresIds )
-			throws BusinessException {
-
-		InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
-		invoicesGW.setConnection( connection );
-
-		invoicesGW.linkInvoiceWithFailures( invoiceId, failuresIds );
 	}
 
 	/**
@@ -252,40 +252,6 @@ public class GenerateInvoiceForFailures {
 		invoicesGW.setConnection( connection );
 
 		return invoicesGW.getGeneratedKey( invoiceNumber );
-	}
-
-	/**
-	 * Updates the amount of a given failure.
-	 * 
-	 * @param failureId is the id of the failure to update.
-	 * @param failureTotal is the new amount of the failure.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private void updateAmountForFailure( Long failureId, double failureTotal )
-			throws BusinessException {
-
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		failuresGW.setConnection( connection );
-
-		failuresGW.updateAmountForFailure( failureId, failureTotal );
-
-	}
-
-	/**
-	 * Gets the total costs of the replacements used to fix the failure.
-	 * 
-	 * @param failureId id the failure id to checks the costs of replacements.
-	 * @return the total costs of replacements used in this failure.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private double getReplamentCostsForFailure( Long failureId ) throws BusinessException {
-
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		failuresGW.setConnection( connection );
-
-		return failuresGW.getReplacementCostsForFailure( failureId );
 	}
 
 	/**
@@ -307,36 +273,70 @@ public class GenerateInvoiceForFailures {
 	}
 
 	/**
-	 * Gets the taxes for a given date.
+	 * Gets the total costs of the replacements used to fix the failure.
 	 * 
-	 * @param invoiceDate is the date where the invoice was created.
-	 * @return 18.0 if the date is before 1/7/2012. Otherwise 21.0.
-	 */
-	private double computeTaxes( Date invoiceDate ) {
-		return DateUtil.fromString( "1/7/2012" ).before( invoiceDate ) ? 21.0 : 18.0;
-	}
-
-	/**
-	 * Computes the total costs for all the given failures.
-	 * 
-	 * @param failuresIds are the different failures id's to compute the costs.
-	 * @return the total cost of the invoice without taxes.
+	 * @param failureId id the failure id to checks the costs of replacements.
+	 * @return the total costs of replacements used in this failure.
 	 * @throws BusinessException if any error occurs during the execution of the
 	 *             method.
 	 */
-	protected double computeTotalAmmountForFailures( List<Long> failuresIds )
+	private double getReplamentCostsForFailure( Long failureId ) throws BusinessException {
+
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		failuresGW.setConnection( connection );
+
+		return failuresGW.getReplacementCostsForFailure( failureId );
+	}
+
+	/**
+	 * Links the each failure with the invoice where the are billed.
+	 * 
+	 * @param invoiceId is the invoice where the failures are included.
+	 * @param failuresIds are the id's of the failures included in the invoice.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	private void linkInvoiceWithFailures( long invoiceId, List<Long> failuresIds )
 			throws BusinessException {
 
-		double totalCostForInvoice = 0.0, humanCosts, replacementCosts, totalCostsForFailure;
-		for (Long failureId : failuresIds) {
-			humanCosts = getHumanCostsForFailure( failureId );
-			replacementCosts = getReplamentCostsForFailure( failureId );
-			totalCostsForFailure = humanCosts + replacementCosts;
+		InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
+		invoicesGW.setConnection( connection );
 
-			updateAmountForFailure( failureId, totalCostsForFailure );
+		invoicesGW.linkInvoiceWithFailures( invoiceId, failuresIds );
+	}
 
-			totalCostForInvoice += totalCostsForFailure;
-		}
-		return totalCostForInvoice;
+	/**
+	 * Updates the amount of a given failure.
+	 * 
+	 * @param failureId is the id of the failure to update.
+	 * @param failureTotal is the new amount of the failure.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	private void updateAmountForFailure( Long failureId, double failureTotal )
+			throws BusinessException {
+
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		failuresGW.setConnection( connection );
+
+		failuresGW.updateAmountForFailure( failureId, failureTotal );
+
+	}
+
+	/**
+	 * Verifies that all the failures who's id's are in the list provided are
+	 * finished.
+	 * 
+	 * @param failuresIds is a list containing all the id's of failures to check
+	 *            that are finished.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	private void verifyFailuresAreFinished( List<Long> failuresIds ) throws BusinessException {
+
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		failuresGW.setConnection( connection );
+
+		failuresGW.verifyFailuresAreFinished( failuresIds );
 	}
 }

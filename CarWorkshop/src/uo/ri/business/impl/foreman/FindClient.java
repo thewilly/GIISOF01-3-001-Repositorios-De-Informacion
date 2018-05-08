@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.admin;
+package uo.ri.business.impl.foreman;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,61 +29,62 @@ import java.sql.SQLException;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.MechanicsGateway;
+import uo.ri.persistence.ClientsGateway;
 
 /**
  * 
- * AddMechanic.java
+ * FindClient.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805072327
- * @since 201805072327
+ * @version 201805082017
+ * @since 201805082017
  * @formatter Oviedo Computing Community
  */
-public class AddMechanic {
+public class FindClient {
 
-	private String name;
-	private String surname;
+	private Long clientId;
 
 	/**
-	 * Allocates a mechanic with its name and surname.
+	 * Creates a find client action.
 	 * 
-	 * @param name of the mechanic.
-	 * @param surname of the mechanic.
+	 * @param clientId is the if of the client to find.
 	 */
-	public AddMechanic( String name, String surname ) {
-		this.name = name;
-		this.surname = surname;
-
+	public FindClient( Long clientId ) {
+		this.clientId = clientId;
 	}
 
 	/**
-	 * Gets a connection from the JDBC. And for that given connection opens a
-	 * mechanics gateway to save the mechanic data.
+	 * Executes the find client action and returns the client data or empty
+	 * string.
 	 * 
+	 * @return the client's data or the empty string.
 	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
+	 *             inner operations.
 	 */
-	public void execute() throws BusinessException {
+	public String execute() throws BusinessException {
 
-		Connection connection = null;
+		Connection conenction = null;
+		String clientDetails = "";
 
 		try {
-			// Getting the connection
-			connection = getConnection();
+			// Getting the connection.
+			conenction = getConnection();
 
 			// Creating the gateway and setting the connection.
-			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
-			mechanicsGW.setConnection( connection );
+			ClientsGateway clientGW = PersistenceFactory.getClientsGateway();
+			clientGW.setConnection( conenction );
 
-			// Invoke the save method to persist the data.
-			mechanicsGW.save( this.name, this.surname );
+			// Getting the client data from the gateway.
+			clientDetails = clientGW.findByClientId( clientId );
+
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
 			// Closing the connection.
-			close( connection );
+			close( conenction );
 		}
+		// Returning the client's data.
+		return clientDetails;
 	}
 
 }

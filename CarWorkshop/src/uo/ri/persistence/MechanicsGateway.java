@@ -31,13 +31,13 @@ import uo.ri.common.BusinessException;
 
 public interface MechanicsGateway {
 
-	void setConnection( Connection con );
-
-	void save( String nombre, String apellidos ) throws BusinessException;
+	List<Map<String, Object>> findAllMechanics() throws BusinessException;
 
 	void remove( long idMechanic ) throws BusinessException;
 
-	List<Map<String, Object>> findAllMechanics() throws BusinessException;
+	void save( String nombre, String apellidos ) throws BusinessException;
+
+	void setConnection( Connection con );
 
 	void update( String nombre, String apellidos, long idClient ) throws BusinessException;
 

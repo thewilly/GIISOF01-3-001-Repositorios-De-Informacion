@@ -26,50 +26,75 @@ package uo.ri.business.impl.foreman;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
+/**
+ * 
+ * UpdateClient.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082023
+ * @since 201805082023
+ * @formatter Oviedo Computing Community
+ */
 public class UpdateClient {
 
-	private Long idClient;
+	private Long clientId;
+	private String dni, name, surname, email;
+	private int phoneNumber, zipCode;
 
-	private String dni;
-	private String nombre;
-	private String apellidos;
-	private String correo;
-	private int zipcode;
-	private int telefono;
-
-	public UpdateClient( long idClient, String dni, String nombre, String apellidos, int zipcode,
-			int telefono, String correo ) {
+	/**
+	 * Creates an update action that will update the client data for the given
+	 * client id.
+	 * 
+	 * @param clientId is the id for whom we want to update the data.
+	 * @param dni of the client.
+	 * @param name of the client.
+	 * @param surname of the client.
+	 * @param zipCode of the client.
+	 * @param phoneNumber of the client.
+	 * @param email of the client.
+	 */
+	public UpdateClient( long clientId, String dni, String name, String surname, int zipCode,
+			int phoneNumber, String email ) {
 		this.dni = dni;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.zipcode = zipcode;
-		this.telefono = telefono;
-		this.correo = correo;
-		this.idClient = idClient;
+		this.name = name;
+		this.surname = surname;
+		this.zipCode = zipCode;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.clientId = clientId;
 	}
 
+	/**
+	 * Executes the update in the data for the client.
+	 * 
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             inner operations.
+	 */
 	public void execute() throws BusinessException {
 
-		Connection c = null;
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating the gateway and setting the connection.
+			ClientsGateway clientGW = PersistenceFactory.getClientsGateway();
+			clientGW.setConnection( connection );
 
-			cGate.update( idClient, dni, nombre, apellidos, zipcode, telefono, correo );
-			;
+			// Updating the client's data
+			clientGW.update( clientId, dni, name, surname, zipCode, phoneNumber, email );;
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection.
+			close( connection );
 		}
 
 	}

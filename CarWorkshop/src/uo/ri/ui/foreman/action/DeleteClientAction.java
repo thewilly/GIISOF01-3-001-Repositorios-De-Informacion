@@ -35,7 +35,7 @@ public class DeleteClientAction implements Action {
 
 		Long idClient = Console.readLong( "Id del cliente" );
 
-		ServicesFactory.getForemanService().deleteClient( idClient );
+		ServicesFactory.getForemanService().removeClient( idClient );
 
 		Console.println( "Se ha eliminado el cliente" );
 	}

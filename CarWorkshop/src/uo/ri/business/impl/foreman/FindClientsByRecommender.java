@@ -29,39 +29,71 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
-public class FindAllClientsByRecomendator {
+/**
+ * 
+ * FindClientsByRecommender.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082006
+ * @since 201805082006
+ * @formatter Oviedo Computing Community
+ */
+public class FindClientsByRecommender {
 
-	private Long idRecomendador;
+	private Long recommenderId;
 
-	public FindAllClientsByRecomendator( Long idRecomendator ) {
-		this.idRecomendador = idRecomendator;
+	/**
+	 * Creates the action to find all the clients that are recommended by the
+	 * given one.
+	 * 
+	 * @param recommenderId is the id of the recommender for whom we want all
+	 *            the recommended clients.
+	 */
+	public FindClientsByRecommender( Long recommenderId ) {
+		this.recommenderId = recommenderId;
 	}
 
+	/**
+	 * Executes the action of finding all the clients filtering by recommender
+	 * in the system and returns them as a list of maps being each map the
+	 * client data.
+	 * 
+	 * @return a list of maps being each map the client data.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             operations involved.
+	 */
 	public List<Map<String, Object>> execute() throws BusinessException {
 
-		List<Map<String, Object>> map = new ArrayList<Map<String, Object>>();
+		// Creating the clients data and initializing it to avoid future
+		// null pointers.
+		List<Map<String, Object>> clientsData = new ArrayList<Map<String, Object>>();
 
-		Connection c = null;
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating gateway and setting connection.
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
+			clientsGW.setConnection( connection );
 
-			map = cGate.findAllClientsByRecomendator( idRecomendador );
+			// Getting the clients data from the gateway.
+			clientsData = clientsGW.findClientsByRecommender( recommenderId );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection.
+			close( connection );
 		}
-		return map;
+		// Returning the clients data.
+		return clientsData;
 	}
 
 }

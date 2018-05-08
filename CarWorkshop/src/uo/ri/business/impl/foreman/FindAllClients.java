@@ -29,33 +29,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
+/**
+ * 
+ * FindAllClients.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805081957
+ * @since 201805081957
+ * @formatter Oviedo Computing Community
+ */
 public class FindAllClients {
 
+	/**
+	 * Executes the action of finding all the clients in the system and returns
+	 * them as a list of maps being each map the client data.
+	 * 
+	 * @return a list of maps being each map the client data.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             operations involved.
+	 */
 	public List<Map<String, Object>> execute() throws BusinessException {
 
-		List<Map<String, Object>> map = new ArrayList<Map<String, Object>>();
-
-		Connection c = null;
+		// Creating the all clients data and initializing it to avoid future null
+		// pointers.
+		List<Map<String, Object>> allClientsData = new ArrayList<Map<String, Object>>();
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Getting the connection.
+			connection = getConnection();
 
-			map = cGate.findAllClients();
+			// Creating the gateway and setting the connection.
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
+			clientsGW.setConnection( connection );
+
+			// Getting all clients data from the gateway.
+			allClientsData = clientsGW.findAllClients();
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection
+			close( connection );
 		}
-		return map;
+		// Returning all clients data.
+		return allClientsData;
 	}
 
 }

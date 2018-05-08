@@ -26,35 +26,71 @@ package uo.ri.business.impl.foreman;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
-public class DeleteClient {
+/**
+ * 
+ * AddClient.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805081936
+ * @since 201805081936
+ * @formatter Oviedo Computing Community
+ */
+public class CreateClient {
 
-	private Long idClient;
+	private String dni, name, surname, email;
+	private int phoneNumber, zipCode;
 
-	public DeleteClient( Long idClient ) {
-		this.idClient = idClient;
+	/**
+	 * Creates the action that will create a simple client to the system.
+	 * 
+	 * @param dni is the country unique person identifier.
+	 * @param name is the name of the client.
+	 * @param surname is the surname of the client.
+	 * @param zipCode is the postal code from where the client lives.
+	 * @param phoneNumber is the phone number of the client.
+	 * @param email is the email address of the client.
+	 */
+	public CreateClient( String dni, String name, String surname, int zipCode, int phoneNumber,
+			String email ) {
+		this.dni = dni;
+		this.name = name;
+		this.surname = surname;
+		this.zipCode = zipCode;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
 	}
 
+	/**
+	 * Executes the action of creating a client in the system.
+	 * 
+	 * @throws BusinessException if any error occurs during the creation of the
+	 *             client.
+	 */
 	public void execute() throws BusinessException {
 
-		Connection c = null;
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating the gateway and setting the connection.
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
+			clientsGW.setConnection( connection );
 
-			cGate.delete( idClient );
+			// We persis the data of the client trough the gateway.
+			clientsGW.save( dni, name, surname, zipCode, phoneNumber, email );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection.
+			close( connection );
 		}
 
 	}

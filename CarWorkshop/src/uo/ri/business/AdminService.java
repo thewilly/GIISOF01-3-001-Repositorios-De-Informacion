@@ -48,31 +48,7 @@ public interface AdminService {
 	 * @throws BusinessException if any error occurs during the mechanic
 	 *             creation or during persistence.
 	 */
-	void addMechanic( String name, String suename ) throws BusinessException;
-
-	/**
-	 * From a given mechanic id will remove it from the persistence database.
-	 * 
-	 * @param mechanicId is the id of the mechanic we want to remove from the
-	 *            database.
-	 * @throws BusinessException if any error occurs during the mechanic
-	 *             deletion or during persistence.
-	 */
-	void removeMechanic( Long mechanicId ) throws BusinessException;
-
-	/**
-	 * For the given mechanic id will update the name and the surname with the
-	 * ones provided.
-	 * 
-	 * @param mechanicId is the id of the mechanic we want to update its name
-	 *            and surname.
-	 * @param name is the new name we want to set as the mechanic name.
-	 * @param surname is the new surname we want to set as the mechanic surname.
-	 * @throws BusinessException if any error occurs during the mechanic update
-	 *             or during persistence.
-	 */
-	void updateMechanic( Long mechanicId, String name, String surname )
-			throws BusinessException;
+	void createMechanic( String name, String suename ) throws BusinessException;
 
 	/**
 	 * Return the a list containing all the mechanics data that is contained in
@@ -104,5 +80,29 @@ public interface AdminService {
 	 *             method.
 	 */
 	void generateBonds() throws BusinessException;
+
+	/**
+	 * From a given mechanic id will remove it from the persistence database.
+	 * 
+	 * @param mechanicId is the id of the mechanic we want to remove from the
+	 *            database.
+	 * @throws BusinessException if any error occurs during the mechanic
+	 *             deletion or during persistence.
+	 */
+	void removeMechanic( Long mechanicId ) throws BusinessException;
+
+	/**
+	 * For the given mechanic id will update the name and the surname with the
+	 * ones provided.
+	 * 
+	 * @param mechanicId is the id of the mechanic we want to update its name
+	 *            and surname.
+	 * @param name is the new name we want to set as the mechanic name.
+	 * @param surname is the new surname we want to set as the mechanic surname.
+	 * @throws BusinessException if any error occurs during the mechanic update
+	 *             or during persistence.
+	 */
+	void updateMechanic( Long mechanicId, String name, String surname )
+			throws BusinessException;
 
 }

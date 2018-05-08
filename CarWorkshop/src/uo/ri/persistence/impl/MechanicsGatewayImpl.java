@@ -43,51 +43,21 @@ public class MechanicsGatewayImpl implements MechanicsGateway {
 	PreparedStatement pst = null;
 	ResultSet rs = null;
 
-	@Override
-	public void setConnection( Connection conection ) {
-		this.conection = conection;
+	/**
+	 * Comprueba si existe el mecánico que se le pasa como parámetro
+	 * 
+	 * @return true si existe, false en caso contrario
+	 * @throws BusinessException
+	 */
+	private boolean existMechanic( Long idMechanic ) throws BusinessException {
 
-	}
-
-	@Override
-	public void save( String nombre, String apellidos ) throws BusinessException {
-
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_INSERT_MECHANIC" ) );
-
-			pst.setString( 1, nombre );
-			pst.setString( 2, apellidos );
-
-			pst.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error añadiendo un mecánico" );
-		} finally {
-			Jdbc.close( pst );
-		}
-
-	}
-
-	@Override
-	public void remove( long idMechanic ) throws BusinessException {
-
-		if (existMechanic( idMechanic )) {
-			try {
-
-				pst = conection.prepareStatement( Conf.get( "SQL_DELETE_MECHANIC" ) );
-				pst.setLong( 1, idMechanic );
-
-				pst.executeUpdate();
-
-			} catch (SQLException e) {
-				throw new BusinessException( "Error eliminando un mecánico" );
-			} finally {
-				Jdbc.close( pst );
+		List<Long> idsMecanicos = findAllMechanicsID();
+		for (Long l : idsMecanicos) {
+			if (l == idMechanic) {
+				return true;
 			}
-		} else {
-			throw new BusinessException( "El id del mecánico que se desea borrar no existe" );
 		}
-
+		return false;
 	}
 
 	@Override
@@ -142,6 +112,53 @@ public class MechanicsGatewayImpl implements MechanicsGateway {
 	}
 
 	@Override
+	public void remove( long idMechanic ) throws BusinessException {
+
+		if (existMechanic( idMechanic )) {
+			try {
+
+				pst = conection.prepareStatement( Conf.get( "SQL_DELETE_MECHANIC" ) );
+				pst.setLong( 1, idMechanic );
+
+				pst.executeUpdate();
+
+			} catch (SQLException e) {
+				throw new BusinessException( "Error eliminando un mecánico" );
+			} finally {
+				Jdbc.close( pst );
+			}
+		} else {
+			throw new BusinessException( "El id del mecánico que se desea borrar no existe" );
+		}
+
+	}
+
+	@Override
+	public void save( String nombre, String apellidos ) throws BusinessException {
+
+		try {
+			pst = conection.prepareStatement( Conf.get( "SQL_INSERT_MECHANIC" ) );
+
+			pst.setString( 1, nombre );
+			pst.setString( 2, apellidos );
+
+			pst.executeUpdate();
+
+		} catch (SQLException e) {
+			throw new BusinessException( "Error añadiendo un mecánico" );
+		} finally {
+			Jdbc.close( pst );
+		}
+
+	}
+
+	@Override
+	public void setConnection( Connection conection ) {
+		this.conection = conection;
+
+	}
+
+	@Override
 	public void update( String nombre, String apellidos, long idMechanic )
 			throws BusinessException {
 
@@ -165,23 +182,6 @@ public class MechanicsGatewayImpl implements MechanicsGateway {
 			throw new BusinessException( "El id del mecánico que se desea actualizar no existe" );
 		}
 
-	}
-
-	/**
-	 * Comprueba si existe el mecánico que se le pasa como parámetro
-	 * 
-	 * @return true si existe, false en caso contrario
-	 * @throws BusinessException
-	 */
-	private boolean existMechanic( Long idMechanic ) throws BusinessException {
-
-		List<Long> idsMecanicos = findAllMechanicsID();
-		for (Long l : idsMecanicos) {
-			if (l == idMechanic) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

@@ -27,6 +27,10 @@ import alb.util.menu.BaseMenu;
 
 public class MainMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public MainMenu() {
 		menuOptions = new Object[][] {
 				{ "Administrador", null },
@@ -35,10 +39,6 @@ public class MainMenu extends BaseMenu {
 				{ "Gestión de tipos de vehículo", TiposVehiculoMenu.class },
 				{ "Gestión de bonos", BonosMenu.class }
 		};
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
 	}
 
 }

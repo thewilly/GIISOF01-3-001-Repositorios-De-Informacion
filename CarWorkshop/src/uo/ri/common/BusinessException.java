@@ -23,21 +23,53 @@
  ******************************************************************************/
 package uo.ri.common;
 
+/**
+ * 
+ * BusinessException.java (From source code provided by subject teachers)
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082114
+ * @since 201805082114
+ * @formatter Oviedo Computing Community
+ */
 public class BusinessException extends Exception {
+
 	private static final long serialVersionUID = -308694287126038961L;
 
+	/**
+	 * Allocates a business exception object and initializes it. represents.
+	 */
 	public BusinessException() {}
 
+	/**
+	 * Allocates a business exception object and initializes it so that it
+	 * contains the given message.
+	 * 
+	 * @param message is the message of the exception.
+	 */
 	public BusinessException( String message ) {
 		super( message );
 	}
 
-	public BusinessException( Throwable cause ) {
-		super( cause );
-	}
-
+	/**
+	 * Allocates a business exception object and initializes it so that it
+	 * contains the given message and the given cause.
+	 * 
+	 * @param message is the message of the exception.
+	 * @param cause is the cause of the exception.
+	 */
 	public BusinessException( String message, Throwable cause ) {
 		super( message, cause );
+	}
+
+	/**
+	 * Allocates a business exception object and initializes it so that it
+	 * contains the given cause.
+	 * 
+	 * @param cause is the cause of the exception.
+	 */
+	public BusinessException( Throwable cause ) {
+		super( cause );
 	}
 
 }

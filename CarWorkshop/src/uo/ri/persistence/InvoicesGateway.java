@@ -31,14 +31,14 @@ import uo.ri.common.BusinessException;
 
 public interface InvoicesGateway {
 
-	void setConnection( Connection conection );
+	long getGeneratedKey( long numeroFactura ) throws BusinessException;
 
 	void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria ) throws BusinessException;
 
 	void save( long numeroFactura, Date fechaFactura, double iva, double totalConIva )
 			throws BusinessException;
 
-	long getGeneratedKey( long numeroFactura ) throws BusinessException;
+	void setConnection( Connection conection );
 
 	Long ultimoNumeroFactura() throws BusinessException;
 

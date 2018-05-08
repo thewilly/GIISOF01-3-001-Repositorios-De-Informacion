@@ -26,48 +26,76 @@ package uo.ri.business.impl.foreman;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.ClientsGateway;
 
-public class AddClient {
+/**
+ * 
+ * CreateClientWithRecomender.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805081953
+ * @since 201805081953
+ * @formatter Oviedo Computing Community
+ */
+public class CreateRecommendedClient {
 
-	private String dni;
-	private String nombre;
-	private String apellidos;
-	private String correo;
-	private int zipcode;
-	private int telefono;
+	private Long recommenderId;
+	private String dni, name, surname, email;
+	private int phoneNumber, zipCode;
 
-	public AddClient( String dni, String nombre, String apellidos, int cPostal, int telefono,
-			String correo ) {
+	/**
+	 * Create the action to create a client with a recommender.
+	 * 
+	 * @param dni of the client.
+	 * @param name of the client.
+	 * @param surname of the client.
+	 * @param zipCode of the client.
+	 * @param phone of the client.
+	 * @param email of the client.
+	 * @param recomenderId is the recommender unique identifier in the system.
+	 */
+	public CreateRecommendedClient( String dni, String name, String surname, int zipCode,
+			int phone, String email, long recomenderId ) {
 		this.dni = dni;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.zipcode = cPostal;
-		this.telefono = telefono;
-		this.correo = correo;
+		this.name = name;
+		this.surname = surname;
+		this.zipCode = zipCode;
+		this.phoneNumber = phone;
+		this.email = email;
+		this.recommenderId = recomenderId;
 	}
 
+	/**
+	 * Executes the action.
+	 * 
+	 * @throws BusinessException if any error occurs during the creation of the
+	 *             client.
+	 */
 	public void execute() throws BusinessException {
 
-		Connection c = null;
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection.
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating the gateway and setting the connection.
+			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
+			clientsGW.setConnection( connection );
 
-			cGate.save( dni, nombre, apellidos, zipcode, telefono, correo );
+			// Saving the object in persistence.
+			clientsGW.createWithRecommender( dni, name, surname, zipCode, phoneNumber, email,
+					recommenderId );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection.
+			close( connection );
 		}
-
 	}
 
 }

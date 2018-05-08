@@ -42,9 +42,26 @@ public class BondsGatewayImpl implements BondsGateway {
 	ResultSet rs = null;
 
 	@Override
-	public void setConnection( Connection conection ) {
-		this.conection = conection;
+	public List<Long> findFailuresIdsByVehicleId( Long idVehiculo ) throws BusinessException {
+		List<Long> ids = new ArrayList<Long>();
 
+		try {
+			pst = conection.prepareStatement( Conf.get( "SQL_FIND_AVERIAS_BY_ID_VEHICULO" ) );
+
+			pst.setLong( 1, idVehiculo );
+
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				ids.add( rs.getLong( "id" ) );
+			}
+
+		} catch (SQLException e) {
+			throw new BusinessException( "Error sacando las averias de los vehículos" );
+		} finally {
+			Jdbc.close( rs, pst );
+		}
+
+		return ids;
 	}
 
 	@Override
@@ -72,26 +89,9 @@ public class BondsGatewayImpl implements BondsGateway {
 	}
 
 	@Override
-	public List<Long> findFailuresIdsByVehicleId( Long idVehiculo ) throws BusinessException {
-		List<Long> ids = new ArrayList<Long>();
+	public void setConnection( Connection conection ) {
+		this.conection = conection;
 
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_FIND_AVERIAS_BY_ID_VEHICULO" ) );
-
-			pst.setLong( 1, idVehiculo );
-
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				ids.add( rs.getLong( "id" ) );
-			}
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error sacando las averias de los vehículos" );
-		} finally {
-			Jdbc.close( rs, pst );
-		}
-
-		return ids;
 	}
 
 }

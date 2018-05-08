@@ -36,32 +36,59 @@ import uo.ri.persistence.impl.InvoicesGatewayImpl;
 import uo.ri.persistence.impl.MechanicsGatewayImpl;
 import uo.ri.persistence.impl.PaymentMethodsGatewayImp;
 
+/**
+ * 
+ * PersistenceFactory.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082121
+ * @since 201805082121
+ * @formatter Oviedo Computing Community
+ */
 public class PersistenceFactory {
 
-	public PersistenceFactory() {}
-
-	public static MechanicsGateway getMechanicsGateway() {
-		return new MechanicsGatewayImpl();
-	}
-
-	public static InvoicesGateway getInvoicesGateway() {
-		return new InvoicesGatewayImpl();
-	}
-
-	public static FailuresGateway getFailuresGateway() {
-		return new FailuresGatewayImpl();
-	}
-
-	public static ClientsGateway getClientsGateway() {
-		return new ClientsGatewayImpl();
-	}
-
+	/**
+	 * @return new bonds gateway implementation.
+	 */
 	public static BondsGateway getBondsGateway() {
 		return new BondsGatewayImpl();
 	}
 
+	/**
+	 * @return new bonds gateway implementation.
+	 */
+	public static ClientsGateway getClientsGateway() {
+		return new ClientsGatewayImpl();
+	}
+
+	/**
+	 * @return new bonds gateway implementation.
+	 */
+	public static FailuresGateway getFailuresGateway() {
+		return new FailuresGatewayImpl();
+	}
+
+	/**
+	 * @return new bonds gateway implementation.
+	 */
+	public static InvoicesGateway getInvoicesGateway() {
+		return new InvoicesGatewayImpl();
+	}
+
+	/**
+	 * @return new bonds gateway implementation.
+	 */
+	public static MechanicsGateway getMechanicsGateway() {
+		return new MechanicsGatewayImpl();
+	}
+
+	/**
+	 * @return new bonds gateway implementation.
+	 */
 	public static PaymentMethodsGateway getPaymentMethodsGateway() {
 		return new PaymentMethodsGatewayImp();
 	}
+
+	private PersistenceFactory() {}
 
 }

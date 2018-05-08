@@ -21,56 +21,68 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.foreman;
+package uo.ri.business.impl.admin;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.MechanicsGateway;
 
-public class AddClientWithRecomendator {
+/**
+ * 
+ * AddMechanic.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805072327
+ * @since 201805072327
+ * @formatter Oviedo Computing Community
+ */
+public class CreateMechanic {
 
-	private Long idRecomendador;
+	private String name;
+	private String surname;
 
-	private String dni;
-	private String nombre;
-	private String apellidos;
-	private String correo;
-	private int zipcode;
-	private int telefono;
+	/**
+	 * Allocates a mechanic with its name and surname.
+	 * 
+	 * @param name of the mechanic.
+	 * @param surname of the mechanic.
+	 */
+	public CreateMechanic( String name, String surname ) {
+		this.name = name;
+		this.surname = surname;
 
-	public AddClientWithRecomendator( String dni, String nombre, String apellidos, int cPostal,
-			int telefono,
-			String correo, long idRecomendador ) {
-		this.dni = dni;
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-		this.zipcode = cPostal;
-		this.telefono = telefono;
-		this.correo = correo;
-		this.idRecomendador = idRecomendador;
 	}
 
+	/**
+	 * Gets a connection from the JDBC. And for that given connection opens a
+	 * mechanics gateway to save the mechanic data.
+	 * 
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
 	public void execute() throws BusinessException {
 
-		Connection c = null;
+		Connection connection = null;
 
 		try {
-			c = Jdbc.getConnection();
+			// Getting the connection
+			connection = getConnection();
 
-			ClientsGateway cGate = PersistenceFactory.getClientsGateway();
-			cGate.setConnection( c );
+			// Creating the gateway and setting the connection.
+			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
+			mechanicsGW.setConnection( connection );
 
-			cGate.saveWithRecomendator( dni, nombre, apellidos, zipcode, telefono, correo,
-					idRecomendador );
-
+			// Invoke the save method to persist the data.
+			mechanicsGW.save( this.name, this.surname );
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( c );
+			// Closing the connection.
+			close( connection );
 		}
 	}
 

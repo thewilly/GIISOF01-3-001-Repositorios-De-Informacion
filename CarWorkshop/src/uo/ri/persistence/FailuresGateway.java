@@ -30,18 +30,18 @@ import uo.ri.common.BusinessException;
 
 public interface FailuresGateway {
 
-	void setConnection( Connection conection );
-
-	void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
-
-	void updateFailuresStatus( List<Long> idsAveria, String status ) throws BusinessException;
-
-	void updateAmountForFailure( Long idAveria, double totalAveria ) throws BusinessException;
+	double getHumanCostsForFailure( Long idAveria ) throws BusinessException;
 
 	double getReplacementCostsForFailure( Long idAveria ) throws BusinessException;
 
-	double getHumanCostsForFailure( Long idAveria ) throws BusinessException;
+	void setConnection( Connection conection );
 
 	void setFailureAsBondUsed( Long idAveria ) throws BusinessException;
+
+	void updateAmountForFailure( Long idAveria, double totalAveria ) throws BusinessException;
+
+	void updateFailuresStatus( List<Long> idsAveria, String status ) throws BusinessException;
+
+	void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
 
 }

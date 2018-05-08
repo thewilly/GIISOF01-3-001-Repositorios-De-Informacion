@@ -23,33 +23,40 @@
  ******************************************************************************/
 package uo.ri.persistence;
 
-import java.sql.Connection;
 import java.util.List;
 
 import uo.ri.common.BusinessException;
 
-public interface BondsGateway {
-
-	void setConnection( Connection conection );
-
-	/**
-	 * Devuelve una lista con los ids de los vehículos de un cliente que se le
-	 * pasa como parámetro
-	 * 
-	 * @param idCliente
-	 * @return
-	 * @throws BusinessException
-	 */
-	List<Long> findVehiclesIdsByClientId( Long idCliente ) throws BusinessException;
+/**
+ * 
+ * BondsGateway.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082150
+ * @since 201805082150
+ * @formatter Oviedo Computing Community
+ */
+public interface BondsGateway extends RequestsConnection {
 
 	/**
-	 * Devuelve una lista con los ids de las averias de un vehículo que se le
-	 * pasa como parámetro
+	 * Finds all the failures for a given vehicle id.
 	 * 
-	 * @param idVehiculo
-	 * @return
-	 * @throws BusinessException
+	 * @param vehicleId is the unique vehicle id in the system to look for.
+	 * @return a list containing all the id's of the failures associated with
+	 *         that vehicle.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
 	 */
-	List<Long> findFailuresIdsByVehicleId( Long idVehiculo ) throws BusinessException;
+	List<Long> findFailuresIdsByVehicleId( Long vehicleId ) throws BusinessException;
 
+	/**
+	 * Finds all the vehicles id's for a given client id.
+	 * 
+	 * @param clientId is the unique client id in the system of the client for
+	 *            which we want to get all the associated cars.
+	 * @return a list containing all the vehicles id's for the given client id.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	List<Long> findVehiclesIdsByClientId( Long clientId ) throws BusinessException;
 }

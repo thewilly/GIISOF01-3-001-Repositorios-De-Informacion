@@ -37,7 +37,7 @@ public class AddMechanicAction implements Action {
 		String nombre = Console.readString( "Nombre" );
 		String apellidos = Console.readString( "Apellidos" );
 
-		ServicesFactory.getAdminService().addMechanic( nombre, apellidos );
+		ServicesFactory.getAdminService().createMechanic( nombre, apellidos );
 
 		// Mostrar resultado
 		Console.println( "Nuevo mecánico añadido" );

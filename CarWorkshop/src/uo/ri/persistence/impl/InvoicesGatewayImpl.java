@@ -42,9 +42,20 @@ public class InvoicesGatewayImpl implements InvoicesGateway {
 	ResultSet rs = null;
 
 	@Override
-	public void setConnection( Connection conection ) {
-		this.conection = conection;
+	public long getGeneratedKey( long numeroFactura ) throws BusinessException {
+		try {
+			pst = conection.prepareStatement( Conf.get( "SQL_RECUPERAR_CLAVE_GENERADA" ) );
+			pst.setLong( 1, numeroFactura );
+			rs = pst.executeQuery();
+			rs.next();
 
+			return rs.getLong( 1 );
+
+		} catch (SQLException e) {
+			throw new BusinessException( "Error recuperando la clave generada" );
+		} finally {
+			Jdbc.close( rs, pst );
+		}
 	}
 
 	@Override
@@ -90,20 +101,9 @@ public class InvoicesGatewayImpl implements InvoicesGateway {
 	}
 
 	@Override
-	public long getGeneratedKey( long numeroFactura ) throws BusinessException {
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_RECUPERAR_CLAVE_GENERADA" ) );
-			pst.setLong( 1, numeroFactura );
-			rs = pst.executeQuery();
-			rs.next();
+	public void setConnection( Connection conection ) {
+		this.conection = conection;
 
-			return rs.getLong( 1 );
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error recuperando la clave generada" );
-		} finally {
-			Jdbc.close( rs, pst );
-		}
 	}
 
 	@Override

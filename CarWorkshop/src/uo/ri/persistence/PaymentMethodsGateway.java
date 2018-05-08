@@ -29,8 +29,6 @@ import uo.ri.common.BusinessException;
 
 public interface PaymentMethodsGateway {
 
-	void setConnection( Connection conection );
-
 	/**
 	 * Crea un bono de tipo TMetalico en la tabla TMediospago
 	 * 
@@ -47,5 +45,7 @@ public interface PaymentMethodsGateway {
 	 * @throws BusinessException
 	 */
 	String getLastBonoCode() throws BusinessException;
+
+	void setConnection( Connection conection );
 
 }

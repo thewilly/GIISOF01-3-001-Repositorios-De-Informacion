@@ -27,46 +27,55 @@ import java.util.List;
 import java.util.Map;
 
 import uo.ri.business.AdminService;
-import uo.ri.business.impl.admin.AddMechanic;
+import uo.ri.business.impl.admin.CreateMechanic;
 import uo.ri.business.impl.admin.RemoveMechanic;
 import uo.ri.business.impl.admin.FindAllMechanics;
-import uo.ri.business.impl.admin.GenerateBonos;
+import uo.ri.business.impl.admin.GenerateBonds;
 import uo.ri.business.impl.admin.UpdateMechanic;
 import uo.ri.common.BusinessException;
 
+/**
+ * 
+ * AdminServiceImpl.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201805082105
+ * @since 201805082105
+ * @formatter Oviedo Computing Community
+ */
 public class AdminServiceImpl implements AdminService {
 
 	@Override
-	public void addMechanic( String nombre, String apellidos ) throws BusinessException {
-		AddMechanic action = new AddMechanic( nombre, apellidos );
-		action.execute();
-
-	}
-
-	@Override
-	public void removeMechanic( Long idMechanic ) throws BusinessException {
-		RemoveMechanic d = new RemoveMechanic( idMechanic );
-		d.execute();
-	}
-
-	@Override
-	public void updateMechanic( Long idMechanic, String nombre, String apellidos )
-			throws BusinessException {
-		UpdateMechanic u = new UpdateMechanic( idMechanic, nombre, apellidos );
-		u.execute();
+	public void createMechanic( String name, String surname ) throws BusinessException {
+		CreateMechanic create = new CreateMechanic( name, surname );
+		create.execute();
 
 	}
 
 	@Override
 	public List<Map<String, Object>> findAllMechanics() throws BusinessException {
-		FindAllMechanics f = new FindAllMechanics();
-		return f.execute();
+		FindAllMechanics findAll = new FindAllMechanics();
+		return findAll.execute();
 	}
 
 	@Override
 	public void generateBonds() throws BusinessException {
-		GenerateBonos g = new GenerateBonos();
-		g.execute();
+		GenerateBonds generate = new GenerateBonds();
+		generate.execute();
+
+	}
+
+	@Override
+	public void removeMechanic( Long idMechanic ) throws BusinessException {
+		RemoveMechanic remove = new RemoveMechanic( idMechanic );
+		remove.execute();
+	}
+
+	@Override
+	public void updateMechanic( Long idMechanic, String nombre, String apellidos )
+			throws BusinessException {
+		UpdateMechanic update = new UpdateMechanic( idMechanic, nombre, apellidos );
+		update.execute();
 
 	}
 

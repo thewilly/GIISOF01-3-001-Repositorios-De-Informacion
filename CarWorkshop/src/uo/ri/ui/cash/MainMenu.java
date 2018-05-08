@@ -29,6 +29,10 @@ import uo.ri.ui.cash.action.FacturarReparacionesAction;
 
 public class MainMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public MainMenu() {
 		menuOptions = new Object[][] {
 				{ "Caja de Taller", null },
@@ -38,10 +42,6 @@ public class MainMenu extends BaseMenu {
 				{ "Facturar reparaciones", FacturarReparacionesAction.class },
 				{ "Liquidar factura ", NotYetImplementedAction.class },
 		};
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
 	}
 
 }

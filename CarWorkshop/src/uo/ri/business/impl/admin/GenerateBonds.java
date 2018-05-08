@@ -45,9 +45,56 @@ import uo.ri.persistence.PaymentMethodsGateway;
  * @since 201805072358
  * @formatter Oviedo Computing Community
  */
-public class GenerateBonos {
+public class GenerateBonds {
 
 	private static final int NUMBER_OF_FAILURES_PER_BOND = 3;
+
+	/**
+	 * Generates a new bond in the table of PAYMENTS_METHOD and updates the
+	 * relation of FAILURES to persist that the failure it is included in the
+	 * generated bond.
+	 * 
+	 * @param failuresIds is a list containing all the failures id's for the
+	 *            given client.
+	 * @param clientId if the id of the client for whom the bonds are going to
+	 *            be generated.
+	 * @param connection to be used to connect to the database.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	private void computeBondForEach3Failures( List<Long> failuresIds, Long clientId,
+			Connection connection )
+			throws BusinessException {
+
+		// Creating the gateways and setting the connection.
+		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+		PaymentMethodsGateway paymentMethodGW = PersistenceFactory.getPaymentMethodsGateway();
+		failuresGW.setConnection( connection );
+		paymentMethodGW.setConnection( connection );
+
+		// Computing the number of failures for the client.
+		int numberOfFailures = failuresIds.size()
+				- ( failuresIds.size() % NUMBER_OF_FAILURES_PER_BOND );
+
+		// Computing the corresponding number of bonds given the number of
+		// failures per bond.
+		int numberOfBonds = numberOfFailures / NUMBER_OF_FAILURES_PER_BOND;
+
+		// For each failure, update the persist data to say it is used in the
+		// bond.
+		for (int i = 0; i < numberOfFailures; i++) {
+			failuresGW.setFailureAsBondUsed( failuresIds.get( i ) );
+		}
+
+		// For the number of bonds to create we create and insert a bond in the
+		// database with the computed code. The computed code its BXXXXX+1.
+		for (int i = 0; i < numberOfBonds; i++) {
+			paymentMethodGW.createBonos( clientId, "B" +
+					( String.valueOf( Integer.valueOf(
+							paymentMethodGW.getLastBonoCode().substring( 1 ) ) + 1 ) ) );
+		}
+
+	}
 
 	/**
 	 * Will automatically generate the corresponding bonuses for all registered
@@ -120,52 +167,5 @@ public class GenerateBonos {
 			// Closing the connection.
 			close( connection );
 		}
-	}
-
-	/**
-	 * Generates a new bond in the table of PAYMENTS_METHOD and updates the
-	 * relation of FAILURES to persist that the failure it is included in the
-	 * generated bond.
-	 * 
-	 * @param failuresIds is a list containing all the failures id's for the
-	 *            given client.
-	 * @param clientId if the id of the client for whom the bonds are going to
-	 *            be generated.
-	 * @param connection to be used to connect to the database.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	private void computeBondForEach3Failures( List<Long> failuresIds, Long clientId,
-			Connection connection )
-			throws BusinessException {
-
-		// Creating the gateways and setting the connection.
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		PaymentMethodsGateway paymentMethodGW = PersistenceFactory.getPaymentMethodsGateway();
-		failuresGW.setConnection( connection );
-		paymentMethodGW.setConnection( connection );
-
-		// Computing the number of failures for the client.
-		int numberOfFailures = failuresIds.size()
-				- ( failuresIds.size() % NUMBER_OF_FAILURES_PER_BOND );
-
-		// Computing the corresponding number of bonds given the number of
-		// failures per bond.
-		int numberOfBonds = numberOfFailures / NUMBER_OF_FAILURES_PER_BOND;
-
-		// For each failure, update the persist data to say it is used in the
-		// bond.
-		for (int i = 0; i < numberOfFailures; i++) {
-			failuresGW.setFailureAsBondUsed( failuresIds.get( i ) );
-		}
-
-		// For the number of bonds to create we create and insert a bond in the
-		// database with the computed code. The computed code its BXXXXX+1.
-		for (int i = 0; i < numberOfBonds; i++) {
-			paymentMethodGW.createBonos( clientId, "B" +
-					( String.valueOf( Integer.valueOf(
-							paymentMethodGW.getLastBonoCode().substring( 1 ) ) + 1 ) ) );
-		}
-
 	}
 }
