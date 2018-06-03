@@ -17,51 +17,37 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.conf;
 
 import uo.ri.business.AdminService;
 import uo.ri.business.CashService;
-import uo.ri.business.ForemanService;
 import uo.ri.business.impl.AdminServiceImpl;
 import uo.ri.business.impl.CashServiceImpl;
-import uo.ri.business.impl.ForemanServiceImpl;
 
 /**
- * 
  * ServicesFactory.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082122
- * @since 201805082122
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public class ServicesFactory {
 
 	/**
-	 * @return new admin service implementation.
+	 * @return a new service for the administrator user.
 	 */
 	public static AdminService getAdminService() {
 		return new AdminServiceImpl();
 	}
 
 	/**
-	 * @return new cash service implementation.
+	 * @return a new service for the cashier user.
 	 */
 	public static CashService getCashService() {
 		return new CashServiceImpl();
 	}
-
-	/**
-	 * @return new foreman service implementation.
-	 */
-	public static ForemanService getForemanService() {
-		return new ForemanServiceImpl();
-	}
-
-	private ServicesFactory() {}
-
 }

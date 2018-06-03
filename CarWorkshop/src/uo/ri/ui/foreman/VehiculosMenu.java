@@ -17,26 +17,32 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.foreman;
 
 import alb.util.menu.BaseMenu;
 import alb.util.menu.NotYetImplementedAction;
 
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is just for all the vehicles and different actions related
+ * to them.
+ * 
+ * @author uo250878
+ *
+ */
 public class VehiculosMenu extends BaseMenu {
 
 	public VehiculosMenu() {
-		menuOptions = new Object[][] {
-				{ "Jefe de Taller > Gestión de Vehículos", null },
+		menuOptions = new Object[][] { { "Jefe de Taller > Gestión de Vehículos", null },
 
 				{ "Añadir vehículo", NotYetImplementedAction.class },
 				{ "Modificar datos de vehículo", NotYetImplementedAction.class },
 				{ "Eliminar vehículo", NotYetImplementedAction.class },
-				{ "Listar vehículo", NotYetImplementedAction.class },
-		};
+				{ "Listar vehículo", NotYetImplementedAction.class }, };
 	}
 
 }

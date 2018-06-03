@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business.impl;
 
@@ -27,24 +26,54 @@ import java.util.List;
 import java.util.Map;
 
 import uo.ri.business.CashService;
-import uo.ri.business.impl.cash.GenerateInvoiceForFailures;
+import uo.ri.business.impl.cash.CreatePMBond;
+import uo.ri.business.impl.cash.CreatePMCard;
+import uo.ri.business.impl.cash.CreateInvoiceForFailures;
+import uo.ri.business.impl.cash.RemovePaymentMehtodById;
+import uo.ri.business.impl.cash.FindAllPaymentMethodsByClientId;
 import uo.ri.common.BusinessException;
 
 /**
- * 
  * CashServiceImpl.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082103
- * @since 201805082103
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public class CashServiceImpl implements CashService {
 
 	@Override
-	public Map<String, Object> generateInvoiceForFailures( List<Long> list ) throws BusinessException {
-		GenerateInvoiceForFailures generate = new GenerateInvoiceForFailures( list );
-		return generate.execute();
+	public Map<String, Object> createInvoiceForFailures( List<Long> failuresIds ) throws BusinessException {
+		CreateInvoiceForFailures createInvoiceForFailures = new CreateInvoiceForFailures( failuresIds );
+		return createInvoiceForFailures.execute();
+	}
+
+	@Override
+	public List<Map<String, Object>> FindAllPaymentMethodsByClientId( Long clientId )
+			throws BusinessException {
+		FindAllPaymentMethodsByClientId findAllPaymentMethodsByClient = new FindAllPaymentMethodsByClientId( clientId );
+		return findAllPaymentMethodsByClient.execute();
+	}
+
+	@Override
+	public void removePaymentMethodById( Long paymentMethodId ) throws BusinessException {
+		RemovePaymentMehtodById removePaymentMethodById = new RemovePaymentMehtodById( paymentMethodId );
+		removePaymentMethodById.execute();
+	}
+
+	@Override
+	public void createPMCard( Long paymentMethodId, String cardKind, String cardNumber, String expirationDate )
+			throws BusinessException {
+		CreatePMCard createPMCard = new CreatePMCard( paymentMethodId, cardKind, cardNumber, expirationDate );
+		createPMCard.execute();
+	}
+
+	@Override
+	public void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
+			throws BusinessException {
+		CreatePMBond createPMBond = new CreatePMBond( paymentMethodId, bondDescription, availableAmount );
+		createPMBond.execute();
 	}
 
 }

@@ -17,46 +17,62 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.persistence;
+package uo.ri.business.impl.admin;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import uo.ri.common.BusinessException;
+import uo.ri.conf.PersistenceFactory;
+import uo.ri.persistence.PaymentMethodsGateway;
+
+import static alb.util.jdbc.Jdbc.close;
+import static alb.util.jdbc.Jdbc.getConnection;
 
 /**
  * 
- * BondsGateway.java
+ * FindAllBonds.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082150
- * @since 201805082150
+ * @version 201806021337
+ * @since 201806021337
  * @formatter Oviedo Computing Community
  */
-public interface BondsGateway extends RequestsConnection {
+public class FindAllBonds {
 
 	/**
-	 * Finds all the failures for a given vehicle id.
+	 * Will find all bonds in the system and will return them.
 	 * 
-	 * @param vehicleId is the unique vehicle id in the system to look for.
-	 * @return a list containing all the id's of the failures associated with
-	 *         that vehicle.
+	 * @return a list of maps where each map represents a bond.
 	 * @throws BusinessException if any error occurs during the execution of the
 	 *             method.
 	 */
-	List<Long> findFailuresIdsByVehicleId( Long vehicleId ) throws BusinessException;
+	public List<Map<String, Object>> execute() {
+		
+		Connection connection = null;
+		
+		try {
+			// Getting the connection.
+			connection = getConnection();
+			
+			// Creating the gateway and setting the connection.
+			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
+			paymentMethodsGW.setConnection( connection );
+			
+			// Returning the find bonds.
+			return paymentMethodsGW.findAllBonds();
+			
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			// Closing the connection.
+			close( connection );
+		}
+	}
 
-	/**
-	 * Finds all the vehicles id's for a given client id.
-	 * 
-	 * @param clientId is the unique client id in the system of the client for
-	 *            which we want to get all the associated cars.
-	 * @return a list containing all the vehicles id's for the given client id.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	List<Long> findVehiclesIdsByClientId( Long clientId ) throws BusinessException;
 }

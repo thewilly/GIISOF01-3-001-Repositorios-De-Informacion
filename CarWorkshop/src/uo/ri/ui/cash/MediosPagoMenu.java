@@ -17,39 +17,35 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.ui.foreman.action;
+package uo.ri.ui.cash;
 
-import java.util.List;
-import java.util.Map;
+import alb.util.menu.BaseMenu;
+import uo.ri.ui.cash.action.DeleteMedioPagoAction;
+import uo.ri.ui.cash.action.ListMediosPagoAction;
 
-import alb.util.console.Console;
-import alb.util.menu.Action;
-import uo.ri.common.BusinessException;
-import uo.ri.conf.ServicesFactory;
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is for all the things you can perform with the ways of
+ * payment of the system.
+ * 
+ * @author uo250878
+ *
+ */
+public class MediosPagoMenu extends BaseMenu {
 
-public class ListClientsByRecomendatorAction implements Action {
+	public MediosPagoMenu() {
+		menuOptions = new Object[][] { { "Caja de Taller > Gestión de medios de pago ", null },
+				{ "Dar de alta un medio de pago a un cliente", AddMedioPagoMenu.class },
+				{ "Dar de baja un medio de pago", DeleteMedioPagoAction.class },
+				{ "Listar medios de pago de un cliente", ListMediosPagoAction.class }, };
+	}
 
-	@Override
-	public void execute() throws BusinessException {
-
-		long idRecomendador = Console.readLong( "Id del recomendador" );
-
-		Console.println(
-				"\nListado de Clientes Recomendados por el cliente con id " + idRecomendador );
-
-		List<Map<String, Object>> map = ServicesFactory.getForemanService()
-				.findAllClientsByRecomendator( idRecomendador );
-		for (Map<String, Object> m : map) {
-			for (Map.Entry<String, Object> entry : m.entrySet()) {
-				Console.print( entry.getKey() + "\t" + entry.getValue() + "\n" );
-			}
-			Console.println();
-		}
-
+	public static void main( String[] args ) {
+		new MainMenu().execute();
 	}
 
 }

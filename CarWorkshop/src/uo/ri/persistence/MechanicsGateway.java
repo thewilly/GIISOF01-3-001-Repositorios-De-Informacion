@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.persistence;
 
@@ -29,16 +28,23 @@ import java.util.Map;
 
 import uo.ri.common.BusinessException;
 
+/**
+ * MechanicsGateway.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
+ */
 public interface MechanicsGateway {
 
-	List<Map<String, Object>> findAllMechanics() throws BusinessException;
+	void setConnection( Connection c );
 
-	void remove( long idMechanic ) throws BusinessException;
+	List<Map<String, Object>> findAll();
 
-	void save( String nombre, String apellidos ) throws BusinessException;
+	void update( Long id, String name, String surname ) throws BusinessException;
 
-	void setConnection( Connection con );
+	void save( String name, String surname );
 
-	void update( String nombre, String apellidos, long idClient ) throws BusinessException;
-
+	void remove( Long id ) throws BusinessException;
 }

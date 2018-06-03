@@ -26,99 +26,104 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import alb.util.date.DateUtil;
 import alb.util.jdbc.Jdbc;
+import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
-import uo.ri.persistence.InvoicesGateway;
+import uo.ri.persistence.MechanicsGateway;
 
 /**
- * InvoicesGatewayImpl.java
+ * MechaincsGatewayImpl.java
  *
  * @author Guillermo Facundo Colunga
  * @version 201806032143
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class InvoicesGatewayImpl implements InvoicesGateway {
-
-	private Connection connection;
+public class MechaincsGatewayImpl implements MechanicsGateway {
+	private Connection c;
+	private PreparedStatement pst = null;
+	private ResultSet rs = null;
 
 	@Override
 	public void setConnection( Connection c ) {
-		this.connection = c;
+		this.c = c;
+	}
+
+	private Map<String, Object> load( ResultSet rs ) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			map.put( "id", rs.getLong( 1 ) );
+			map.put( "name", rs.getString( 2 ) );
+			map.put( "surname", rs.getString( 3 ) );
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		}
+		return map;
 	}
 
 	@Override
-	public Long getLastInvoiceNumber() {
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-
+	public List<Map<String, Object>> findAll() {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_ULTIMO_NUMERO_FACTURA" ) );
+			pst = c.prepareStatement( Conf.get( "SQL_FIND_ALL_MECHANICS" ) );
 			rs = pst.executeQuery();
-
-			if (rs.next()) {
-				return rs.getLong( 1 ) + 1; // +1, el siguiente
-			} else { // todavía no hay ninguna
-				return 1L;
+			while (rs.next()) {
+				list.add( load( rs ) );
 			}
+			return list;
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst, connection );
+			Jdbc.close( rs, pst, c );
 		}
 	}
 
 	@Override
-	public Long save( Map<String, Object> map ) {
-		PreparedStatement pst = null;
+	public void update( Long id, String name, String surname ) throws BusinessException {
 		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_INSERTAR_FACTURA" ) );
-			pst.setLong( 1, (long) map.get( "numFactura" ) );
-			pst.setDate( 2, (java.sql.Date) map.get( "fechaFactura" ) );
-			pst.setDouble( 3, (double) map.get( "iva" ) );
-
-			pst.setDouble( 4, (double) map.get( "importe" ) );
-			pst.setString( 5, "SIN_ABONAR" );
-
+			pst = c.prepareStatement( Conf.get( "SQL_UPDATE_MECHANIC" ) );
+			pst.setString( 1, name );
+			pst.setString( 2, surname );
+			pst.setLong( 3, id );
 			pst.executeUpdate();
-
-			return getGeneratedKey( (long) map.get( "numFactura" ) ); // Id de
-																		// la
-																		// nueva
-																		// factura
-			// generada
 		} catch (SQLException e) {
-			throw new RuntimeException( e );
+			throw new BusinessException( e );
 		} finally {
-			Jdbc.close( connection );
-			Jdbc.close( pst );
-		}
-	}
-
-	private long getGeneratedKey( long numeroFactura ) throws SQLException {
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-
-		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_RECUPERAR_CLAVE_GENERADA" ) );
-			pst.setLong( 1, numeroFactura );
-			rs = pst.executeQuery();
-			rs.next();
-
-			return rs.getLong( 1 );
-
-		} finally {
-			Jdbc.close( rs, pst, connection );
+			Jdbc.close( rs, pst, c );
 		}
 	}
 
 	@Override
-	public double getTaxes( double totalFactura, Date fechaFactura ) {
-		return DateUtil.fromString( "1/7/2012" ).before( fechaFactura ) ? 21.0 : 18.0;
+	public void save( String name, String surname ) {
+		try {
+			pst = c.prepareStatement( Conf.get( "SQL_ADD_MECHANIC" ) );
+			pst.setString( 1, name );
+			pst.setString( 2, surname );
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException();
+		} finally {
+			Jdbc.close( rs, pst, c );
+		}
+	}
+
+	@Override
+	public void remove( Long idMecanico ) throws BusinessException {
+		try {
+			pst = c.prepareStatement( Conf.get( "SQL_DELETE_MECHANIC" ) );
+			pst.setLong( 1, idMecanico );
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new BusinessException( e );
+		} finally {
+			Jdbc.close( rs, pst, c );
+		}
+
 	}
 
 }

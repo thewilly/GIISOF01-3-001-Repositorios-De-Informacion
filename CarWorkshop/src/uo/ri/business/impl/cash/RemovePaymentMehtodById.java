@@ -17,11 +17,10 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.foreman;
+package uo.ri.business.impl.cash;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,74 +28,58 @@ import java.sql.SQLException;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
 /**
  * 
- * UpdateClient.java
+ * RemovePaymentMehtod.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082023
- * @since 201805082023
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class UpdateClient {
+public class RemovePaymentMehtodById {
 
-	private Long clientId;
-	private String dni, name, surname, email;
-	private int phoneNumber, zipCode;
+	private Long paymentMethodId;
 
 	/**
-	 * Creates an update action that will update the client data for the given
-	 * client id.
+	 * Initializes the action of removing a payment method by its unique DB
+	 * identifier.
 	 * 
-	 * @param clientId is the id for whom we want to update the data.
-	 * @param dni of the client.
-	 * @param name of the client.
-	 * @param surname of the client.
-	 * @param zipCode of the client.
-	 * @param phoneNumber of the client.
-	 * @param email of the client.
+	 * @param paymentMethodId is the unique DB identifier of the payment method.
 	 */
-	public UpdateClient( long clientId, String dni, String name, String surname, int zipCode,
-			int phoneNumber, String email ) {
-		this.dni = dni;
-		this.name = name;
-		this.surname = surname;
-		this.zipCode = zipCode;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.clientId = clientId;
+	public RemovePaymentMehtodById( Long paymentMethodId ) {
+		this.paymentMethodId = paymentMethodId;
 	}
 
 	/**
-	 * Executes the update in the data for the client.
+	 * Executes the action of removing the payment method by the information
+	 * given in the constructor.
 	 * 
 	 * @throws BusinessException if any error occurs during the execution of the
-	 *             inner operations.
+	 *             method.
 	 */
 	public void execute() throws BusinessException {
-
 		Connection connection = null;
 
 		try {
+
 			// Getting the connection.
 			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			ClientsGateway clientGW = PersistenceFactory.getClientsGateway();
-			clientGW.setConnection( connection );
+			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
+			paymentMethodsGW.setConnection( connection );
 
-			// Updating the client's data
-			clientGW.update( clientId, dni, name, surname, zipCode, phoneNumber, email );;
-
+			// Calling the remove from the gateway.
+			paymentMethodsGW.removePaymentMethodById( paymentMethodId );
 		} catch (SQLException e) {
-			throw new RuntimeException( e );
+			throw new RuntimeException();
 		} finally {
 			// Closing the connection.
 			close( connection );
 		}
-
 	}
 
 }

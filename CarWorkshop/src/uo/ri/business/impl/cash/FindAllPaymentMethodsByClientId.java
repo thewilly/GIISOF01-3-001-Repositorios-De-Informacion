@@ -17,82 +17,68 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.foreman;
+package uo.ri.business.impl.cash;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
 /**
- * 
- * AddClient.java
+ * FindAllPaymentMethodsByClientId.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805081936
- * @since 201805081936
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class CreateClient {
+public class FindAllPaymentMethodsByClientId {
 
-	private String dni, name, surname, email;
-	private int phoneNumber, zipCode;
+	private Long clientId;
 
 	/**
-	 * Creates the action that will create a simple client to the system.
-	 * 
-	 * @param dni is the country unique person identifier.
-	 * @param name is the name of the client.
-	 * @param surname is the surname of the client.
-	 * @param zipCode is the postal code from where the client lives.
-	 * @param phoneNumber is the phone number of the client.
-	 * @param email is the email address of the client.
+	 * @param clientId is the id of the client to filter all the payment
+	 *            methods.
 	 */
-	public CreateClient( String dni, String name, String surname, int zipCode, int phoneNumber,
-			String email ) {
-		this.dni = dni;
-		this.name = name;
-		this.surname = surname;
-		this.zipCode = zipCode;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
+	public FindAllPaymentMethodsByClientId( Long clientId ) {
+		this.clientId = clientId;
 	}
 
 	/**
-	 * Executes the action of creating a client in the system.
+	 * Executes the query.
 	 * 
-	 * @throws BusinessException if any error occurs during the creation of the
-	 *             client.
+	 * @return a list of maps where each map is a payment method of the given
+	 *         client.
+	 * @throws BusinessException if any error success during the execution of
+	 *             the method.
 	 */
-	public void execute() throws BusinessException {
-
+	public List<Map<String, Object>> execute() throws BusinessException {
 		Connection connection = null;
-
 		try {
+
 			// Getting the connection.
 			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
-			clientsGW.setConnection( connection );
+			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
+			paymentMethodsGW.setConnection( connection );
 
-			// We persis the data of the client trough the gateway.
-			clientsGW.save( dni, name, surname, zipCode, phoneNumber, email );
-
+			// returning the result of performing the query in the gateway.
+			return paymentMethodsGW.findAllPaymentMethodsByClientId( clientId );
 		} catch (SQLException e) {
-			throw new RuntimeException( e );
+			throw new RuntimeException();
 		} finally {
 			// Closing the connection.
 			close( connection );
 		}
-
 	}
 
 }

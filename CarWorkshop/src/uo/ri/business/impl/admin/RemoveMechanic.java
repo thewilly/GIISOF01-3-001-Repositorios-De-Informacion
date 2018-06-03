@@ -17,23 +17,23 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business.impl.admin;
+
+import static alb.util.jdbc.Jdbc.close;
+import static alb.util.jdbc.Jdbc.getConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.MechanicsGateway;
 
 /**
- * 
- * DeleteMechanic.java
+ * RemoveMechanic.java
  *
  * @author Guillermo Facundo Colunga
  * @version 201805072347
@@ -50,8 +50,8 @@ public class RemoveMechanic {
 	 * 
 	 * @param mechanicId is the id of the mechanic we want to remove.
 	 */
-	public RemoveMechanic( long mechanicId ) {
-		this.mechanicId = mechanicId;
+	public RemoveMechanic( long id ) {
+		this.mechanicId = id;
 	}
 
 	/**
@@ -62,7 +62,6 @@ public class RemoveMechanic {
 	 *             method.
 	 */
 	public void execute() throws BusinessException {
-
 		Connection connection = null;
 
 		try {
@@ -83,5 +82,4 @@ public class RemoveMechanic {
 			close( connection );
 		}
 	}
-
 }

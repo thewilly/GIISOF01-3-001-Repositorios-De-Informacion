@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business.impl.admin;
 
@@ -29,61 +28,44 @@ import java.sql.SQLException;
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.MechanicsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
 /**
  * 
- * AddMechanic.java
+ * GenerateBonos.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805072327
- * @since 201805072327
+ * @version 201805072358
+ * @since 201805072358
  * @formatter Oviedo Computing Community
  */
-public class CreateMechanic {
-
-	private String name;
-	private String surname;
-
+public class GenerateBondByRecommendation {
+	
 	/**
-	 * Allocates a mechanic with its name and surname.
-	 * 
-	 * @param name of the mechanic.
-	 * @param surname of the mechanic.
+	 * Executes the action of generating the bonds by recommendation.
 	 */
-	public CreateMechanic( String name, String surname ) {
-		this.name = name;
-		this.surname = surname;
-
-	}
-
-	/**
-	 * Gets a connection from the JDBC. And for that given connection opens a
-	 * mechanics gateway to save the mechanic data.
-	 * 
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public void execute() throws BusinessException {
-
+	public void execute() {
+		
 		Connection connection = null;
-
+		
 		try {
-			// Getting the connection
+			// Getting the connection.
 			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
-			mechanicsGW.setConnection( connection );
-
-			// Invoke the save method to persist the data.
-			mechanicsGW.save( this.name, this.surname );
+			
+			// Getting the gateway and setting the connection.
+			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
+			paymentMethodsGW.setConnection( connection );
+			
+			// Generating the bonds by recommendation.
+			paymentMethodsGW.generateBonosByRecomendation();
+			
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
+		} catch (BusinessException b) {
+			throw new RuntimeException( b );
 		} finally {
 			// Closing the connection.
 			close( connection );
 		}
 	}
-
 }

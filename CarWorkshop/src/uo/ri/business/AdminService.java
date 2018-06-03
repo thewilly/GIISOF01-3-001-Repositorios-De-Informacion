@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business;
 
@@ -29,80 +28,68 @@ import java.util.Map;
 import uo.ri.common.BusinessException;
 
 /**
- * 
  * AdminService.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805072244
- * @since 201805072244
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public interface AdminService {
 
 	/**
-	 * For a given name and surname will call the corresponding persistence
-	 * factory to send persist the new mechanic in the database.
+	 * Creates a mechanic from the given name and surname.
 	 * 
-	 * @param name of the mechanic.
-	 * @param suename of the mechanic.
-	 * @throws BusinessException if any error occurs during the mechanic
-	 *             creation or during persistence.
+	 * @param name is the name of the mechanic.
+	 * @param surname is the surname of the mechanic.
 	 */
-	void createMechanic( String name, String suename ) throws BusinessException;
+	void createMechanic( String name, String surname );
 
 	/**
-	 * Return the a list containing all the mechanics data that is contained in
-	 * the persistence layer.
+	 * Removes a mechanic by its given unique DB id.
 	 * 
-	 * @return a list a list containing all the mechanics data that is contained
-	 *         in the persistence layer.
-	 * @throws BusinessException if any error occurs during the execution of the
+	 * @param mechanicId is the mechanic to remove given unique DB id.
+	 * @throws BusinessException if any error during the executing of the
 	 *             method.
 	 */
-	List<Map<String, Object>> findAllMechanics() throws BusinessException;
+	void removeMechanic( long mechanicId ) throws BusinessException;
 
 	/**
-	 * Will automatically generate the corresponding bonuses for all registered
-	 * clients. Those are the conditions to generate bonds.
+	 * Updates the mechanic with the given mechanic id.
 	 * 
-	 * For each client that has recommended 3 other clients (who have made some
-	 * repair in the Workshop) a bonus of € 25 will be issued, with no limit on
-	 * the number of bonuses that can be obtained. It is necessary that the
-	 * client to whom a bond is to be issued has previously made some repair in
-	 * the Workshop. The bonds of this type carry the description "By
-	 * recommendation".
-	 * 
-	 * For every 3 breakdowns repaired in the Workshop (and charged) you will be
-	 * issued a € 20 bonus. No limit on the number of bonuses you can get. The
-	 * description of this type of bonus will be "For three breakdowns".
-	 * 
-	 * @throws BusinessException if any error occurs during the execution of the
+	 * @param mechanicToUpdateId is the unique DB id of the mechanic to update.
+	 * @param newMechanicName is the new name for the mechanic.
+	 * @param newMechanicSurname is the new surname for the mechanic.
+	 * @throws BusinessException if any error during the executing of the
 	 *             method.
 	 */
-	void generateBonds() throws BusinessException;
-
-	/**
-	 * From a given mechanic id will remove it from the persistence database.
-	 * 
-	 * @param mechanicId is the id of the mechanic we want to remove from the
-	 *            database.
-	 * @throws BusinessException if any error occurs during the mechanic
-	 *             deletion or during persistence.
-	 */
-	void removeMechanic( Long mechanicId ) throws BusinessException;
-
-	/**
-	 * For the given mechanic id will update the name and the surname with the
-	 * ones provided.
-	 * 
-	 * @param mechanicId is the id of the mechanic we want to update its name
-	 *            and surname.
-	 * @param name is the new name we want to set as the mechanic name.
-	 * @param surname is the new surname we want to set as the mechanic surname.
-	 * @throws BusinessException if any error occurs during the mechanic update
-	 *             or during persistence.
-	 */
-	void updateMechanic( Long mechanicId, String name, String surname )
+	void updateMechanic( long mechanicToUpdateId, String newMechanicName,
+			String newMechanicSurname )
 			throws BusinessException;
 
+	/**
+	 * @return all the mechanics in the system as a list of maps where each map
+	 *         represents a mechanic.
+	 */
+	List<Map<String, Object>> findAllMechanics();
+
+	/**
+	 * @return all the bonds in the system as a list of maps where each map
+	 *         represents a bond.
+	 */
+	List<Map<String, Object>> findAllBonds();
+
+	/**
+	 * @param clientId is the unique DB id of the client to query the bonds.
+	 * @return the bonds in the system that matched the given criteria as a list
+	 *         of maps where each map represents a bond.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	List<Map<String, Object>> findAllBondsByCliendId( long clientId ) throws BusinessException;
+
+	/**
+	 * Generates the bonds by recommendation.
+	 */
+	void generateBonosByRecomendation();
 }

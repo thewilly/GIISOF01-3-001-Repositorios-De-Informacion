@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.conf;
 
@@ -31,18 +30,18 @@ import java.util.Properties;
  * Conf.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082120
- * @since 201805082120
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public class Conf {
-	
+
 	// SATATIC MEMBERS
 
 	private static final String CONF_FILE = "configuration.properties";
 
 	private static Conf instance;
-	
+
 	public static String get( String key ) {
 		return getInstance().getProperty( key );
 	}
@@ -54,10 +53,10 @@ public class Conf {
 		return instance;
 	}
 
-	// NON-STATIC MEMEBERS 
-	
+	// NON-STATIC MEMEBERS
+
 	private Properties properties;
-	
+
 	private Conf() {
 		properties = new Properties();
 		try {

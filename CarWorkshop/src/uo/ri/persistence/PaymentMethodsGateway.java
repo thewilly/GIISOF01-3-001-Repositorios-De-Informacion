@@ -17,35 +17,42 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.persistence;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 import uo.ri.common.BusinessException;
 
+/**
+ * PaymentMethodsGateway.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
+ */
 public interface PaymentMethodsGateway {
 
-	/**
-	 * Crea un bono de tipo TMetalico en la tabla TMediospago
-	 * 
-	 * @param idCLiente
-	 * @param codigo
-	 * @throws BusinessException
-	 */
-	void createBonos( Long idCLiente, String codigo ) throws BusinessException;
+	void setConnection( Connection c );
 
-	/**
-	 * Devuelve el código del último bono de tipo TMetálico
-	 * 
-	 * @return
-	 * @throws BusinessException
-	 */
-	String getLastBonoCode() throws BusinessException;
+	List<Map<String, Object>> findAllBonds();
 
-	void setConnection( Connection conection );
+	List<Map<String, Object>> findAllBondsByClientId( long id ) throws BusinessException;
 
+	void generateBonosByRecomendation() throws BusinessException;
+
+	List<Map<String, Object>> findAllPaymentMethodsByClientId( Long id ) throws BusinessException;
+
+	void removePaymentMethodById( Long id ) throws BusinessException;
+
+	void createPMCard( Long id, String tipo, String numero, Timestamp fecha )
+			throws BusinessException;
+
+	void createBond( long id, double disponible, String descripcion ) throws BusinessException;
 }

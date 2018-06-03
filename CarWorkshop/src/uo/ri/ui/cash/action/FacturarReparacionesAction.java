@@ -17,59 +17,52 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.cash.action;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import alb.util.console.Console;
 import alb.util.menu.Action;
+import uo.ri.business.CashService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
+import uo.ri.ui.util.Printer;
 
+/**
+ * This class is the one that is called in the menu when an option that does not
+ * lead you to another menu takes you. Just for the menu of the cash register.
+ * In this case, the action of the class is to make the invoice of all the
+ * breakdowns the user is typing, and whenever he finishes, it will make the
+ * operations, and after that, it will be printed thanks to the printer class.
+ * 
+ * @author uo250878
+ *
+ */
 public class FacturarReparacionesAction implements Action {
-
-	public FacturarReparacionesAction() {
-
-	}
 
 	@Override
 	public void execute() throws BusinessException {
 		List<Long> idsAveria = new ArrayList<Long>();
 
+		// pedir las averias a incluir en la factura
 		do {
 			Long id = Console.readLong( "ID de averia" );
 			idsAveria.add( id );
 		} while (masAverias());
 
-		Map<String, Object> factura = ServicesFactory.getCashService()
-				.generateInvoiceForFailures( idsAveria );
-
-		mostrarFactura( (long) factura.get( "numeroFactura" ), (Date) factura.get( "fechaFactura" ),
-				(double) factura.get( "totalFactura" ), (double) factura.get( "iva" ),
-				(double) factura.get( "importe" ) );
-
+		CashService cash = ServicesFactory.getCashService();
+		Map<String, Object> map = cash.createInvoiceForFailures( idsAveria );
+		Printer printer = new Printer( map );
+		printer.printInvoice();
 	}
 
 	private boolean masAverias() {
 		return Console.readString( "¿Añadir más averias? (s/n) " ).equalsIgnoreCase( "s" );
-	}
-
-	private void mostrarFactura( long numeroFactura, Date fechaFactura, double totalFactura,
-			double iva,
-			double totalConIva ) {
-
-		Console.printf( "Factura nº: %d\n", numeroFactura );
-		Console.printf( "\tFecha: %1$td/%1$tm/%1$tY\n", fechaFactura );
-		Console.printf( "\tTotal: %.2f €\n", totalFactura );
-		Console.printf( "\tIva: %.1f %% \n", iva );
-		Console.printf( "\tTotal con IVA: %.2f €\n", totalConIva );
 	}
 
 }

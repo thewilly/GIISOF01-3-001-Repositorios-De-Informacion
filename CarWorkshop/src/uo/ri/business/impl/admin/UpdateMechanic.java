@@ -17,15 +17,12 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business.impl.admin;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static alb.util.jdbc.Jdbc.*;
@@ -45,7 +42,8 @@ import uo.ri.persistence.MechanicsGateway;
 public class UpdateMechanic {
 
 	private long mechanicId;
-	private String name, surname;
+	private String name;
+	private String surname;
 
 	/**
 	 * Action to update the mechanic name and surname. The mechanic where the
@@ -57,9 +55,9 @@ public class UpdateMechanic {
 	 * @param surname is the new surname for the mechanic.
 	 */
 	public UpdateMechanic( long mechanicId, String name, String surname ) {
+		this.mechanicId = mechanicId;
 		this.name = name;
 		this.surname = surname;
-		this.mechanicId = mechanicId;
 	}
 
 	/**
@@ -71,26 +69,23 @@ public class UpdateMechanic {
 	 */
 	public void execute() throws BusinessException {
 		Connection connection = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
 
 		try {
 			// Getting the connection.
 			connection = getConnection();
 
-			// Creating the data gateway.
+			// Creating the gateway and setting the connection.
 			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
 			mechanicsGW.setConnection( connection );
 
 			// Updating the mechanic.
-			mechanicsGW.update( name, surname, mechanicId );
+			mechanicsGW.update( mechanicId, name, surname );
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			// Closing the connection, the prepared statement and the result set.
-			close( rs, pst, connection );
+			// Closing the connection.
+			close( connection );
 		}
 	}
-
 }

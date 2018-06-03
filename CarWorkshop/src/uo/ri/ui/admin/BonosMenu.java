@@ -17,23 +17,34 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.admin;
 
 import alb.util.menu.BaseMenu;
-import uo.ri.ui.admin.action.GenerateBonosAction;
+import uo.ri.ui.admin.action.GenerateBonoRecomendationAction;
+import uo.ri.ui.admin.action.ListBonosAction;
+import uo.ri.ui.admin.action.ListBonosClientsAction;
 
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is just for bonus in the system and the operations to do
+ * with them.
+ * 
+ * @author uo250878
+ *
+ */
 public class BonosMenu extends BaseMenu {
 
 	public BonosMenu() {
-		menuOptions = new Object[][] {
-				{ "Administrador > Gestión de bonos", null },
-				{ "Generar bonos por tres averias", GenerateBonosAction.class }
+		menuOptions = new Object[][] { { "Administrador > Gestión de bonos", null },
 
-		};
+				{ "Generacion automática de bonos: recomendación",
+						GenerateBonoRecomendationAction.class },
+				{ "Listado de bonos de un cliente", ListBonosClientsAction.class },
+				{ "Listado de todos los bonos", ListBonosAction.class }, };
 	}
 
 }

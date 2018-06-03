@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.persistence;
 
@@ -28,20 +27,23 @@ import java.util.List;
 
 import uo.ri.common.BusinessException;
 
+/**
+ * FailuresGateway.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
+ */
 public interface FailuresGateway {
 
-	double getHumanCostsForFailure( Long idAveria ) throws BusinessException;
+	void setConnection( Connection c );
 
-	double getReplacementCostsForFailure( Long idAveria ) throws BusinessException;
+	void checkAllFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
 
-	void setConnection( Connection conection );
+	double getCostForFailures( List<Long> idsAveria ) throws BusinessException;
 
-	void setFailureAsBondUsed( Long idAveria ) throws BusinessException;
+	void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria );
 
-	void updateAmountForFailure( Long idAveria, double totalAveria ) throws BusinessException;
-
-	void updateFailuresStatus( List<Long> idsAveria, String status ) throws BusinessException;
-
-	void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
-
+	void setFailureStatus( List<Long> idsAveria, String string );
 }

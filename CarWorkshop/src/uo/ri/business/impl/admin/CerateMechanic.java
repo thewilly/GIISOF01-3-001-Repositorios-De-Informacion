@@ -17,74 +17,71 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.foreman;
+package uo.ri.business.impl.admin;
+
+import static alb.util.jdbc.Jdbc.close;
+import static alb.util.jdbc.Jdbc.getConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.MechanicsGateway;
 
 /**
  * 
- * FindClient.java
+ * AddMechanic.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082017
- * @since 201805082017
+ * @version 201805072327
+ * @since 201805072327
  * @formatter Oviedo Computing Community
  */
-public class FindClient {
+public class CerateMechanic {
 
-	private Long clientId;
+	private String name = "";
+	private String surname = "";
 
 	/**
-	 * Creates a find client action.
+	 * Allocates a mechanic with its name and surname.
 	 * 
-	 * @param clientId is the if of the client to find.
+	 * @param name of the mechanic.
+	 * @param surname of the mechanic.
 	 */
-	public FindClient( Long clientId ) {
-		this.clientId = clientId;
+	public CerateMechanic( String name, String surname ) {
+		this.name = name;
+		this.surname = surname;
 	}
 
 	/**
-	 * Executes the find client action and returns the client data or empty
-	 * string.
+	 * Gets a connection from the JDBC. And for that given connection opens a
+	 * mechanics gateway to save the mechanic data.
 	 * 
-	 * @return the client's data or the empty string.
 	 * @throws BusinessException if any error occurs during the execution of the
-	 *             inner operations.
+	 *             method.
 	 */
-	public String execute() throws BusinessException {
-
-		Connection conenction = null;
-		String clientDetails = "";
+	public void execute() {
+		Connection connection = null;
 
 		try {
-			// Getting the connection.
-			conenction = getConnection();
+			// Getting the connection
+			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			ClientsGateway clientGW = PersistenceFactory.getClientsGateway();
-			clientGW.setConnection( conenction );
+			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
+			mechanicsGW.setConnection( connection );
 
-			// Getting the client data from the gateway.
-			clientDetails = clientGW.findByClientId( clientId );
-
+			// Invoke the save method to persist the data.
+			mechanicsGW.save( this.name, this.surname );
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
 			// Closing the connection.
-			close( conenction );
+			close( connection );
 		}
-		// Returning the client's data.
-		return clientDetails;
 	}
-
 }

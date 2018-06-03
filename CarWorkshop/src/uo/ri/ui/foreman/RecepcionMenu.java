@@ -17,33 +17,35 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.foreman;
 
 import alb.util.menu.BaseMenu;
 import alb.util.menu.NotYetImplementedAction;
-import uo.ri.ui.foreman.action.ModificarAveriaAction;
-import uo.ri.ui.foreman.action.RegistrarAveriaAction;
 
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is just for all the possible actions related with
+ * breakdowns.
+ * 
+ * @author uo250878
+ *
+ */
 public class RecepcionMenu extends BaseMenu {
 
 	public RecepcionMenu() {
-		menuOptions = new Object[][] {
-				{ "Jefe de Taller > Recepción en taller", null },
+		menuOptions = new Object[][] { { "Jefe de Taller > Recepción en taller", null },
 
-				{ "Registrar avería", RegistrarAveriaAction.class },
-				{ "Modificar averia", ModificarAveriaAction.class },
-				{ "Eliminar una averia", NotYetImplementedAction.class },
-				{ "", null },
+				{ "Registrar avería", NotYetImplementedAction.class },
+				{ "Modificar averia", NotYetImplementedAction.class },
+				{ "Eliminar una averia", NotYetImplementedAction.class }, { "", null },
 				{ "Listar averías", NotYetImplementedAction.class },
-				{ "Ver una avería", NotYetImplementedAction.class },
-				{ "", null },
+				{ "Ver una avería", NotYetImplementedAction.class }, { "", null },
 				{ "Listar mecánicos", NotYetImplementedAction.class },
-				{ "Asignar una avería", NotYetImplementedAction.class },
-		};
+				{ "Asignar una avería", NotYetImplementedAction.class }, };
 	}
 
 }

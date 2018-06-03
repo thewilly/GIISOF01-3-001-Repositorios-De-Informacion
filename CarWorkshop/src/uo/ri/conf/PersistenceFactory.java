@@ -17,78 +17,55 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.conf;
 
 import uo.ri.persistence.FailuresGateway;
-import uo.ri.persistence.BondsGateway;
-import uo.ri.persistence.ClientsGateway;
 import uo.ri.persistence.InvoicesGateway;
 import uo.ri.persistence.MechanicsGateway;
 import uo.ri.persistence.PaymentMethodsGateway;
 import uo.ri.persistence.impl.FailuresGatewayImpl;
-import uo.ri.persistence.impl.BondsGatewayImpl;
-import uo.ri.persistence.impl.ClientsGatewayImpl;
 import uo.ri.persistence.impl.InvoicesGatewayImpl;
-import uo.ri.persistence.impl.MechanicsGatewayImpl;
-import uo.ri.persistence.impl.PaymentMethodsGatewayImp;
+import uo.ri.persistence.impl.MechaincsGatewayImpl;
+import uo.ri.persistence.impl.PaymentMethodsGatewayImpl;
 
 /**
- * 
  * PersistenceFactory.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805082121
- * @since 201805082121
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public class PersistenceFactory {
 
 	/**
-	 * @return new bonds gateway implementation.
-	 */
-	public static BondsGateway getBondsGateway() {
-		return new BondsGatewayImpl();
-	}
-
-	/**
-	 * @return new bonds gateway implementation.
-	 */
-	public static ClientsGateway getClientsGateway() {
-		return new ClientsGatewayImpl();
-	}
-
-	/**
-	 * @return new bonds gateway implementation.
+	 * @return a new gateway for the failures.
 	 */
 	public static FailuresGateway getFailuresGateway() {
 		return new FailuresGatewayImpl();
 	}
 
 	/**
-	 * @return new bonds gateway implementation.
+	 * @return a new gateway for the invoices.
 	 */
 	public static InvoicesGateway getInvoicesGateway() {
 		return new InvoicesGatewayImpl();
 	}
 
 	/**
-	 * @return new bonds gateway implementation.
+	 * @return a new gateway for the mechanics.
 	 */
 	public static MechanicsGateway getMechanicsGateway() {
-		return new MechanicsGatewayImpl();
+		return new MechaincsGatewayImpl();
 	}
 
 	/**
-	 * @return new bonds gateway implementation.
+	 * @return a new gateway for the payment methods.
 	 */
 	public static PaymentMethodsGateway getPaymentMethodsGateway() {
-		return new PaymentMethodsGatewayImp();
+		return new PaymentMethodsGatewayImpl();
 	}
-
-	private PersistenceFactory() {}
-
 }

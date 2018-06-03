@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.admin;
 
@@ -29,17 +28,24 @@ import uo.ri.ui.admin.action.DeleteMechanicAction;
 import uo.ri.ui.admin.action.ListMechanicsAction;
 import uo.ri.ui.admin.action.UpdateMechanicAction;
 
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is just for mechanics in the system and what to do with
+ * them.
+ * 
+ * @author uo250878
+ *
+ */
 public class MecanicosMenu extends BaseMenu {
 
 	public MecanicosMenu() {
-		menuOptions = new Object[][] {
-				{ "Administrador > Gestión de mecánicos", null },
+		menuOptions = new Object[][] { { "Administrador > Gestión de mecánicos", null },
 
 				{ "Añadir mecánico", AddMechanicAction.class },
 				{ "Modificar datos de mecánico", UpdateMechanicAction.class },
 				{ "Eliminar mecánico", DeleteMechanicAction.class },
-				{ "Listar mecánicos", ListMechanicsAction.class },
-		};
+				{ "Listar mecánicos", ListMechanicsAction.class }, };
 	}
 
 }

@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business;
 
@@ -29,27 +28,74 @@ import java.util.Map;
 import uo.ri.common.BusinessException;
 
 /**
- * 
  * CashService.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805072312
- * @since 201805072312
+ * @version 201806032143
+ * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public interface CashService {
 
 	/**
-	 * For a given list of the failures id's will generate the corresponding
-	 * invoice and return its data in to a map.
+	 * Creates an invoice for the given list of failures.
 	 * 
-	 * @param failuresIds is a list containing all the failures that are going
-	 *            to be billed in the invoice.
-	 * @return a <tt>Map</tt> containing all the invoice data.
-	 * @throws BusinessException if any error occurs during the generation of
-	 *             the invoices.
+	 * @param failuresIds is the list that contains the unique identifiers of
+	 *            the failures to bill in the invoice.
+	 * @return the invoice as a map.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
 	 */
-	Map<String, Object> generateInvoiceForFailures( List<Long> failuresIds )
+	Map<String, Object> createInvoiceForFailures( List<Long> failuresIds ) throws BusinessException;
+
+	/**
+	 * Finds all the payment method of a given client.
+	 * 
+	 * @param clientId is the unique DB identifier of the client to get the
+	 *            payment methods.
+	 * @return a list of maps where each map is a payment method of the given
+	 *         client.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	List<Map<String, Object>> FindAllPaymentMethodsByClientId( Long clientId )
 			throws BusinessException;
 
+	/**
+	 * Removes a payment method by its unique DB identifier.
+	 * 
+	 * @param paymentMethodId is the unique DB identifier of the payment method
+	 *            to remove from the system.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void removePaymentMethodById( Long paymentMethodId ) throws BusinessException;
+
+	/**
+	 * Creates a payment method of card type.
+	 * 
+	 * @param paymentMethodId is the id for the card.
+	 * @param cardKind is the kind of card.
+	 * @param cardNumber is the number of the card.
+	 * @param cardExpirationDate is the expiration date of the card after which
+	 *            the card will not be valid.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void createPMCard( Long paymentMethodId, String cardKind, String cardNumber,
+			String cardExpirationDate )
+			throws BusinessException;
+
+	/**
+	 * Creates a payment method of bond type.
+	 * 
+	 * @param paymentMethodId is the id of the bond.
+	 * @param bondDescription is the description of the bond.
+	 * @param availableAmount is the available amount of the money that the bond
+	 *            has.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
+			throws BusinessException;
 }

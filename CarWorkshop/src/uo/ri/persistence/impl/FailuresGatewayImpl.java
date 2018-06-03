@@ -17,9 +17,8 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.persistence.impl;
 
@@ -29,124 +28,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import bin.alb.util.jdbc.Jdbc;
+import alb.util.jdbc.Jdbc;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
 import uo.ri.persistence.FailuresGateway;
 
+/**
+ * FailuresGatewayImpl.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
+ */
 public class FailuresGatewayImpl implements FailuresGateway {
 
-	Connection conection = null;
-	PreparedStatement pst = null;
-	ResultSet rs = null;
+	private Connection connection;
 
-	@Override
-	public double getHumanCostsForFailure( Long idAveria ) throws BusinessException {
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_IMPORTE_MANO_OBRA" ) );
-			pst.setLong( 1, idAveria );
-
-			rs = pst.executeQuery();
-			if (rs.next() == false) {
-				throw new BusinessException( "La averia no existe o no se puede facturar" );
-			}
-
-			return rs.getDouble( 1 );
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error consultando el importe de mano de obra" );
-		} finally {
-			Jdbc.close( rs, pst );
-		}
+	public void setConnection( Connection c ) {
+		this.connection = c;
 	}
 
 	@Override
-	public double getReplacementCostsForFailure( Long idAveria ) throws BusinessException {
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_IMPORTE_REPUESTOS" ) );
-			pst.setLong( 1, idAveria );
-
-			rs = pst.executeQuery();
-			if (rs.next() == false) {
-				return 0.0;
-			}
-
-			return rs.getDouble( 1 );
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error consultando el importe de repuestos" );
-		} finally {
-			Jdbc.close( rs, pst );
-		}
-	}
-
-	@Override
-	public void setConnection( Connection conection ) {
-		this.conection = conection;
-
-	}
-
-	@Override
-	public void setFailureAsBondUsed( Long idAveria ) throws BusinessException {
+	public void checkAllFailuresAreFinished( List<Long> idsAveria ) throws BusinessException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
 
 		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_INSERT_BONO_AVERIA" ) );
-
-			pst.setLong( 1, idAveria );
-
-			pst.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error actualizando usada_bono en las averias" );
-		} finally {
-			Jdbc.close( pst );
-		}
-
-	}
-
-	@Override
-	public void updateAmountForFailure( Long idAveria, double totalAveria )
-			throws BusinessException {
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_UPDATE_IMPORTE_AVERIA" ) );
-			pst.setDouble( 1, totalAveria );
-			pst.setLong( 2, idAveria );
-			pst.executeUpdate();
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error actualizando el importe de una avería" );
-		} finally {
-			Jdbc.close( pst );
-		}
-
-	}
-
-	@Override
-	public void updateFailuresStatus( List<Long> idsAveria, String status )
-			throws BusinessException {
-		try {
-			pst = conection.prepareStatement( Conf.get( "SQL_ACTUALIZAR_ESTADO_AVERIA" ) );
-
-			for (Long idAveria : idsAveria) {
-				pst.setString( 1, status );
-				pst.setLong( 2, idAveria );
-
-				pst.executeUpdate();
-			}
-
-		} catch (SQLException e) {
-			throw new BusinessException( "Error actualizando el estado de una avería" );
-		} finally {
-			Jdbc.close( pst );
-		}
-
-	}
-
-	@Override
-	public void verifyFailuresAreFinished( List<Long> idsAveria ) throws BusinessException {
-		try {
-
-			pst = conection.prepareStatement( Conf.get( "SQL_VERIFICAR_ESTADO_AVERIA" ) );
+			pst = connection.prepareStatement( Conf.get( "SQL_VERIFICAR_ESTADO_AVERIA" ) );
 
 			for (Long idAveria : idsAveria) {
 				pst.setLong( 1, idAveria );
@@ -160,14 +69,132 @@ public class FailuresGatewayImpl implements FailuresGateway {
 				if (!"TERMINADA".equalsIgnoreCase( status )) {
 					throw new BusinessException( "No está terminada la avería " + idAveria );
 				}
+				rs.close();
 			}
-
 		} catch (SQLException e) {
-			throw new BusinessException( "Error verificando el estado de una avería" );
+			throw new BusinessException( e );
 		} finally {
 			Jdbc.close( rs, pst );
 		}
+	}
 
+	@Override
+	public double getCostForFailures( List<Long> idsAveria ) throws BusinessException {
+		double totalFactura = 0.0;
+		for (Long idAveria : idsAveria) {
+			double importeManoObra = consultaImporteManoObra( idAveria );
+			double importeRepuestos = consultaImporteRepuestos( idAveria );
+			double totalAveria = importeManoObra + importeRepuestos;
+
+			actualizarImporteAveria( idAveria, totalAveria );
+
+			totalFactura += totalAveria;
+		}
+		return totalFactura;
+	}
+
+	private void actualizarImporteAveria( Long idAveria, double totalAveria ) {
+		PreparedStatement pst = null;
+
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_UPDATE_IMPORTE_AVERIA" ) );
+			pst.setDouble( 1, totalAveria );
+			pst.setLong( 2, idAveria );
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			Jdbc.close( connection );
+			Jdbc.close( pst );
+		}
+	}
+
+	private double consultaImporteManoObra( Long idAveria ) throws BusinessException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_IMPORTE_MANO_OBRA" ) );
+			pst.setLong( 1, idAveria );
+
+			rs = pst.executeQuery();
+			if (rs.next() == false) {
+				throw new BusinessException( "La averia no existe o no se puede facturar" );
+			}
+
+			return rs.getDouble( 1 );
+
+		} catch (BusinessException e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new BusinessException( e );
+		} finally {
+			Jdbc.close( rs, pst, connection );
+		}
+	}
+
+	private double consultaImporteRepuestos( Long idAveria ) throws BusinessException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_IMPORTE_REPUESTOS" ) );
+			pst.setLong( 1, idAveria );
+
+			rs = pst.executeQuery();
+			if (rs.next() == false) {
+				return 0.0; // La averia puede no tener repuestos
+			}
+
+			return rs.getDouble( 1 );
+
+		} catch (SQLException e) {
+			throw new BusinessException( e );
+		} finally {
+			Jdbc.close( rs, pst, connection );
+		}
+	}
+
+	@Override
+	public void setFailureStatus( List<Long> idsAveria, String status ) {
+
+		PreparedStatement pst = null;
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_ACTUALIZAR_ESTADO_AVERIA" ) );
+
+			for (Long idAveria : idsAveria) {
+				pst.setString( 1, status );
+				pst.setLong( 2, idAveria );
+
+				pst.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			Jdbc.close( connection );
+			Jdbc.close( pst );
+		}
+	}
+
+	@Override
+	public void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria ) {
+
+		PreparedStatement pst = null;
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_VINCULAR_AVERIA_FACTURA" ) );
+
+			for (Long idAveria : idsAveria) {
+				pst.setLong( 1, idFactura );
+				pst.setLong( 2, idAveria );
+
+				pst.executeUpdate();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			Jdbc.close( connection );
+			Jdbc.close( pst );
+		}
 	}
 
 }

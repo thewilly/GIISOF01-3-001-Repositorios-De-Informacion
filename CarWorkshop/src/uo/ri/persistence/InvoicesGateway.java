@@ -17,29 +17,30 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.persistence;
 
 import java.sql.Connection;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
-import uo.ri.common.BusinessException;
-
+/**
+ * InvoicesGateway.java
+ *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
+ */
 public interface InvoicesGateway {
 
-	long getGeneratedKey( long numeroFactura ) throws BusinessException;
+	void setConnection( Connection c );
 
-	void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria ) throws BusinessException;
+	Long getLastInvoiceNumber();
 
-	void save( long numeroFactura, Date fechaFactura, double iva, double totalConIva )
-			throws BusinessException;
+	Long save( Map<String, Object> map );
 
-	void setConnection( Connection conection );
-
-	Long ultimoNumeroFactura() throws BusinessException;
-
+	double getTaxes( double totalFactura, Date fechaFactura );
 }

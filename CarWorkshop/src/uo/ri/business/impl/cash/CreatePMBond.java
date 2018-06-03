@@ -17,69 +17,73 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.business.impl.foreman;
+package uo.ri.business.impl.cash;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
-import uo.ri.persistence.ClientsGateway;
+import uo.ri.persistence.PaymentMethodsGateway;
 
 /**
  * 
- * FindAllClients.java
+ * CreatePMBond.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201805081957
- * @since 201805081957
+ * @version 201806032111
+ * @since 201806032111
  * @formatter Oviedo Computing Community
  */
-public class FindAllClients {
+public class CreatePMBond {
+
+	private Long bondId;
+	private String bondDescription;
+	private double availableAmount;
 
 	/**
-	 * Executes the action of finding all the clients in the system and returns
-	 * them as a list of maps being each map the client data.
+	 * Creates a bond with the given data.
 	 * 
-	 * @return a list of maps being each map the client data.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             operations involved.
+	 * @param bondId is the unique id for the bond.
+	 * @param bondDescription is the description of the bond.
+	 * @param availableAmount is the available amount in the bond.
 	 */
-	public List<Map<String, Object>> execute() throws BusinessException {
+	public CreatePMBond( Long bondId, String bondDescription, double availableAmount ) {
+		this.bondId = bondId;
+		this.bondDescription = bondDescription;
+		this.availableAmount = availableAmount;
+	}
 
-		// Creating the all clients data and initializing it to avoid future null
-		// pointers.
-		List<Map<String, Object>> allClientsData = new ArrayList<Map<String, Object>>();
+	/**
+	 * Creates the bond with the given data.
+	 * 
+	 * @throws BusinessException if an error success during the execution of the
+	 *             method.
+	 */
+	public void execute() throws BusinessException {
+
 		Connection connection = null;
 
 		try {
-
 			// Getting the connection.
 			connection = getConnection();
 
 			// Creating the gateway and setting the connection.
-			ClientsGateway clientsGW = PersistenceFactory.getClientsGateway();
-			clientsGW.setConnection( connection );
+			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
+			paymentMethodsGW.setConnection( connection );
 
-			// Getting all clients data from the gateway.
-			allClientsData = clientsGW.findAllClients();
-
+			// Creating the bond.
+			paymentMethodsGW.createBond( bondId, availableAmount, bondDescription );
 		} catch (SQLException e) {
-			throw new RuntimeException( e );
+			throw new RuntimeException();
 		} finally {
-			// Closing the connection
+			// Closing the connection.
 			close( connection );
 		}
-		// Returning all clients data.
-		return allClientsData;
 	}
 
 }

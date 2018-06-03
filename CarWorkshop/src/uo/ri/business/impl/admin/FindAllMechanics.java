@@ -17,11 +17,13 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.business.impl.admin;
+
+import static alb.util.jdbc.Jdbc.close;
+import static alb.util.jdbc.Jdbc.getConnection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.PersistenceFactory;
 import uo.ri.persistence.MechanicsGateway;
@@ -54,7 +55,7 @@ public class FindAllMechanics {
 	 * @throws BusinessException if any error occurs during the execution of the
 	 *             method.
 	 */
-	public List<Map<String, Object>> execute() throws BusinessException {
+	public List<Map<String, Object>> execute() {
 
 		// Instantiate the result object and initialize it to avoid future null
 		// pointers.
@@ -70,8 +71,9 @@ public class FindAllMechanics {
 			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
 			mechanicsGW.setConnection( connection );
 
-			// Invoke the findAllMechanics method from the gateway to get all the mechanics.
-			result = mechanicsGW.findAllMechanics();
+			// Invoke the findAllMechanics method from the gateway to get all
+			// the mechanics.
+			result = mechanicsGW.findAll();
 
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
@@ -82,5 +84,4 @@ public class FindAllMechanics {
 
 		return result;
 	}
-
 }

@@ -17,28 +17,34 @@
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 package uo.ri.ui.admin;
 
 import alb.util.menu.BaseMenu;
 
+/**
+ * This class is the one in charge of giving the user options to do in the
+ * application. It will redirect to the corresponding class it is selected. in
+ * this case the menu is for all the things the administration can do; any of
+ * the options lead you to another menu.
+ * 
+ * @author uo250878
+ *
+ */
 public class MainMenu extends BaseMenu {
 
-	public static void main( String[] args ) {
-		new MainMenu().execute();
-	}
-
 	public MainMenu() {
-		menuOptions = new Object[][] {
-				{ "Administrador", null },
+		menuOptions = new Object[][] { { "Administrador", null },
 				{ "Gestión de mecánicos", MecanicosMenu.class },
 				{ "Gestión de repuestos", RepuestosMenu.class },
 				{ "Gestión de tipos de vehículo", TiposVehiculoMenu.class },
-				{ "Gestión de bonos", BonosMenu.class }
-		};
+				{ "Gestión de bonos", BonosMenu.class }, };
+	}
+
+	public static void main( String[] args ) {
+		new MainMenu().execute();
 	}
 
 }
