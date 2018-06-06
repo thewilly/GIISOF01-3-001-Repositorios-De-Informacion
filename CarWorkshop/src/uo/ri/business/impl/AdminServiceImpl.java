@@ -52,24 +52,6 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public void removeMechanic( long mechanicId ) throws BusinessException {
-		RemoveMechanic removeMechanic = new RemoveMechanic( mechanicId );
-		removeMechanic.execute();
-	}
-
-	@Override
-	public void updateMechanic( long mechanicId, String name, String surname ) throws BusinessException {
-		UpdateMechanic updateMechanic = new UpdateMechanic( mechanicId, name, surname );
-		updateMechanic.execute();
-	}
-
-	@Override
-	public List<Map<String, Object>> findAllMechanics() {
-		FindAllMechanics findAllMechanics = new FindAllMechanics();
-		return findAllMechanics.execute();
-	}
-
-	@Override
 	public List<Map<String, Object>> findAllBonds() {
 		FindAllBonds findAllBonds = new FindAllBonds();
 		return findAllBonds.execute();
@@ -82,9 +64,27 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<Map<String, Object>> findAllMechanics() {
+		FindAllMechanics findAllMechanics = new FindAllMechanics();
+		return findAllMechanics.execute();
+	}
+
+	@Override
 	public void generateBonosByRecomendation() {
 		GenerateBondByRecommendation generateBondsByRecommendation = new GenerateBondByRecommendation();
 		generateBondsByRecommendation.execute();
+	}
+
+	@Override
+	public void removeMechanic( long mechanicId ) throws BusinessException {
+		RemoveMechanic removeMechanic = new RemoveMechanic( mechanicId );
+		removeMechanic.execute();
+	}
+
+	@Override
+	public void updateMechanic( long mechanicId, String name, String surname ) throws BusinessException {
+		UpdateMechanic updateMechanic = new UpdateMechanic( mechanicId, name, surname );
+		updateMechanic.execute();
 	}
 
 }

@@ -29,13 +29,12 @@ import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to update a mechanic by the id, and
- * so the name and surname after read are updated in the data base.
- * 
- * @author uo250878
+ * UpdateMechanicAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class UpdateMechanicAction implements Action {
 

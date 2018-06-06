@@ -22,36 +22,34 @@
  ******************************************************************************/
 package uo.ri.ui.admin.action;
 
-import java.util.List;
-import java.util.Map;
-
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
-import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to listing all the bonus from a
- * client, whose id is read from the console. The Printer class is called for it
- * to print all the information of the map with the data.
- * 
- * @author uo250878
+ * AddMechanicAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class ListBonosClientsAction implements Action {
+public class CreateMechanicAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		// Pedir datos
-		Long id = Console.readLong( "Id" );
-		Console.println( "\nListado de bonos de cliente con id: " + id + "\n" );
+
+		// Ask the used for data.
+		String nombre = Console.readString( "Nombre" );
+		String apellidos = Console.readString( "Apellidos" );
+
+		// Call to the corresponding service.
 		AdminService admin = ServicesFactory.getAdminService();
-		List<Map<String, Object>> list = admin.findAllBondsByCliendId( id );
-		Printer print = new Printer( list );
-		print.printBonosFromClient();
+		admin.createMechanic( nombre, apellidos );
+
+		// Show the result
+		Console.println( "Nuevo mecánico añadido" );
 	}
 }

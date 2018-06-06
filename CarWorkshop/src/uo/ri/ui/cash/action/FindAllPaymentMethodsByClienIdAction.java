@@ -20,37 +20,36 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.ui.admin.action;
+package uo.ri.ui.cash.action;
+
+import java.util.List;
+import java.util.Map;
 
 import alb.util.console.Console;
 import alb.util.menu.Action;
-import uo.ri.business.AdminService;
+import uo.ri.business.CashService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
+import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to add a mechanic and so it reads
- * from the console and calls to the logic layer with the help of the services
- * factory. It reads the name and surname.
- * 
- * @author uo250878
+ * FindAllPaymentMethodsByClienIdAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class AddMechanicAction implements Action {
+public class FindAllPaymentMethodsByClienIdAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-
-		// Pedir datos
-		String nombre = Console.readString( "Nombre" );
-		String apellidos = Console.readString( "Apellidos" );
-
-		AdminService admin = ServicesFactory.getAdminService();
-		admin.createMechanic( nombre, apellidos );
-
-		// Mostrar resultado
-		Console.println( "Nuevo mecánico añadido" );
+		Long id = Console.readLong( "Id cliente" );
+		Console.println( "\nListado de medios de pago de cliente con id: " + id + "\n" );
+		CashService cash = ServicesFactory.getCashService();
+		List<Map<String, Object>> list = cash.findAllPaymentMethodsByClientId( id );
+		Printer print = new Printer( list );
+		print.printMediosPagoFromClient();
 	}
+
 }

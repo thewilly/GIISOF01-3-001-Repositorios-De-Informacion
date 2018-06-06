@@ -22,31 +22,32 @@
  ******************************************************************************/
 package uo.ri.ui.admin.action;
 
+import java.util.List;
+import java.util.Map;
+
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
+import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to generate a bono automatically due
- * to the recommendation of a client of another clients. The recommender will
- * recieve a bono for each 3 he recommends.
- * 
- * @author uo250878
+ * FindAllBondsAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class GenerateBonoRecomendationAction implements Action {
+public class FindAllBondsAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-
+		Console.println( "\nListado de bonos\n" );
 		AdminService admin = ServicesFactory.getAdminService();
-		admin.generateBonosByRecomendation();
-
-		Console.println( "\nBonos generados\n" );
+		List<Map<String, Object>> list = admin.findAllBonds();
+		Printer print = new Printer( list );
+		print.printBonos();
 	}
-
 }

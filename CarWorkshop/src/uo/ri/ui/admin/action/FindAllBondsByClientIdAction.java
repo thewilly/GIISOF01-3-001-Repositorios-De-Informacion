@@ -20,34 +20,36 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.ui.cash.action;
+package uo.ri.ui.admin.action;
+
+import java.util.List;
+import java.util.Map;
 
 import alb.util.console.Console;
 import alb.util.menu.Action;
-import uo.ri.business.CashService;
+import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
+import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to delete a way of payment by the id
- * of it. It will just delete a way of payment that has not had any charge into
- * it. And the cash type can of course not be deleted either.(If any of those
- * cases are given, an exception will raise.
- * 
- * @author uo250878
+ * FindAllBondsByClientIdAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class DeleteMedioPagoAction implements Action {
+public class FindAllBondsByClientIdAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-
-		Long id = Console.readLong( "Id medio de pago" );
-		CashService cash = ServicesFactory.getCashService();
-		cash.removePaymentMethodById( id );
-		Console.println( "Se ha eliminado el medio de pago" );
+		// Pedir datos
+		Long id = Console.readLong( "Id" );
+		Console.println( "\nListado de bonos de cliente con id: " + id + "\n" );
+		AdminService admin = ServicesFactory.getAdminService();
+		List<Map<String, Object>> list = admin.findAllBondsByCliendId( id );
+		Printer print = new Printer( list );
+		print.printBonosFromClient();
 	}
-
 }

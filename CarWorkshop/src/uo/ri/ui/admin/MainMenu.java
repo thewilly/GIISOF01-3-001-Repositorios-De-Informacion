@@ -25,15 +25,18 @@ package uo.ri.ui.admin;
 import alb.util.menu.BaseMenu;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. in
- * this case the menu is for all the things the administration can do; any of
- * the options lead you to another menu.
- * 
- * @author uo250878
+ * MainMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class MainMenu extends BaseMenu {
+
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
 
 	public MainMenu() {
 		menuOptions = new Object[][] { { "Administrador", null },
@@ -41,10 +44,6 @@ public class MainMenu extends BaseMenu {
 				{ "Gestión de repuestos", RepuestosMenu.class },
 				{ "Gestión de tipos de vehículo", TiposVehiculoMenu.class },
 				{ "Gestión de bonos", BonosMenu.class }, };
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
 	}
 
 }

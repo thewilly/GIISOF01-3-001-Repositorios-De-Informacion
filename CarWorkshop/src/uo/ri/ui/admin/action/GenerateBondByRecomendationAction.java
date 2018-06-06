@@ -20,39 +20,31 @@
  *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-package uo.ri.ui.cash.action;
+package uo.ri.ui.admin.action;
 
 import alb.util.console.Console;
 import alb.util.menu.Action;
-import uo.ri.business.CashService;
+import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to add a new bonus to the system, to
- * the client specified in the console, as well as a description of issuance,
- * and the quantity of money it will have.
- * 
- * @author uo250878
+ * GenerateBondByRecomendationAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class AddBonoAction implements Action {
+public class GenerateBondByRecomendationAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
 
-		// Pedir datos
-		Long id = Console.readLong( "Id cliente" );
-		String descripcion = Console.readString( "Descripción" );
-		double disponible = Console.readDouble( "Dinero" );
+		AdminService admin = ServicesFactory.getAdminService();
+		admin.generateBonosByRecomendation();
 
-		CashService cash = ServicesFactory.getCashService();
-		cash.createPMBond( id, descripcion, disponible );
-
-		// Mostrar resultado
-		Console.println( "Nuevo bono añadido a " + id );
+		Console.println( "\nBonos generados\n" );
 	}
 
 }

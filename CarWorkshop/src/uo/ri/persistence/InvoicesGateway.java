@@ -36,11 +36,34 @@ import java.util.Map;
  */
 public interface InvoicesGateway {
 
-	void setConnection( Connection c );
-
+	/**
+	 * Gets the last invoice number generated.
+	 * 
+	 * @return the last invoice number generated.
+	 */
 	Long getLastInvoiceNumber();
 
-	Long save( Map<String, Object> map );
+	/**
+	 * Gets the taxes for the amount and date.
+	 * 
+	 * @param invoiceAmount is the amount of the invoice.
+	 * @param invoiceDate is the date of the invoice.
+	 * @return the taxes for the given data.
+	 */
+	double getTaxes( double invoiceAmount, Date invoiceDate );
 
-	double getTaxes( double totalFactura, Date fechaFactura );
+	/**
+	 * Saves the given invoice.
+	 * 
+	 * @param invoice is the context representation of an invoice as a map.
+	 * @return the generated id of the invoice.
+	 */
+	Long save( Map<String, Object> invoice );
+
+	/**
+	 * Sets the connection for the transactions.
+	 * 
+	 * @param cconnection is the connection to use in the transactions.
+	 */
+	void setConnection( Connection cconnection );
 }

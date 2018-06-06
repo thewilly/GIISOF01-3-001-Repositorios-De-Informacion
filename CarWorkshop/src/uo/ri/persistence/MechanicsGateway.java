@@ -38,13 +38,43 @@ import uo.ri.common.BusinessException;
  */
 public interface MechanicsGateway {
 
-	void setConnection( Connection c );
-
+	/**
+	 * @return all the mechanics in the system.
+	 */
 	List<Map<String, Object>> findAll();
 
-	void update( Long id, String name, String surname ) throws BusinessException;
+	/**
+	 * Removes a mechanic by its given unique DB id.
+	 * 
+	 * @param mechanicId is the mechanic to remove given unique DB id.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void remove( Long mechanicId ) throws BusinessException;
 
+	/**
+	 * Creates a mechanic from the given name and surname.
+	 * 
+	 * @param name is the name of the mechanic.
+	 * @param surname is the surname of the mechanic.
+	 */
 	void save( String name, String surname );
 
-	void remove( Long id ) throws BusinessException;
+	/**
+	 * Sets the connection for the transactions.
+	 * 
+	 * @param connection is the connection to use.
+	 */
+	void setConnection( Connection connection );
+
+	/**
+	 * Updates the mechanic with the given mechanic id.
+	 * 
+	 * @param mechanicToUpdateId is the unique DB id of the mechanic to update.
+	 * @param newMechanicName is the new name for the mechanic.
+	 * @param newMechanicSurname is the new surname for the mechanic.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void update( Long mechanicToUpdateId, String newMechanicName, String newMechanicSurname ) throws BusinessException;
 }

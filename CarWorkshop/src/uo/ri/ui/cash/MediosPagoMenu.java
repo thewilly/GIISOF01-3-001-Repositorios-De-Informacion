@@ -23,8 +23,8 @@
 package uo.ri.ui.cash;
 
 import alb.util.menu.BaseMenu;
-import uo.ri.ui.cash.action.DeleteMedioPagoAction;
-import uo.ri.ui.cash.action.ListMediosPagoAction;
+import uo.ri.ui.cash.action.RemovePaymentMethodAction;
+import uo.ri.ui.cash.action.FindAllPaymentMethodsByClienIdAction;
 
 /**
  * This class is the one in charge of giving the user options to do in the
@@ -37,15 +37,15 @@ import uo.ri.ui.cash.action.ListMediosPagoAction;
  */
 public class MediosPagoMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public MediosPagoMenu() {
 		menuOptions = new Object[][] { { "Caja de Taller > Gestión de medios de pago ", null },
 				{ "Dar de alta un medio de pago a un cliente", AddMedioPagoMenu.class },
-				{ "Dar de baja un medio de pago", DeleteMedioPagoAction.class },
-				{ "Listar medios de pago de un cliente", ListMediosPagoAction.class }, };
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
+				{ "Dar de baja un medio de pago", RemovePaymentMethodAction.class },
+				{ "Listar medios de pago de un cliente", FindAllPaymentMethodsByClienIdAction.class }, };
 	}
 
 }

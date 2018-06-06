@@ -37,13 +37,48 @@ import uo.ri.common.BusinessException;
  */
 public interface FailuresGateway {
 
-	void setConnection( Connection c );
+	/**
+	 * Checks that all the failures that are provided in the list are finished.
+	 * 
+	 * @param failuresIds is the list that contains all the id's of the failures
+	 *            to be checked.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	void checkAllFailuresAreFinished( List<Long> failuresIds ) throws BusinessException;
 
-	void checkAllFailuresAreFinished( List<Long> idsAveria ) throws BusinessException;
+	/**
+	 * Computes and returns the accumulated cost produced by the failures given.
+	 * 
+	 * @param failuresIds is the list of the failures to accumulate the costs.
+	 * @return the accumulated costs for the failures.
+	 * @throws BusinessException if any error occurs during the execution of the
+	 *             method.
+	 */
+	double getCostForFailures( List<Long> failuresIds ) throws BusinessException;
 
-	double getCostForFailures( List<Long> idsAveria ) throws BusinessException;
+	/**
+	 * Links the given invoice with the given failures.
+	 * 
+	 * @param invoiceId is the invoice to link with the failures.
+	 * @param failuresIds is the list of failures to link with the given
+	 *            invoice.
+	 */
+	void linkInvoiceWithFailures( long invoiceId, List<Long> failuresIds );
 
-	void linkInvoiceWithFailures( long idFactura, List<Long> idsAveria );
+	/**
+	 * Sets the connection to operate the transaction.
+	 * 
+	 * @param connection is the connection to set.
+	 */
+	void setConnection( Connection connection );
 
-	void setFailureStatus( List<Long> idsAveria, String string );
+	/**
+	 * Sets the status for a list of failures id's.
+	 * 
+	 * @param failuresIds is the list of failures to change its status.
+	 * @param newStatus is the new status for every failure in the list of
+	 *            failures.
+	 */
+	void setFailureStatus( List<Long> failuresIds, String newStatus );
 }

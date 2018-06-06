@@ -31,23 +31,24 @@ import java.util.Map.Entry;
 import alb.util.console.Console;
 
 /**
- * This class is in charge of printing all kinds of maps of data that the system
- * needs to be shown in console.
- * 
- * @author uo250878
+ * Printer.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class Printer {
 
 	private Map<String, Object> map;
 	private List<Map<String, Object>> listMaps;
 
-	public Printer( Map<String, Object> map ) {
-		this.map = map;
-	}
-
 	public Printer( List<Map<String, Object>> listMaps ) {
 		this.listMaps = listMaps;
+	}
+
+	public Printer( Map<String, Object> map ) {
+		this.map = map;
 	}
 
 	/**
@@ -68,59 +69,6 @@ public class Printer {
 		Console.printf( "\tTotal: %.2f €\n", totalFactura );
 		Console.printf( "\tIva: %.1f %% \n", iva );
 		Console.printf( "\tTotal con IVA: %.2f €\n", totalConIva );
-	}
-
-	/**
-	 * This method go over the map field of the class and shows the invoice
-	 */
-	public void printInvoice() {
-		long numF = 0;
-		Date fecha = null;
-		double total = 0.0;
-		double iva = 0.0;
-		double totalIva = 0.0;
-
-		Iterator<Entry<String, Object>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, Object> pair = (Map.Entry<String, Object>) it.next();
-			if (pair.getKey().equals( "numFactura" )) {
-				numF = (long) pair.getValue();
-			} else if (pair.getKey().equals( "fechaFactura" )) {
-				fecha = (Date) pair.getValue();
-			} else if (pair.getKey().equals( "totalFactura" )) {
-				total = (double) pair.getValue();
-			} else if (pair.getKey().equals( "iva" )) {
-				iva = (double) pair.getValue();
-			} else if (pair.getKey().equals( "importe" )) {
-				totalIva = (double) pair.getValue();
-			}
-		}
-		mostrarFactura( numF, fecha, total, iva, totalIva );
-		it.remove(); // avoids a ConcurrentModificationException
-	}
-
-	/**
-	 * This method shows the information of the mechanic with the given format
-	 */
-	public void printMechanics() {
-		for (int i = 0; i < listMaps.size(); i++) {
-			long id = 0;
-			String name = "";
-			String surname = "";
-			Iterator<Entry<String, Object>> it = listMaps.get( i ).entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<String, Object> pair = (Map.Entry<String, Object>) it.next();
-				if (pair.getKey().equals( "id" )) {
-					id = (long) pair.getValue();
-				} else if (pair.getKey().equals( "name" )) {
-					name = (String) pair.getValue();
-				} else if (pair.getKey().equals( "surname" )) {
-					surname = (String) pair.getValue();
-				}
-			}
-			Console.printf( "\t%d %s %s\n", id, name, surname );
-			it.remove();
-		}
 	}
 
 	/**
@@ -211,6 +159,59 @@ public class Printer {
 						numeroTotal, importeTotal, consumidoTotal, disponibleTotal );
 				it.remove();
 			}
+		}
+	}
+
+	/**
+	 * This method go over the map field of the class and shows the invoice
+	 */
+	public void printInvoice() {
+		long numF = 0;
+		Date fecha = null;
+		double total = 0.0;
+		double iva = 0.0;
+		double totalIva = 0.0;
+
+		Iterator<Entry<String, Object>> it = map.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, Object> pair = (Map.Entry<String, Object>) it.next();
+			if (pair.getKey().equals( "numFactura" )) {
+				numF = (long) pair.getValue();
+			} else if (pair.getKey().equals( "fechaFactura" )) {
+				fecha = (Date) pair.getValue();
+			} else if (pair.getKey().equals( "totalFactura" )) {
+				total = (double) pair.getValue();
+			} else if (pair.getKey().equals( "iva" )) {
+				iva = (double) pair.getValue();
+			} else if (pair.getKey().equals( "importe" )) {
+				totalIva = (double) pair.getValue();
+			}
+		}
+		mostrarFactura( numF, fecha, total, iva, totalIva );
+		it.remove(); // avoids a ConcurrentModificationException
+	}
+
+	/**
+	 * This method shows the information of the mechanic with the given format
+	 */
+	public void printMechanics() {
+		for (int i = 0; i < listMaps.size(); i++) {
+			long id = 0;
+			String name = "";
+			String surname = "";
+			Iterator<Entry<String, Object>> it = listMaps.get( i ).entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, Object> pair = (Map.Entry<String, Object>) it.next();
+				if (pair.getKey().equals( "id" )) {
+					id = (long) pair.getValue();
+				} else if (pair.getKey().equals( "name" )) {
+					name = (String) pair.getValue();
+				} else if (pair.getKey().equals( "surname" )) {
+					surname = (String) pair.getValue();
+				}
+			}
+			Console.printf( "\t%d %s %s\n", id, name, surname );
+			it.remove();
 		}
 	}
 

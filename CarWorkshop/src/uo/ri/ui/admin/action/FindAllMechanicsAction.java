@@ -22,32 +22,32 @@
  ******************************************************************************/
 package uo.ri.ui.admin.action;
 
+import java.util.List;
+import java.util.Map;
+
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
+import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to delete a mechanic and so it reads
- * from the console and calls to the logic layer with the help of the services
- * factory. It reads the id of the mechanic to be eliminated.
- * 
- * @author uo250878
+ * FindAllMechanicsAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class DeleteMechanicAction implements Action {
+public class FindAllMechanicsAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		Long idMecanico = Console.readLong( "Id de mecánico" );
-
+		Console.println( "\nListado de mecánicos\n" );
 		AdminService admin = ServicesFactory.getAdminService();
-		admin.removeMechanic( idMecanico );
-
-		Console.println( "Se ha eliminado el mecánico" );
+		List<Map<String, Object>> list = admin.findAllMechanics();
+		Printer print = new Printer( list );
+		print.printMechanics();
 	}
-
 }

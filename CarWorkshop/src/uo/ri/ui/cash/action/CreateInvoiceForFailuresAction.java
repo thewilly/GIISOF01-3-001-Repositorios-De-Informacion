@@ -22,6 +22,7 @@
  ******************************************************************************/
 package uo.ri.ui.cash.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,25 +34,33 @@ import uo.ri.conf.ServicesFactory;
 import uo.ri.ui.util.Printer;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is listing all the ways of payment of a
- * specific client, by its id. The information will in this case be printed by
- * the Printer class.
- * 
- * @author uo250878
+ * CreateInvoiceForFailuresAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class ListMediosPagoAction implements Action {
+public class CreateInvoiceForFailuresAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		Long id = Console.readLong( "Id cliente" );
-		Console.println( "\nListado de medios de pago de cliente con id: " + id + "\n" );
+		List<Long> idsAveria = new ArrayList<Long>();
+
+		// pedir las averias a incluir en la factura
+		do {
+			Long id = Console.readLong( "ID de averia" );
+			idsAveria.add( id );
+		} while (masAverias());
+
 		CashService cash = ServicesFactory.getCashService();
-		List<Map<String, Object>> list = cash.FindAllPaymentMethodsByClientId( id );
-		Printer print = new Printer( list );
-		print.printMediosPagoFromClient();
+		Map<String, Object> map = cash.createInvoiceForFailures( idsAveria );
+		Printer printer = new Printer( map );
+		printer.printInvoice();
+	}
+
+	private boolean masAverias() {
+		return Console.readString( "¿Añadir más averias? (s/n) " ).equalsIgnoreCase( "s" );
 	}
 
 }

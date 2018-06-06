@@ -23,18 +23,17 @@
 package uo.ri.ui.admin;
 
 import alb.util.menu.BaseMenu;
-import uo.ri.ui.admin.action.GenerateBonoRecomendationAction;
-import uo.ri.ui.admin.action.ListBonosAction;
-import uo.ri.ui.admin.action.ListBonosClientsAction;
+import uo.ri.ui.admin.action.GenerateBondByRecomendationAction;
+import uo.ri.ui.admin.action.FindAllBondsAction;
+import uo.ri.ui.admin.action.FindAllBondsByClientIdAction;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. in
- * this case the menu is just for bonus in the system and the operations to do
- * with them.
- * 
- * @author uo250878
+ * BonosMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class BonosMenu extends BaseMenu {
 
@@ -42,9 +41,9 @@ public class BonosMenu extends BaseMenu {
 		menuOptions = new Object[][] { { "Administrador > Gestión de bonos", null },
 
 				{ "Generacion automática de bonos: recomendación",
-						GenerateBonoRecomendationAction.class },
-				{ "Listado de bonos de un cliente", ListBonosClientsAction.class },
-				{ "Listado de todos los bonos", ListBonosAction.class }, };
+						GenerateBondByRecomendationAction.class },
+				{ "Listado de bonos de un cliente", FindAllBondsByClientIdAction.class },
+				{ "Listado de todos los bonos", FindAllBondsAction.class }, };
 	}
 
 }

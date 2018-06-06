@@ -39,20 +39,79 @@ import uo.ri.common.BusinessException;
  */
 public interface PaymentMethodsGateway {
 
-	void setConnection( Connection c );
+	/**
+	 * Creates a payment method of bond type.
+	 * 
+	 * @param paymentMethodId is the id of the bond.
+	 * @param availableAmount is the available amount of the money that the bond
+	 *            has.
+	 * @param bondDescription is the description of the bond.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void createBond( long paymentMethodId, double availableAmount, String bondDescription ) throws BusinessException;
 
-	List<Map<String, Object>> findAllBonds();
-
-	List<Map<String, Object>> findAllBondsByClientId( long id ) throws BusinessException;
-
-	void generateBonosByRecomendation() throws BusinessException;
-
-	List<Map<String, Object>> findAllPaymentMethodsByClientId( Long id ) throws BusinessException;
-
-	void removePaymentMethodById( Long id ) throws BusinessException;
-
-	void createPMCard( Long id, String tipo, String numero, Timestamp fecha )
+	/**
+	 * Creates a payment method of card type.
+	 * 
+	 * @param paymentMethodId is the id for the card.
+	 * @param cardKind is the kind of card.
+	 * @param cardNumber is the number of the card.
+	 * @param cardExpirationDate is the expiration date of the card after which
+	 *            the card will not be valid.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void createPMCard( Long paymentMethodId, String cardKind, String cardNumber, Timestamp cardExpirationDate )
 			throws BusinessException;
 
-	void createBond( long id, double disponible, String descripcion ) throws BusinessException;
+	/**
+	 * @return all the bonds in the system as a list of maps where each map
+	 *         represents a bond.
+	 */
+	List<Map<String, Object>> findAllBonds();
+
+	/**
+	 * @param clientId is the unique DB id of the client to query the bonds.
+	 * @return the bonds in the system that matched the given criteria as a list
+	 *         of maps where each map represents a bond.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	List<Map<String, Object>> findAllBondsByClientId( long clientId ) throws BusinessException;
+
+	/**
+	 * Finds all the payment method of a given client.
+	 * 
+	 * @param clientId is the unique DB identifier of the client to get the
+	 *            payment methods.
+	 * @return a list of maps where each map is a payment method of the given
+	 *         client.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	List<Map<String, Object>> findAllPaymentMethodsByClientId( Long clientId ) throws BusinessException;
+
+	/**
+	 * 
+	 * @throws BusinessException
+	 */
+	void generateBondsByRecomendation() throws BusinessException;
+
+	/**
+	 * Removes a payment method by its unique DB identifier.
+	 * 
+	 * @param paymentMethodId is the unique DB identifier of the payment method
+	 *            to remove from the system.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void removePaymentMethodById( Long paymentMethodId ) throws BusinessException;
+
+	/**
+	 * Sets the connection to operate the transaction.
+	 * 
+	 * @param connection is the connection to set.
+	 */
+	void setConnection( Connection connection );
 }

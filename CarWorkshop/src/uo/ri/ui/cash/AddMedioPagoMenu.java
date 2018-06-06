@@ -23,8 +23,8 @@
 package uo.ri.ui.cash;
 
 import alb.util.menu.BaseMenu;
-import uo.ri.ui.cash.action.AddBonoAction;
-import uo.ri.ui.cash.action.AddTarjetaAction;
+import uo.ri.ui.cash.action.CreatePMBondAction;
+import uo.ri.ui.cash.action.CreatePMCardAction;
 
 /**
  * This class is the one in charge of giving the user options to do in the
@@ -37,15 +37,15 @@ import uo.ri.ui.cash.action.AddTarjetaAction;
  */
 public class AddMedioPagoMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public AddMedioPagoMenu() {
 		menuOptions = new Object[][] {
 				{ "Caja de Taller > Gestión de medios de pago > Dar de alta un medio de pago a un cliente",
 						null },
-				{ "Añadir tarjeta a un cliente", AddTarjetaAction.class },
-				{ "Añadir bono a un cliente", AddBonoAction.class }, };
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
+				{ "Añadir tarjeta a un cliente", CreatePMCardAction.class },
+				{ "Añadir bono a un cliente", CreatePMBondAction.class }, };
 	}
 }

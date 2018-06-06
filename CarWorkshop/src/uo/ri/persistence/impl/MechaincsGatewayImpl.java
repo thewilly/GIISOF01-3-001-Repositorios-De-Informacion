@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
 import uo.ri.persistence.MechanicsGateway;
@@ -45,85 +45,135 @@ import uo.ri.persistence.MechanicsGateway;
  * @formatter Oviedo Computing Community
  */
 public class MechaincsGatewayImpl implements MechanicsGateway {
-	private Connection c;
+	private Connection connection;
 	private PreparedStatement pst = null;
 	private ResultSet rs = null;
-
-	@Override
-	public void setConnection( Connection c ) {
-		this.c = c;
-	}
-
-	private Map<String, Object> load( ResultSet rs ) {
-		Map<String, Object> map = new HashMap<>();
-		try {
-			map.put( "id", rs.getLong( 1 ) );
-			map.put( "name", rs.getString( 2 ) );
-			map.put( "surname", rs.getString( 3 ) );
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		}
-		return map;
-	}
 
 	@Override
 	public List<Map<String, Object>> findAll() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
-			pst = c.prepareStatement( Conf.get( "SQL_FIND_ALL_MECHANICS" ) );
+
+			// Getting the query.
+			pst = connection.prepareStatement( Conf.get( "SQL_FIND_ALL_MECHANICS" ) );
+
+			// Executing the query.
 			rs = pst.executeQuery();
+
+			// If the result set has more results on it, load them in the list.
 			while (rs.next()) {
-				list.add( load( rs ) );
+				list.add( mechanicResultSetToMap( rs ) );
 			}
+
+			// Finally return the list.
 			return list;
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst, c );
+
+			// Closing the result set the prepared statement and the connection.
+			close( rs, pst, connection );
 		}
 	}
 
 	@Override
-	public void update( Long id, String name, String surname ) throws BusinessException {
+	public void remove( Long mechanicId ) throws BusinessException {
 		try {
-			pst = c.prepareStatement( Conf.get( "SQL_UPDATE_MECHANIC" ) );
-			pst.setString( 1, name );
-			pst.setString( 2, surname );
-			pst.setLong( 3, id );
+
+			// Getting the query.
+			pst = connection.prepareStatement( Conf.get( "SQL_DELETE_MECHANIC" ) );
+
+			// Setting the parameters for the query.
+			pst.setLong( 1, mechanicId );
+
+			// Executing the query.
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new BusinessException( e );
 		} finally {
-			Jdbc.close( rs, pst, c );
+
+			// Closing the result set, the prepared statement and the
+			// connection.
+			close( rs, pst, connection );
 		}
+
 	}
 
 	@Override
 	public void save( String name, String surname ) {
 		try {
-			pst = c.prepareStatement( Conf.get( "SQL_ADD_MECHANIC" ) );
+
+			// Getting the query.
+			pst = connection.prepareStatement( Conf.get( "SQL_ADD_MECHANIC" ) );
+
+			// Setting the parameters for the query.
 			pst.setString( 1, name );
 			pst.setString( 2, surname );
+
+			// Executing the update.
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException();
 		} finally {
-			Jdbc.close( rs, pst, c );
+
+			// Closing the result set, the prepared statement and the
+			// connection.
+			close( rs, pst, connection );
 		}
 	}
 
 	@Override
-	public void remove( Long idMecanico ) throws BusinessException {
+	public void setConnection( Connection connection ) {
+		this.connection = connection;
+	}
+
+	@Override
+	public void update( Long mechanicId, String newName, String newSurname )
+			throws BusinessException {
 		try {
-			pst = c.prepareStatement( Conf.get( "SQL_DELETE_MECHANIC" ) );
-			pst.setLong( 1, idMecanico );
+
+			// Getting the connection.
+			pst = connection.prepareStatement( Conf.get( "SQL_UPDATE_MECHANIC" ) );
+
+			// Setting the parameters for the query.
+			pst.setString( 1, newName );
+			pst.setString( 2, newSurname );
+			pst.setLong( 3, mechanicId );
+
+			// Executing the query.
 			pst.executeUpdate();
 		} catch (SQLException e) {
 			throw new BusinessException( e );
 		} finally {
-			Jdbc.close( rs, pst, c );
-		}
 
+			// Closing the result set, the prepared statement and the
+			// connection.
+			close( rs, pst, connection );
+		}
 	}
 
+	// PRIVATE MEMBERS
+
+	/**
+	 * Transforms a mechanic result set to a map.
+	 * 
+	 * @param resultSet that contains the mechanic info and we want to cast to a
+	 *            map.
+	 * @return a map containing all the mechanic info.
+	 */
+	private Map<String, Object> mechanicResultSetToMap( ResultSet resultSet ) {
+		Map<String, Object> mechanicMap = new HashMap<>();
+		try {
+
+			// Setting the map entries.
+			mechanicMap.put( "id", resultSet.getLong( 1 ) );
+			mechanicMap.put( "name", resultSet.getString( 2 ) );
+			mechanicMap.put( "surname", resultSet.getString( 3 ) );
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		}
+
+		// Returning the map.
+		return mechanicMap;
+	}
 }

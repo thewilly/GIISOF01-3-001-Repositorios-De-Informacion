@@ -57,7 +57,7 @@ public class GenerateBondByRecommendation {
 			paymentMethodsGW.setConnection( connection );
 			
 			// Generating the bonds by recommendation.
-			paymentMethodsGW.generateBonosByRecomendation();
+			paymentMethodsGW.generateBondsByRecomendation();
 			
 		} catch (SQLException e) {
 			throw new RuntimeException( e );

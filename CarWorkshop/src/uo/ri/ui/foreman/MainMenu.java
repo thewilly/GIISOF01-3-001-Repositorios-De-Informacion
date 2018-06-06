@@ -36,16 +36,16 @@ import alb.util.menu.NotYetImplementedAction;
  */
 public class MainMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public MainMenu() {
 		menuOptions = new Object[][] { { "Jefe de Taller", null },
 				{ "Recepción en taller", RecepcionMenu.class },
 				{ "Gestión de clientes", ClientesMenu.class },
 				{ "Gestión de vehículos", VehiculosMenu.class },
 				{ "Revisar historial de un cliente", NotYetImplementedAction.class }, };
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
 	}
 
 }

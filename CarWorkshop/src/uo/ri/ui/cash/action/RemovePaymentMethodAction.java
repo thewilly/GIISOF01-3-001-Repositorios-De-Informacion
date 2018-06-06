@@ -29,31 +29,22 @@ import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to add a new credit card to a client
- * defined by its id. The information it gets is also de type of card, the
- * number and the validity date, which has to be in the format specified.
- * 
- * @author uo250878
+ * RemovePaymentMethodAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
-public class AddTarjetaAction implements Action {
+public class RemovePaymentMethodAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
 
-		// Pedir datos
-		Long id = Console.readLong( "Id cliente" );
-		String tipo = Console.readString( "Tipo" );
-		String numero = Console.readString( "Número" );
-		String fecha = Console.readString( "Fecha validez (yyyy-mm-dd)" );
-
+		Long id = Console.readLong( "Id medio de pago" );
 		CashService cash = ServicesFactory.getCashService();
-		cash.createPMCard( id, tipo, numero, fecha );
-
-		// Mostrar resultado
-		Console.println( "Nuevo tarjeta añadida a " + id );
+		cash.removePaymentMethodById( id );
+		Console.println( "Se ha eliminado el medio de pago" );
 	}
 
 }

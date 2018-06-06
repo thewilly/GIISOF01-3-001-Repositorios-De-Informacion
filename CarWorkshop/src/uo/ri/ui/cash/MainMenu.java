@@ -24,7 +24,7 @@ package uo.ri.ui.cash;
 
 import alb.util.menu.BaseMenu;
 import alb.util.menu.NotYetImplementedAction;
-import uo.ri.ui.cash.action.FacturarReparacionesAction;
+import uo.ri.ui.cash.action.CreateInvoiceForFailuresAction;
 
 /**
  * This class is the one in charge of giving the user options to do in the
@@ -37,18 +37,18 @@ import uo.ri.ui.cash.action.FacturarReparacionesAction;
  */
 public class MainMenu extends BaseMenu {
 
+	public static void main( String[] args ) {
+		new MainMenu().execute();
+	}
+
 	public MainMenu() {
 		menuOptions = new Object[][] { { "Caja de Taller", null },
 				{ "Buscar reparaciones no facturadas de un cliente",
 						NotYetImplementedAction.class },
 				{ "Buscar reparación por matrícula", NotYetImplementedAction.class },
-				{ "Facturar reparaciones", FacturarReparacionesAction.class },
+				{ "Facturar reparaciones", CreateInvoiceForFailuresAction.class },
 				{ "Liquidar factura ", NotYetImplementedAction.class },
 				{ "Gestión de medios de pago", MediosPagoMenu.class }, };
-	}
-
-	public static void main( String[] args ) {
-		new MainMenu().execute();
 	}
 
 }

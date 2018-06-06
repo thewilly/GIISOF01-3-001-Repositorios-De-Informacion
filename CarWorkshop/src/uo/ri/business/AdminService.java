@@ -46,6 +46,32 @@ public interface AdminService {
 	void createMechanic( String name, String surname );
 
 	/**
+	 * @return all the bonds in the system as a list of maps where each map
+	 *         represents a bond.
+	 */
+	List<Map<String, Object>> findAllBonds();
+
+	/**
+	 * @param clientId is the unique DB id of the client to query the bonds.
+	 * @return the bonds in the system that matched the given criteria as a list
+	 *         of maps where each map represents a bond.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	List<Map<String, Object>> findAllBondsByCliendId( long clientId ) throws BusinessException;
+
+	/**
+	 * @return all the mechanics in the system as a list of maps where each map
+	 *         represents a mechanic.
+	 */
+	List<Map<String, Object>> findAllMechanics();
+
+	/**
+	 * Generates the bonds by recommendation.
+	 */
+	void generateBonosByRecomendation();
+
+	/**
 	 * Removes a mechanic by its given unique DB id.
 	 * 
 	 * @param mechanicId is the mechanic to remove given unique DB id.
@@ -66,30 +92,4 @@ public interface AdminService {
 	void updateMechanic( long mechanicToUpdateId, String newMechanicName,
 			String newMechanicSurname )
 			throws BusinessException;
-
-	/**
-	 * @return all the mechanics in the system as a list of maps where each map
-	 *         represents a mechanic.
-	 */
-	List<Map<String, Object>> findAllMechanics();
-
-	/**
-	 * @return all the bonds in the system as a list of maps where each map
-	 *         represents a bond.
-	 */
-	List<Map<String, Object>> findAllBonds();
-
-	/**
-	 * @param clientId is the unique DB id of the client to query the bonds.
-	 * @return the bonds in the system that matched the given criteria as a list
-	 *         of maps where each map represents a bond.
-	 * @throws BusinessException if any error during the executing of the
-	 *             method.
-	 */
-	List<Map<String, Object>> findAllBondsByCliendId( long clientId ) throws BusinessException;
-
-	/**
-	 * Generates the bonds by recommendation.
-	 */
-	void generateBonosByRecomendation();
 }

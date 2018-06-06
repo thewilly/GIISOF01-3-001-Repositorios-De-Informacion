@@ -49,27 +49,17 @@ public interface CashService {
 	Map<String, Object> createInvoiceForFailures( List<Long> failuresIds ) throws BusinessException;
 
 	/**
-	 * Finds all the payment method of a given client.
+	 * Creates a payment method of bond type.
 	 * 
-	 * @param clientId is the unique DB identifier of the client to get the
-	 *            payment methods.
-	 * @return a list of maps where each map is a payment method of the given
-	 *         client.
+	 * @param paymentMethodId is the id of the bond.
+	 * @param bondDescription is the description of the bond.
+	 * @param availableAmount is the available amount of the money that the bond
+	 *            has.
 	 * @throws BusinessException if any error during the executing of the
 	 *             method.
 	 */
-	List<Map<String, Object>> FindAllPaymentMethodsByClientId( Long clientId )
+	void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
 			throws BusinessException;
-
-	/**
-	 * Removes a payment method by its unique DB identifier.
-	 * 
-	 * @param paymentMethodId is the unique DB identifier of the payment method
-	 *            to remove from the system.
-	 * @throws BusinessException if any error during the executing of the
-	 *             method.
-	 */
-	void removePaymentMethodById( Long paymentMethodId ) throws BusinessException;
 
 	/**
 	 * Creates a payment method of card type.
@@ -87,15 +77,25 @@ public interface CashService {
 			throws BusinessException;
 
 	/**
-	 * Creates a payment method of bond type.
+	 * Finds all the payment method of a given client.
 	 * 
-	 * @param paymentMethodId is the id of the bond.
-	 * @param bondDescription is the description of the bond.
-	 * @param availableAmount is the available amount of the money that the bond
-	 *            has.
+	 * @param clientId is the unique DB identifier of the client to get the
+	 *            payment methods.
+	 * @return a list of maps where each map is a payment method of the given
+	 *         client.
 	 * @throws BusinessException if any error during the executing of the
 	 *             method.
 	 */
-	void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
+	List<Map<String, Object>> findAllPaymentMethodsByClientId( Long clientId )
 			throws BusinessException;
+
+	/**
+	 * Removes a payment method by its unique DB identifier.
+	 * 
+	 * @param paymentMethodId is the unique DB identifier of the payment method
+	 *            to remove from the system.
+	 * @throws BusinessException if any error during the executing of the
+	 *             method.
+	 */
+	void removePaymentMethodById( Long paymentMethodId ) throws BusinessException;
 }

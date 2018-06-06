@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import alb.util.jdbc.Jdbc;
+import static alb.util.jdbc.Jdbc.*;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.Conf;
 import uo.ri.persistence.PaymentMethodsGateway;
@@ -54,17 +54,48 @@ public class PaymentMethodsGatewayImpl implements PaymentMethodsGateway {
 	private ResultSet rs = null;
 
 	@Override
-	public void setConnection( Connection c ) {
-		this.connection = c;
+	public void createBond( long paymentMethodId, double availableAmount, String bondDescription )
+			throws BusinessException {
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_CREATE_BONO" ) );
+			pst.setString( 1, "TBonos" );
+			pst.setDouble( 2, 0 );
+			pst.setDouble( 3, availableAmount );
+			pst.setLong( 4, paymentMethodId );
+			pst.setString( 5, bondDescription );
+			pst.setString( 6, getLastGeneratedBondCode() );
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new BusinessException( e );
+		} finally {
+			close( pst );
+		}
 	}
 
-	/**
-	 * This method finds all the bonus of the system, and returns the
-	 * information within the dni and the name of the owners
-	 * 
-	 * @return a list of maps with all the information of all the bonus in the
-	 *         database
-	 */
+	@Override
+	public void createPMCard( Long paymentMethodId, String cardKind, String cardNumber,
+			Timestamp cardExpirationDate )
+			throws BusinessException {
+		try {
+			if (!isCardNumberInDB( cardNumber )) {
+				pst = connection.prepareStatement( Conf.get( "SQL_CREATE_TARJETA_CREDITO" ) );
+				pst.setString( 1, "TTarjetasCredito" );
+				pst.setString( 2, cardKind );
+				pst.setString( 3, cardNumber );
+				pst.setTimestamp( 4, cardExpirationDate );
+				pst.setLong( 5, paymentMethodId );
+				pst.setDouble( 6, 0 );
+				pst.executeUpdate();
+			} else {
+				throw new BusinessException( "El número de la tarjeta ya existe" );
+			}
+		} catch (SQLException e) {
+			throw new BusinessException( e );
+		} finally {
+			close( rs, pst, connection );
+		}
+	}
+
 	@Override
 	public List<Map<String, Object>> findAllBonds() {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -85,261 +116,37 @@ public class PaymentMethodsGatewayImpl implements PaymentMethodsGateway {
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst, connection );
+			close( rs, pst, connection );
 		}
 	}
 
-	/**
-	 * This method finds all the bonus of the client and returns them into a
-	 * list of maps form. The last map of this list will be a summary of the
-	 * bonus
-	 * 
-	 * @param id the id of the client to search for the bonus
-	 * @return the list of maps with all the information about the bonus of the
-	 *         client
-	 * @throws BusinessException
-	 */
 	@Override
-	public List<Map<String, Object>> findAllBondsByClientId( long id ) throws BusinessException {
+	public List<Map<String, Object>> findAllBondsByClientId( long clientId )
+			throws BusinessException {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
 			pst = connection.prepareStatement( Conf.get( "SQL_FIND_BONOS_CLIENTE" ) );
-			pst.setLong( 1, id );
+			pst.setLong( 1, clientId );
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				list.add( loadBono( rs ) );
+				list.add( bondResultSetToMap( rs ) );
 			}
-			list.add( summaryBonoCliente( id ) );
+			list.add( findBondSummaryByClient( clientId ) );
 			return list;
 		} catch (SQLException e) {
 			throw new BusinessException( e );
 		} finally {
-			Jdbc.close( rs, pst, connection );
+			close( rs, pst, connection );
 		}
 	}
 
-	/**
-	 * This method gets the result set of the query to obtain all the bonus of
-	 * the client and transform it to a map
-	 * 
-	 * @param rs the result set
-	 * @return the map of each bonus of the client
-	 */
-	private Map<String, Object> loadBono( ResultSet rs ) {
-		Map<String, Object> map = new HashMap<>();
-		try {
-			map.put( "codigo", rs.getString( 1 ) );
-			map.put( "acumulado", rs.getDouble( 2 ) );
-			map.put( "disponible", rs.getDouble( 3 ) );
-			map.put( "descripcion", rs.getString( 4 ) );
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		}
-		return map;
-	}
-
-	/**
-	 * This method gives back a map with the summary of the information of the
-	 * bonus of the client
-	 * 
-	 * @param id the id of the client
-	 * @return a map with the summary of all the bonus of the client
-	 */
-	private Map<String, Object> summaryBonoCliente( long id ) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_RESUMEN_BONOS_CLIENTE" ) );
-			pst.setLong( 1, id );
-			rs = pst.executeQuery();
-			while (rs.next()) {
-				map.put( "bonos", rs.getInt( 1 ) );
-				map.put( "total", rs.getDouble( 2 ) );
-				map.put( "porConsumir", rs.getDouble( 3 ) );
-				map.put( "consum", rs.getDouble( 4 ) );
-			}
-			return map;
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			Jdbc.close( rs, pst );
-		}
-	}
-
-	/**
-	 * This method generate all the bonus from a client by recommendation. The
-	 * client must have had a breakdown payed at least.
-	 * 
-	 * @throws BusinessException
-	 */
 	@Override
-	public void generateBonosByRecomendation() throws BusinessException {
-		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_GET_RECOMENDADORES" ) );
-			rs = pst.executeQuery();
-			Map<Long, Integer> map = new HashMap<Long, Integer>();
-			while (rs.next()) {
-				map.put( rs.getLong( 1 ), rs.getInt( 2 ) );
-			}
-			map = selectRecomendator( map );
-			createBonoForClient( map );
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			Jdbc.close( rs, pst, connection );
-		}
-	}
-
-	/**
-	 * This method select those ones who recommended people whose number of
-	 * recommendations has been 3, or a multiple of 3, and add them into a map
-	 * 
-	 * @param map map of clients
-	 * @return the map with all the id's of the clients who have recommended 3
-	 *         or more people
-	 */
-	private Map<Long, Integer> selectRecomendator( Map<Long, Integer> map ) {
-		Map<Long, Integer> mapAux = new HashMap<Long, Integer>();
-		Iterator<Entry<Long, Integer>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Long, Integer> pair = (Map.Entry<Long, Integer>) it.next();
-			long id = pair.getKey();
-			int numRecomendations = pair.getValue();
-			if (numRecomendations % 3 == 0) {
-				mapAux.put( id, numRecomendations );
-			} else {
-				int rest = numRecomendations / 3;
-				mapAux.put( id, ( rest * 3 ) );
-			}
-		}
-		return mapAux;
-	}
-
-	/**
-	 * This method creates a bonus for a each client
-	 * 
-	 * @param map
-	 * @throws BusinessException
-	 */
-	private void createBonoForClient( Map<Long, Integer> map ) throws BusinessException {
-		Iterator<Entry<Long, Integer>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Long, Integer> pair = (Map.Entry<Long, Integer>) it.next();
-			long id = pair.getKey();
-			int numRecomendations = pair.getValue();
-			int numBonos = numRecomendations / 3;
-			for (int i = 0; i < numBonos; i++) {
-				createBond( id, 25, "Por recomendación" );
-			}
-			if (numRecomendations > 0) {
-				updateClientsBono( id, numRecomendations );
-			}
-		}
-	}
-
-	/**
-	 * This method update the usado_bono field of the tclients table, so it is
-	 * marked as used
-	 * 
-	 * @param id the id of the client who has recommended
-	 * @param num the number of people that had been recommended
-	 */
-	private void updateClientsBono( long id, int num ) {
-		Connection c = connection;
-		PreparedStatement p = null;
-		try {
-			p = c.prepareStatement( Conf.get( "SQL_UPDATE_CLIENTS_BONO" ) );
-			p.setLong( 1, id );
-			p.setInt( 2, num );
-			p.executeUpdate();
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			Jdbc.close( p );
-		}
-	}
-
-	/**
-	 * This method creates a bonus for the specified id of the client, with the
-	 * quantity of money and the description defined by the parameters
-	 * 
-	 * @param id the id of the client whom the bonus will be assigned
-	 * @param disponible the quantity of money to put
-	 * @param descripcion the description of the bonus
-	 * @throws BusinessException
-	 */
-	public void createBond( long id, double disponible, String descripcion )
-			throws BusinessException {
-		try {
-			pst = connection.prepareStatement( Conf.get( "SQL_CREATE_BONO" ) );
-			pst.setString( 1, "TBonos" );
-			pst.setDouble( 2, 0 );
-			pst.setDouble( 3, disponible );
-			pst.setLong( 4, id );
-			pst.setString( 5, descripcion );
-			pst.setString( 6, getGeneratedKey() );
-			pst.executeUpdate();
-		} catch (SQLException e) {
-			throw new BusinessException( e );
-		} finally {
-			Jdbc.close( pst );
-		}
-	}
-
-	/**
-	 * This method looks for the last code of a bonus in the database and
-	 * generates the new one
-	 * 
-	 * @return the new code, which is the last one + 10
-	 */
-	private String getGeneratedKey() {
-		String code = "";
-		PreparedStatement p = null;
-		try {
-			p = connection.prepareStatement( Conf.get( "SQL_ULTIMO_CODIGO_BONO" ) );
-			rs = p.executeQuery();
-			while (rs.next()) {
-				code = rs.getString( 1 );
-			}
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			Jdbc.close( rs, p );
-		}
-		return createCodeOfBono( code );
-	}
-
-	/**
-	 * This method takes the last generated code of a bonus in the database, and
-	 * adds 10 to it
-	 * 
-	 * @param code the last code of the database
-	 * @return the new code to be added
-	 */
-	private String createCodeOfBono( String code ) {
-		String original = code;
-		String value = "";
-		int aux = Integer.parseInt( original.substring( 1 ) );
-		aux += 10;
-		value = "B" + aux;
-		return value;
-	}
-
-	/**
-	 * This method finds and returns a list of all the possible ways of payment
-	 * the client has registered in the system
-	 * 
-	 * @param id the id of the client
-	 * @return a list of maps with all the ways of payment of the client
-	 *         specified
-	 * @throws BusinessException
-	 */
-	@Override
-	public List<Map<String, Object>> findAllPaymentMethodsByClientId( Long id )
+	public List<Map<String, Object>> findAllPaymentMethodsByClientId( Long clientId )
 			throws BusinessException {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		try {
 			pst = connection.prepareStatement( Conf.get( "SQL_FIND_ALL_MEDIOS_PAGO" ) );
-			pst.setLong( 1, id );
+			pst.setLong( 1, clientId );
 			rs = pst.executeQuery();
 			while (rs.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -356,24 +163,34 @@ public class PaymentMethodsGatewayImpl implements PaymentMethodsGateway {
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst, connection );
+			close( rs, pst, connection );
 		}
 	}
 
-	/**
-	 * This method deletes a way of payment defined by the @param. This one,
-	 * must have been not used in any payment, or it will not be removed.If this
-	 * one corresponds to a cash type, it will throw an exception.
-	 * 
-	 * @param id the id of the way of payment to be deleted
-	 * @throws BusinessException
-	 */
 	@Override
-	public void removePaymentMethodById( Long id ) throws BusinessException {
+	public void generateBondsByRecomendation() throws BusinessException {
 		try {
-			if (!medioPagoIdIsCash( id )) {
+			pst = connection.prepareStatement( Conf.get( "SQL_GET_RECOMENDADORES" ) );
+			rs = pst.executeQuery();
+			Map<Long, Integer> map = new HashMap<Long, Integer>();
+			while (rs.next()) {
+				map.put( rs.getLong( 1 ), rs.getInt( 2 ) );
+			}
+			map = filterRecomendatorsBynumberOfRecommendations( map, 3 );
+			createBonoForClient( map, 3 );
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			close( rs, pst, connection );
+		}
+	}
+
+	@Override
+	public void removePaymentMethodById( Long paymentMethodId ) throws BusinessException {
+		try {
+			if (!isPaymentMethodCash( paymentMethodId )) {
 				pst = connection.prepareStatement( Conf.get( "SQL_DELETE_MEDIO_PAGO" ) );
-				pst.setLong( 1, id );
+				pst.setLong( 1, paymentMethodId );
 				pst.executeUpdate();
 			} else {
 				throw new BusinessException( "No se puede dar de baja un pago en metálico" );
@@ -381,84 +198,215 @@ public class PaymentMethodsGatewayImpl implements PaymentMethodsGateway {
 		} catch (SQLException e) {
 			throw new BusinessException( e );
 		} finally {
-			Jdbc.close( rs, pst, connection );
+			close( rs, pst, connection );
+		}
+	}
+
+	@Override
+	public void setConnection( Connection connection ) {
+		this.connection = connection;
+	}
+
+	// PRIVATE MEMBERS
+
+	/**
+	 * Creates the corresponding number of bonds for the given map and number of
+	 * recommendations per bond.
+	 * 
+	 * @param recomenderAndRecomendationsMap is the map that contains the
+	 *            recommender and the recommendations done.
+	 * @throws BusinessException if any error during the method execution.
+	 */
+	private void createBonoForClient( Map<Long, Integer> recomenderAndRecomendationsMap,
+			int numberOfRecommendationsPerBond ) throws BusinessException {
+		Iterator<Entry<Long, Integer>> it = recomenderAndRecomendationsMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<Long, Integer> pair = (Map.Entry<Long, Integer>) it.next();
+			long id = pair.getKey();
+			int numRecomendations = pair.getValue();
+			int numBonos = numRecomendations / numberOfRecommendationsPerBond;
+			for (int i = 0; i < numBonos; i++) {
+				createBond( id, 25, "Por recomendación" );
+			}
+			if (numRecomendations > 0) {
+				updateClientsBono( id, numRecomendations );
+			}
 		}
 	}
 
 	/**
-	 * This method checks if the id of the type of pay is cash, or not in the
-	 * database
+	 * Gets the latest generated bond code in DB. Then adds 10 and return the
+	 * new bond code.
 	 * 
-	 * @param id the id of the type of pay that is being checked
-	 * @return true if the type of pay is cash, false otherwise
+	 * @param lastGeneratedBondCode the last bond code of the database.
+	 * @return the new generated bond code. Which is the last one + 10.
 	 */
-	private boolean medioPagoIdIsCash( Long id ) {
+	private String createCodeOfBono( String lastGeneratedBondCode ) {
+		String original = lastGeneratedBondCode;
+		String value = "";
+		int aux = Integer.parseInt( original.substring( 1 ) );
+		aux += 10;
+		value = "B" + aux;
+		return value;
+	}
+
+	/**
+	 * Gets the latest generated bond code in DB.
+	 * 
+	 * @return the latest generated bond code in DB.
+	 */
+	private String getLastGeneratedBondCode() {
+		String code = "";
+		PreparedStatement p = null;
+		try {
+			p = connection.prepareStatement( Conf.get( "SQL_ULTIMO_CODIGO_BONO" ) );
+			rs = p.executeQuery();
+			while (rs.next()) {
+				code = rs.getString( 1 );
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			close( rs, p );
+		}
+		return createCodeOfBono( code );
+	}
+
+	/**
+	 * From a given bond represented by a result set will transform it to a map.
+	 * 
+	 * @param resultSet the result set.
+	 * @return the map of each bonus of the client.
+	 */
+	private Map<String, Object> bondResultSetToMap( ResultSet resultSet ) {
+		Map<String, Object> bondMap = new HashMap<>();
+		try {
+			bondMap.put( "codigo", resultSet.getString( 1 ) );
+			bondMap.put( "acumulado", resultSet.getDouble( 2 ) );
+			bondMap.put( "disponible", resultSet.getDouble( 3 ) );
+			bondMap.put( "descripcion", resultSet.getString( 4 ) );
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		}
+		return bondMap;
+	}
+
+	/**
+	 * Checks if the given payment method is cash.
+	 * 
+	 * @param paymentMethodId is the unique identifier of the payment method to
+	 *            check.
+	 * @return true if the payment method is cash, false otherwise.
+	 */
+	private boolean isPaymentMethodCash( Long paymentMethodId ) {
 		try {
 			pst = connection.prepareStatement( Conf.get( "SQL_CHECK_IF_CASH" ) );
-			pst.setLong( 1, id );
+			pst.setLong( 1, paymentMethodId );
 			rs = pst.executeQuery();
 			return rs.next();
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( rs, pst );
+			close( rs, pst );
 		}
 	}
 
 	/**
-	 * This method adds a new credit card to a defined client, with the
-	 * corresponding information this new way of payment needs
+	 * Checks if the given card number is already registered in the DB.
 	 * 
-	 * @param id the id of the client
-	 * @param tipo type of the credit card(visa, master card,...)
-	 * @param numero the number of the credit card
-	 * @param fecha the date in which the validity of the credit card expires
-	 * @throws BusinessException
+	 * @param cardNumber is the number of the credit card.
+	 * @return true if the number already exists, false otherwise.
 	 */
-	@Override
-	public void createPMCard( Long id, String tipo, String numero, Timestamp fecha )
-			throws BusinessException {
-		try {
-			if (!numTarjetaExists( numero )) {
-				pst = connection.prepareStatement( Conf.get( "SQL_CREATE_TARJETA_CREDITO" ) );
-				pst.setString( 1, "TTarjetasCredito" );
-				pst.setString( 2, tipo );
-				pst.setString( 3, numero );
-				pst.setTimestamp( 4, fecha );
-				pst.setLong( 5, id );
-				pst.setDouble( 6, 0 );
-				pst.executeUpdate();
-			} else {
-				throw new BusinessException( "El número de la tarjeta ya existe" );
-			}
-		} catch (SQLException e) {
-			throw new BusinessException( e );
-		} finally {
-			Jdbc.close( rs, pst, connection );
-		}
-	}
-
-	/**
-	 * This method checks if the number passed as a parameter(number of the
-	 * credit card) already exists in the database, and returns true if it does,
-	 * false otherwise
-	 * 
-	 * @param num the number of the credit card
-	 * @return true if the number already exists, false otherwise
-	 */
-	private boolean numTarjetaExists( String num ) {
+	private boolean isCardNumberInDB( String cardNumber ) {
 		Connection c = connection;
 		PreparedStatement p = null;
 		ResultSet r = null;
+
 		try {
 			p = c.prepareStatement( Conf.get( "SQL_CHECK_NUM_TARJETA_EXISTS" ) );
-			p.setString( 1, num );
+			p.setString( 1, cardNumber );
 			r = p.executeQuery();
 			return r.next();
 		} catch (SQLException e) {
 			throw new RuntimeException( e );
 		} finally {
-			Jdbc.close( r, p );
+			close( r, p );
+		}
+	}
+
+	/**
+	 * This method select those ones who recommended people whose number of
+	 * recommendations has been 3, or a multiple of 3, and add them into a map.
+	 * 
+	 * @param recommendatorsAndNumberOfRecommendations map of clients
+	 * @return the map with all the id's of the clients who have recommended 3
+	 *         or more people
+	 */
+	private Map<Long, Integer> filterRecomendatorsBynumberOfRecommendations(
+			Map<Long, Integer> recommendatorsAndNumberOfRecommendations,
+			int numberOfRecommendations ) {
+		Map<Long, Integer> filteredMap = new HashMap<Long, Integer>();
+		Iterator<Entry<Long, Integer>> it = recommendatorsAndNumberOfRecommendations.entrySet()
+				.iterator();
+		while (it.hasNext()) {
+			Map.Entry<Long, Integer> pair = (Map.Entry<Long, Integer>) it.next();
+			long id = pair.getKey();
+			int numRecomendations = pair.getValue();
+			if (numRecomendations % numberOfRecommendations == 0) {
+				filteredMap.put( id, numRecomendations );
+			} else {
+				int rest = numRecomendations / numberOfRecommendations;
+				filteredMap.put( id, ( rest * numberOfRecommendations ) );
+			}
+		}
+		return filteredMap;
+	}
+
+	// PRIVATE MEMBERS
+
+	/**
+	 * Finds the bond summary for a given client.
+	 * 
+	 * @param clientId is the unique id for a client.
+	 * @return a map with the summary of all the bonus for the given client.
+	 */
+	private Map<String, Object> findBondSummaryByClient( long clientId ) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_RESUMEN_BONOS_CLIENTE" ) );
+			pst.setLong( 1, clientId );
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				map.put( "bonos", rs.getInt( 1 ) );
+				map.put( "total", rs.getDouble( 2 ) );
+				map.put( "porConsumir", rs.getDouble( 3 ) );
+				map.put( "consum", rs.getDouble( 4 ) );
+			}
+			return map;
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			close( rs, pst );
+		}
+	}
+
+	/**
+	 * Updated the client recommendation table so it is marked as used.
+	 * 
+	 * @param clientId is the unique id of the client who has recommend.
+	 * @param recommendedPeople the number of people that had been recommended.
+	 */
+	private void updateClientsBono( long clientId, int recommendedPeople ) {
+		PreparedStatement pst = null;
+		try {
+			pst = connection.prepareStatement( Conf.get( "SQL_UPDATE_CLIENTS_BONO" ) );
+			pst.setLong( 1, clientId );
+			pst.setInt( 2, recommendedPeople );
+			pst.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException( e );
+		} finally {
+			close( pst );
 		}
 	}
 }

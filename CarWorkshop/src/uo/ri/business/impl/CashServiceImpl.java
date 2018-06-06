@@ -50,16 +50,10 @@ public class CashServiceImpl implements CashService {
 	}
 
 	@Override
-	public List<Map<String, Object>> FindAllPaymentMethodsByClientId( Long clientId )
+	public void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
 			throws BusinessException {
-		FindAllPaymentMethodsByClientId findAllPaymentMethodsByClient = new FindAllPaymentMethodsByClientId( clientId );
-		return findAllPaymentMethodsByClient.execute();
-	}
-
-	@Override
-	public void removePaymentMethodById( Long paymentMethodId ) throws BusinessException {
-		RemovePaymentMehtodById removePaymentMethodById = new RemovePaymentMehtodById( paymentMethodId );
-		removePaymentMethodById.execute();
+		CreatePMBond createPMBond = new CreatePMBond( paymentMethodId, bondDescription, availableAmount );
+		createPMBond.execute();
 	}
 
 	@Override
@@ -70,10 +64,16 @@ public class CashServiceImpl implements CashService {
 	}
 
 	@Override
-	public void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
+	public List<Map<String, Object>> findAllPaymentMethodsByClientId( Long clientId )
 			throws BusinessException {
-		CreatePMBond createPMBond = new CreatePMBond( paymentMethodId, bondDescription, availableAmount );
-		createPMBond.execute();
+		FindAllPaymentMethodsByClientId findAllPaymentMethodsByClient = new FindAllPaymentMethodsByClientId( clientId );
+		return findAllPaymentMethodsByClient.execute();
+	}
+
+	@Override
+	public void removePaymentMethodById( Long paymentMethodId ) throws BusinessException {
+		RemovePaymentMehtodById removePaymentMethodById = new RemovePaymentMehtodById( paymentMethodId );
+		removePaymentMethodById.execute();
 	}
 
 }

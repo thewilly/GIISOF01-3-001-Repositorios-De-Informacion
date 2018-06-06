@@ -23,29 +23,28 @@
 package uo.ri.ui.admin;
 
 import alb.util.menu.BaseMenu;
-import uo.ri.ui.admin.action.AddMechanicAction;
-import uo.ri.ui.admin.action.DeleteMechanicAction;
-import uo.ri.ui.admin.action.ListMechanicsAction;
+import uo.ri.ui.admin.action.CreateMechanicAction;
+import uo.ri.ui.admin.action.RemoveMechanicAction;
+import uo.ri.ui.admin.action.FindAllMechanicsAction;
 import uo.ri.ui.admin.action.UpdateMechanicAction;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. in
- * this case the menu is just for mechanics in the system and what to do with
- * them.
- * 
- * @author uo250878
+ * MecanicosMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class MecanicosMenu extends BaseMenu {
 
 	public MecanicosMenu() {
 		menuOptions = new Object[][] { { "Administrador > Gestión de mecánicos", null },
 
-				{ "Añadir mecánico", AddMechanicAction.class },
+				{ "Añadir mecánico", CreateMechanicAction.class },
 				{ "Modificar datos de mecánico", UpdateMechanicAction.class },
-				{ "Eliminar mecánico", DeleteMechanicAction.class },
-				{ "Listar mecánicos", ListMechanicsAction.class }, };
+				{ "Eliminar mecánico", RemoveMechanicAction.class },
+				{ "Listar mecánicos", FindAllMechanicsAction.class }, };
 	}
 
 }
