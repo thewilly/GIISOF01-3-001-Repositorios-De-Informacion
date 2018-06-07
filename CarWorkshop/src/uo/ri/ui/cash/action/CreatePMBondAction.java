@@ -41,16 +41,16 @@ public class CreatePMBondAction implements Action {
 	@Override
 	public void execute() throws BusinessException {
 
-		// Pedir datos
-		Long id = Console.readLong( "Id cliente" );
-		String descripcion = Console.readString( "Descripción" );
-		double disponible = Console.readDouble( "Dinero" );
+		Long clientId = Console.readLong( "Id cliente" );
+		String description = Console.readString( "Descripción" );
+		double availableAmount = Console.readDouble( "Dinero" );
 
 		CashService cash = ServicesFactory.getCashService();
-		cash.createPMBond( id, descripcion, disponible );
-
-		// Mostrar resultado
-		Console.println( "Nuevo bono añadido a " + id );
+		
+		// Creating the bond.
+		cash.createPMBond( clientId, description, availableAmount );
+		
+		Console.println( "Nuevo bono añadido a " + clientId );
 	}
 
 }

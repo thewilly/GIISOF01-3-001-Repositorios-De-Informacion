@@ -42,12 +42,12 @@ public class CreateMechanicAction implements Action {
 	public void execute() throws BusinessException {
 
 		// Ask the used for data.
-		String nombre = Console.readString( "Nombre" );
-		String apellidos = Console.readString( "Apellidos" );
+		String name = Console.readString( "Nombre" );
+		String surname = Console.readString( "Apellidos" );
 
 		// Call to the corresponding service.
-		AdminService admin = ServicesFactory.getAdminService();
-		admin.createMechanic( nombre, apellidos );
+		AdminService adminService = ServicesFactory.getAdminService();
+		adminService.createMechanic( name, surname );
 
 		// Show the result
 		Console.println( "Nuevo mecánico añadido" );

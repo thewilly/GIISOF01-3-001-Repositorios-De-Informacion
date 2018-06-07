@@ -22,15 +22,12 @@
  ******************************************************************************/
 package uo.ri.ui.admin.action;
 
-import java.util.List;
-import java.util.Map;
-
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.BondsPerClientPrinter;
 
 /**
  * FindAllBondsByClientIdAction.java
@@ -44,12 +41,13 @@ public class FindAllBondsByClientIdAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		// Pedir datos
-		Long id = Console.readLong( "Id" );
-		Console.println( "\nListado de bonos de cliente con id: " + id + "\n" );
-		AdminService admin = ServicesFactory.getAdminService();
-		List<Map<String, Object>> list = admin.findAllBondsByCliendId( id );
-		Printer print = new Printer( list );
-		print.printBonosFromClient();
+
+		// Getting the client id from the user interaction.
+		Long clientId = Console.readLong( "Id" );
+		Console.println( "\nListado de bonos de cliente con id: " + clientId + "\n" );
+		AdminService adminService = ServicesFactory.getAdminService();
+
+		// Getting all the bonds for the given client id and printing them.
+		new BondsPerClientPrinter( adminService.findAllBondsByCliendId( clientId ) );
 	}
 }

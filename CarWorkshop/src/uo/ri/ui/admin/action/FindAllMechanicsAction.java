@@ -22,15 +22,12 @@
  ******************************************************************************/
 package uo.ri.ui.admin.action;
 
-import java.util.List;
-import java.util.Map;
-
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.MechanicsPrinter;
 
 /**
  * FindAllMechanicsAction.java
@@ -45,9 +42,9 @@ public class FindAllMechanicsAction implements Action {
 	@Override
 	public void execute() throws BusinessException {
 		Console.println( "\nListado de mecánicos\n" );
-		AdminService admin = ServicesFactory.getAdminService();
-		List<Map<String, Object>> list = admin.findAllMechanics();
-		Printer print = new Printer( list );
-		print.printMechanics();
+		AdminService adminService = ServicesFactory.getAdminService();
+
+		// Getting the list of mechanics and printing them.
+		new MechanicsPrinter( adminService.findAllMechanics() );
 	}
 }

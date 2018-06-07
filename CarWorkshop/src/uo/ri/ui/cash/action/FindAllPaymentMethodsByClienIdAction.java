@@ -22,15 +22,12 @@
  ******************************************************************************/
 package uo.ri.ui.cash.action;
 
-import java.util.List;
-import java.util.Map;
-
 import alb.util.console.Console;
 import alb.util.menu.Action;
 import uo.ri.business.CashService;
 import uo.ri.common.BusinessException;
 import uo.ri.conf.ServicesFactory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.PaymentMethodsPrinter;
 
 /**
  * FindAllPaymentMethodsByClienIdAction.java
@@ -44,12 +41,13 @@ public class FindAllPaymentMethodsByClienIdAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		Long id = Console.readLong( "Id cliente" );
-		Console.println( "\nListado de medios de pago de cliente con id: " + id + "\n" );
-		CashService cash = ServicesFactory.getCashService();
-		List<Map<String, Object>> list = cash.findAllPaymentMethodsByClientId( id );
-		Printer print = new Printer( list );
-		print.printMediosPagoFromClient();
+		Long clientId = Console.readLong( "Id cliente" );
+		Console.println( "\nListado de medios de pago de cliente con id: " + clientId + "\n" );
+		CashService cashService = ServicesFactory.getCashService();
+
+		// Finding all the payment methods for the given client id and printing
+		// them.
+		new PaymentMethodsPrinter( cashService.findAllPaymentMethodsByClientId( clientId ) );
 	}
 
 }

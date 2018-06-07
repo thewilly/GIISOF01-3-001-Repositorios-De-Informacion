@@ -42,8 +42,9 @@ public class GenerateBondByRecomendationAction implements Action {
 	public void execute() throws BusinessException {
 
 		AdminService admin = ServicesFactory.getAdminService();
-		admin.generateBonosByRecomendation();
 
+		// Generating the corresponding bonds.
+		admin.generateBonosByRecomendation();
 		Console.println( "\nBonos generados\n" );
 	}
 

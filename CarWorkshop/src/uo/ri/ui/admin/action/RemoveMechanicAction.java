@@ -40,10 +40,12 @@ public class RemoveMechanicAction implements Action {
 
 	@Override
 	public void execute() throws BusinessException {
-		Long idMecanico = Console.readLong( "Id de mecánico" );
+		Long mechanicId = Console.readLong( "Id de mecánico" );
 
 		AdminService admin = ServicesFactory.getAdminService();
-		admin.removeMechanic( idMecanico );
+		
+		// Removing the mechanic from the system.
+		admin.removeMechanic( mechanicId );
 
 		Console.println( "Se ha eliminado el mecánico" );
 	}

@@ -38,12 +38,12 @@ import uo.ri.ui.admin.action.FindAllBondsByClientIdAction;
 public class BonosMenu extends BaseMenu {
 
 	public BonosMenu() {
-		menuOptions = new Object[][] { { "Administrador > Gestión de bonos", null },
-
+		menuOptions = new Object[][] {
+				{ "Administrador > Gestión de bonos", null },
 				{ "Generacion automática de bonos: recomendación",
 						GenerateBondByRecomendationAction.class },
 				{ "Listado de bonos de un cliente", FindAllBondsByClientIdAction.class },
-				{ "Listado de todos los bonos", FindAllBondsAction.class }, };
+				{ "Listado de todos los bonos", FindAllBondsAction.class },
+		};
 	}
-
 }

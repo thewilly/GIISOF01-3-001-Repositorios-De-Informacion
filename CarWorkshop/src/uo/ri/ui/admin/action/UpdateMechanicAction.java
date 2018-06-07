@@ -41,15 +41,14 @@ public class UpdateMechanicAction implements Action {
 	@Override
 	public void execute() throws BusinessException {
 
-		// Pedir datos
-		Long id = Console.readLong( "Id del mecánico" );
-		String nombre = Console.readString( "Nombre" );
-		String apellidos = Console.readString( "Apellidos" );
+		Long mechanicId = Console.readLong( "Id del mecánico" );
+		String newMechanicName = Console.readString( "Nombre" );
+		String newMechanicSurname = Console.readString( "Apellidos" );
 
+		// Updating the mechanic
 		AdminService admin = ServicesFactory.getAdminService();
-		admin.updateMechanic( id, nombre, apellidos );
+		admin.updateMechanic( mechanicId, newMechanicName, newMechanicSurname );
 
-		// Mostrar resultado
 		Console.println( "Mecánico actualizado" );
 	}
 
