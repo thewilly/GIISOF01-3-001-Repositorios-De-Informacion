@@ -54,12 +54,12 @@ public interface AdminService {
 	void deleteMechanic(Long idMecanico) throws BusinessException;
 
 	/**
-	 * Update mechanic.
+	 * Find all mechanics.
 	 *
-	 * @param mecanico the mecanico
+	 * @return the list
 	 * @throws BusinessException the business exception
 	 */
-	void updateMechanic(MechanicDto mecanico) throws BusinessException;
+	List<MechanicDto> findAllMechanics() throws BusinessException;
 
 	/**
 	 * Find mechanic by id.
@@ -69,14 +69,6 @@ public interface AdminService {
 	 * @throws BusinessException the business exception
 	 */
 	MechanicDto findMechanicById(Long id) throws BusinessException;
-
-	/**
-	 * Find all mechanics.
-	 *
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<MechanicDto> findAllMechanics() throws BusinessException;
 
 	/**
 	 * Find vouchers by client id.
@@ -102,5 +94,13 @@ public interface AdminService {
 	 * @throws BusinessException the business exception
 	 */
 	List<VoucherSummary> getVoucherSummary() throws BusinessException;
+
+	/**
+	 * Update mechanic.
+	 *
+	 * @param mecanico the mecanico
+	 * @throws BusinessException the business exception
+	 */
+	void updateMechanic(MechanicDto mecanico) throws BusinessException;
 
 }

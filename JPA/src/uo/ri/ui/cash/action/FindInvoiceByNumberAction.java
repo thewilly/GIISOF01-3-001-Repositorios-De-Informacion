@@ -27,7 +27,7 @@ import alb.util.menu.Action;
 import uo.ri.business.CashService;
 import uo.ri.business.dto.InvoiceDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 
 /**
  * This class is the one that is called in the menu when an option that does not
@@ -49,7 +49,7 @@ public class FindInvoiceByNumberAction implements Action {
 		Long numFactura = Console.readLong("Número de la factura");
 		CashService cs = Factory.service.forCash();
 		InvoiceDto dto = cs.findInvoiceByNumber(numFactura);
-		Printer.printInvoice(dto);
+		AbstractPrinter.printInvoice(dto);
 	}
 
 }

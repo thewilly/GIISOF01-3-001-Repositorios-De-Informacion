@@ -36,15 +36,6 @@ import uo.ri.util.exception.BusinessException;
 public interface ForemanService {
 
 	/**
-	 * Find client by id.
-	 *
-	 * @param id the id
-	 * @return the client dto
-	 * @throws BusinessException the business exception
-	 */
-	ClientDto findClientById(Long id) throws BusinessException;
-
-	/**
 	 * Adds the client.
 	 *
 	 * @param client the client
@@ -62,20 +53,21 @@ public interface ForemanService {
 	void deleteClient(Long id) throws BusinessException;
 
 	/**
-	 * Update client.
-	 *
-	 * @param dto the dto
-	 * @throws BusinessException the business exception
-	 */
-	void updateClient(ClientDto dto) throws BusinessException;
-
-	/**
 	 * Find all clients.
 	 *
 	 * @return the list
 	 * @throws BusinessException the business exception
 	 */
 	List<ClientDto> findAllClients() throws BusinessException;
+
+	/**
+	 * Find client by id.
+	 *
+	 * @param id the id
+	 * @return the client dto
+	 * @throws BusinessException the business exception
+	 */
+	ClientDto findClientById(Long id) throws BusinessException;
 
 	/**
 	 * Find recomended clients by cliente id.
@@ -85,5 +77,13 @@ public interface ForemanService {
 	 * @throws BusinessException the business exception
 	 */
 	List<ClientDto> findRecomendedClientsByClienteId(Long id) throws BusinessException;
+
+	/**
+	 * Update client.
+	 *
+	 * @param dto the dto
+	 * @throws BusinessException the business exception
+	 */
+	void updateClient(ClientDto dto) throws BusinessException;
 
 }

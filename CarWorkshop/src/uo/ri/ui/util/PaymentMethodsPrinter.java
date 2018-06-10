@@ -15,7 +15,7 @@ import alb.util.console.Console;
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class PaymentMethodsPrinter extends Printer {
+public class PaymentMethodsPrinter extends AbstractPrinter {
 
 	/**
 	 * Allocates a [] object and initializes it so that it represents 

@@ -49,6 +49,68 @@ import uo.ri.util.exception.BusinessException;
 public class GenerateVoucherSummaryTests extends BaseServiceTests {
 
 	/**
+	 * Assert right summary.
+	 *
+	 * @param vs the vs
+	 * @param c the c
+	 * @param emitted the emitted
+	 * @param total the total
+	 * @param consumed the consumed
+	 */
+	private void assertRightSummary(VoucherSummary vs, Cliente c, 
+			int emitted, double total, double consumed) {
+		assertTrue( vs.dni.equals( c.getDni() ) );
+		assertTrue( vs.name.equals( c.getNombre() ) );
+		assertTrue( vs.surname.equals( c.getApellidos() ) );
+		assertTrue( vs.emitted == emitted );
+		assertTrue( vs.totalAmount == total );
+		assertTrue( vs.consumed ==  consumed );
+		assertTrue( vs.available ==  total - consumed );
+	}
+
+	/**
+	 * Find client index.
+	 *
+	 * @param data the data
+	 * @param dni the dni
+	 * @return the int
+	 */
+	private int findClientIndex(Object[][] data, String dni) {
+		for (int i = 0; i < data.length; i++) {
+			Cliente c = (Cliente) data[i][0];
+			if ( c.getDni().equals( dni ) ) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Register client with vouchers.
+	 *
+	 * @param emitted the emitted
+	 * @param total the total
+	 * @param consumed the consumed
+	 * @return the cliente
+	 * @throws BusinessException the business exception
+	 */
+	private Cliente registerClientWithVouchers(
+			int emitted, double total, double consumed) 
+			throws BusinessException {
+		
+		double initialAvailable = total / emitted;
+		double toBeConsumed = consumed / emitted;
+
+		Cliente c = registerNewClient();
+		for(int i = 0; i < emitted; i++) {
+			Bono b = registerNewVoucherWithAvailable( initialAvailable );
+			Association.Pagar.link(c, b);
+			b.pagar( toBeConsumed );
+		}
+		return c;
+	}
+
+	/**
 	 * Sets the up.
 	 *
 	 * @throws Exception the exception
@@ -56,7 +118,28 @@ public class GenerateVoucherSummaryTests extends BaseServiceTests {
 	@Before
 	public void setUp() throws Exception {
 	}
+	
+	/**
+	 * One client with no vouchers produces one record with all zeroes.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testClientNoVouchers() throws BusinessException {
+		int EMIITED = 0;
+		double TOTAL = 0;
+		double CONSUMED = 0;
 
+		Cliente c = registerClientWithVouchers(EMIITED, TOTAL, CONSUMED);
+		
+		AdminService svc = Factory.service.forAdmin();
+		List<VoucherSummary> summary = svc.getVoucherSummary();
+		
+		assertTrue( summary.size() == 1 );
+		VoucherSummary vs = summary.get(0);
+		assertRightSummary(vs, c, EMIITED, TOTAL, CONSUMED);
+	}
+	
 	/**
 	 * An empty list is returned if there is no client registered on the system
 	 * .
@@ -71,7 +154,7 @@ public class GenerateVoucherSummaryTests extends BaseServiceTests {
 		assertTrue( summary != null );
 		assertTrue( summary.size() == 0 );
 	}
-	
+
 	/**
 	 * Only one client with vouchers registered produces the right summary.
 	 *
@@ -82,27 +165,6 @@ public class GenerateVoucherSummaryTests extends BaseServiceTests {
 		int EMIITED = 10;
 		double TOTAL = 1000;
 		double CONSUMED = 650;
-
-		Cliente c = registerClientWithVouchers(EMIITED, TOTAL, CONSUMED);
-		
-		AdminService svc = Factory.service.forAdmin();
-		List<VoucherSummary> summary = svc.getVoucherSummary();
-		
-		assertTrue( summary.size() == 1 );
-		VoucherSummary vs = summary.get(0);
-		assertRightSummary(vs, c, EMIITED, TOTAL, CONSUMED);
-	}
-
-	/**
-	 * One client with no vouchers produces one record with all zeroes.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testClientNoVouchers() throws BusinessException {
-		int EMIITED = 0;
-		double TOTAL = 0;
-		double CONSUMED = 0;
 
 		Cliente c = registerClientWithVouchers(EMIITED, TOTAL, CONSUMED);
 		
@@ -140,68 +202,6 @@ public class GenerateVoucherSummaryTests extends BaseServiceTests {
 			
 			assertRightSummary(vs, c, emitted, total, consumed);
 		}
-	}
-	
-	/**
-	 * Find client index.
-	 *
-	 * @param data the data
-	 * @param dni the dni
-	 * @return the int
-	 */
-	private int findClientIndex(Object[][] data, String dni) {
-		for (int i = 0; i < data.length; i++) {
-			Cliente c = (Cliente) data[i][0];
-			if ( c.getDni().equals( dni ) ) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Register client with vouchers.
-	 *
-	 * @param emitted the emitted
-	 * @param total the total
-	 * @param consumed the consumed
-	 * @return the cliente
-	 * @throws BusinessException the business exception
-	 */
-	private Cliente registerClientWithVouchers(
-			int emitted, double total, double consumed) 
-			throws BusinessException {
-		
-		double initialAvailable = total / emitted;
-		double toBeConsumed = consumed / emitted;
-
-		Cliente c = registerNewClient();
-		for(int i = 0; i < emitted; i++) {
-			Bono b = registerNewVoucherWithAvailable( initialAvailable );
-			Association.Pagar.link(c, b);
-			b.pagar( toBeConsumed );
-		}
-		return c;
-	}
-	
-	/**
-	 * Assert right summary.
-	 *
-	 * @param vs the vs
-	 * @param c the c
-	 * @param emitted the emitted
-	 * @param total the total
-	 * @param consumed the consumed
-	 */
-	private void assertRightSummary(VoucherSummary vs, Cliente c, 
-			int emitted, double total, double consumed) {
-		assertTrue( vs.dni.equals( c.getDni() ) );
-		assertTrue( vs.name.equals( c.getNombre() ) );
-		assertTrue( vs.surname.equals( c.getApellidos() ) );
-		assertTrue( vs.emitted == emitted );
-		assertTrue( vs.totalAmount == total );
-		assertTrue( vs.consumed ==  consumed );
-		assertTrue( vs.available ==  total - consumed );
 	}
 
 }

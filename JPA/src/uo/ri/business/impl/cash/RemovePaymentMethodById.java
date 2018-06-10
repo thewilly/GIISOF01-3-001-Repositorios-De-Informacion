@@ -52,17 +52,6 @@ public class RemovePaymentMethodById implements Command<Void> {
 		this.paymentMethodId = paymentMethodId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		MedioPago medioPago = mp.findById(paymentMethodId);
-		assertCanBeDeleted(medioPago);
-		mp.remove(medioPago);
-		return null;
-	}
-
 	/**
 	 * This method do all the possible checks that should not be allowed to be
 	 * deleted from the database, due to errors on the petition or conditions of
@@ -76,6 +65,17 @@ public class RemovePaymentMethodById implements Command<Void> {
 		Check.isFalse(medioPago.getClass().equals(Metalico.class),
 				"El medio de pago no puede ser eliminado, por ser metálico");
 		Check.isTrue(medioPago.getCargos().isEmpty(), "Ese medio de pago tiene cargos, y no puede ser eliminado");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public Void execute() throws BusinessException {
+		MedioPagoRepository mp = Factory.repository.forMedioPago();
+		MedioPago medioPago = mp.findById(paymentMethodId);
+		assertCanBeDeleted(medioPago);
+		mp.remove(medioPago);
+		return null;
 	}
 
 }

@@ -81,16 +81,6 @@ public abstract class BaseServiceTests {
 	}
 
 	/**
-	 * Gets the metalico.
-	 *
-	 * @param c the c
-	 * @return the metalico
-	 */
-	protected MedioPago getMetalico(Cliente c) {
-		return c.getMediosPago().stream().findFirst().orElse(null);
-	}
-
-	/**
 	 * Gets the first voucher.
 	 *
 	 * @param c the c
@@ -101,6 +91,16 @@ public abstract class BaseServiceTests {
 		assertTrue(bns.size() == 1);
 		Bono expected = bns.get(0);
 		return expected;
+	}
+
+	/**
+	 * Gets the metalico.
+	 *
+	 * @param c the c
+	 * @return the metalico
+	 */
+	protected MedioPago getMetalico(Cliente c) {
+		return c.getMediosPago().stream().findFirst().orElse(null);
 	}
 
 }

@@ -66,25 +66,6 @@ public class DeletePaymentMeanTests extends BaseServiceTests {
 	}
 	
 	/**
-	 * Se puede borrar un medio de pago, que exista, que no sea metálico y que
-	 * no tenga cargos.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testValidDelete() throws BusinessException {
-		TarjetaCredito expected = findCardByNumber( tc.getNumero() );
-		assertTrue( expected != null );
-		
-		CashService svc = Factory.service.forCash();
-		svc.deletePaymentMean( tc.getId() );
-
-		String number = tc.getNumero();
-		expected = findCardByNumber( number); 
-		assertTrue( expected == null );
-	}
-	
-	/**
 	 * No se puede borrar si tiene cargos.
 	 *
 	 * @throws BusinessException the business exception
@@ -119,6 +100,25 @@ public class DeletePaymentMeanTests extends BaseServiceTests {
 	public void testInvalidDeleteNoId() throws BusinessException {
 		CashService svc = Factory.service.forCash();
 		svc.deletePaymentMean( -1000L );
+	}
+	
+	/**
+	 * Se puede borrar un medio de pago, que exista, que no sea metálico y que
+	 * no tenga cargos.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testValidDelete() throws BusinessException {
+		TarjetaCredito expected = findCardByNumber( tc.getNumero() );
+		assertTrue( expected != null );
+		
+		CashService svc = Factory.service.forCash();
+		svc.deletePaymentMean( tc.getId() );
+
+		String number = tc.getNumero();
+		expected = findCardByNumber( number); 
+		assertTrue( expected == null );
 	}
 
 }

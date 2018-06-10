@@ -54,36 +54,36 @@ public class FindAllBonds implements Command<List<VoucherSummary>> {
 	 */
 	@Override
 	public List<VoucherSummary> execute() throws BusinessException {
-		List<Cliente> listClients = clientsRepository.findAll();
-		return getVoucherList(listClients);
+		List<Cliente> clients = clientsRepository.findAll();
+		return getVouchers(clients);
 	}
 
 	/**
 	 * This method traverses all the list of clients of the system, and adds it
 	 * to the list of voucher summaries.
 	 *
-	 * @param listClients the list of clients
+	 * @param clients the list of clients
 	 * @return the list containing all the voucher summary list
 	 */
-	private List<VoucherSummary> getVoucherList(List<Cliente> listClients) {
+	private List<VoucherSummary> getVouchers(List<Cliente> clients) {
 		List<VoucherSummary> vouchers = new ArrayList<>();
-		for (Cliente cliente : listClients) {
-			Object[] info = paymentMethodRepository.findAggregateVoucherDataByClientId(cliente.getId());
-			VoucherSummary voucher = new VoucherSummary();
-			voucher.name = cliente.getNombre();
-			voucher.surname = cliente.getApellidos();
-			voucher.dni = cliente.getDni();
-			voucher.emitted = (int) info[0];
-			if (voucher.emitted > 0) {
-				voucher.available = (double) info[1];
-				voucher.consumed = (double) info[2];
+		for (Cliente client : clients) {
+			Object[] clientInformation = paymentMethodRepository.findAggregateVoucherDataByClientId(client.getId());
+			VoucherSummary clientVoucher = new VoucherSummary();
+			clientVoucher.name = client.getNombre();
+			clientVoucher.surname = client.getApellidos();
+			clientVoucher.dni = client.getDni();
+			clientVoucher.emitted = (int) clientInformation[0];
+			if (clientVoucher.emitted > 0) {
+				clientVoucher.available = (double) clientInformation[1];
+				clientVoucher.consumed = (double) clientInformation[2];
 			} else {
-				voucher.available = 0.0;
-				voucher.consumed = 0.0;
+				clientVoucher.available = 0.0;
+				clientVoucher.consumed = 0.0;
 			}
-			voucher.totalAmount = voucher.available + voucher.consumed;
+			clientVoucher.totalAmount = clientVoucher.available + clientVoucher.consumed;
 
-			vouchers.add(voucher);
+			vouchers.add(clientVoucher);
 		}
 		return vouchers;
 	}

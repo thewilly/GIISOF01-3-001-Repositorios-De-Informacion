@@ -15,7 +15,7 @@ import alb.util.console.Console;
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class BondsPrinter extends Printer {
+public class BondsPrinter extends AbstractPrinter {
 
 	/**
 	 * Initializes the bonds printer and prints the list of bonds given.

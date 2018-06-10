@@ -64,18 +64,6 @@ public class SettleInvoiceTests extends BaseServiceTests  {
 	}
 
 	/**
-	 * Si la factura no exsite salta excepción.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testDoesNotExisInvoice() throws BusinessException {
-		CashService svc = Factory.service.forCash();
-		Long DOES_NOT_EXIST = -12345L;
-		svc.settleInvoice( DOES_NOT_EXIST, new HashMap<Long, Double>());
-	}
-	
-	/**
 	 * Si la factura ya está liquidada salta excepción.
 	 *
 	 * @throws BusinessException the business exception
@@ -96,6 +84,62 @@ public class SettleInvoiceTests extends BaseServiceTests  {
 		} catch (BusinessException be) {
 			assertTrue( "Ya está abonada".equals( be.getMessage() ));
 		}
+	}
+	
+	/**
+	 * Si la factura no exsite salta excepción.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test(expected = BusinessException.class)
+	public void testDoesNotExisInvoice() throws BusinessException {
+		CashService svc = Factory.service.forCash();
+		Long DOES_NOT_EXIST = -12345L;
+		svc.settleInvoice( DOES_NOT_EXIST, new HashMap<Long, Double>());
+	}
+	
+	/**
+	 * Al liquidar una factura se devuelven los datos de la factura y su estado
+	 * ha cambiado a ABONADA.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testInvoiceSettle() throws BusinessException {
+		Factura f = registerNewInvoiceForAmount( 100 );
+		TarjetaCredito tc = registerNewCreditCard();
+
+		Map<Long, Double> cargos = new HashMap<>();
+		cargos.put(tc.getId(), f.getImporte());
+		
+		CashService svc = Factory.service.forCash();
+		InvoiceDto expected = svc.settleInvoice( f.getId(), cargos );
+		
+		assertTrue( expected.id == f.getId() );
+		assertTrue( expected.status.equals( FacturaStatus.ABONADA.toString() ));
+	}
+		
+	/**
+	 * Al liquidar una factura con varios medios de pago cuyos cargos igualan el
+	 * importe la factura pasa a ABONADA.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testInvoiceSettleWithSeveralPaymentMeans() throws BusinessException {
+		Factura f = registerNewInvoiceForAmount( 100 );
+		TarjetaCredito tc = registerNewCreditCard();
+		Bono b = registerNewVoucherWithAvailable( 1000.0 );
+
+		Map<Long, Double> cargos = new HashMap<>();
+		cargos.put(tc.getId(), f.getImporte() / 2.0);
+		cargos.put(b.getId(), f.getImporte() / 2.0);
+		
+		CashService svc = Factory.service.forCash();
+		InvoiceDto expected = svc.settleInvoice( f.getId(), cargos );
+		
+		assertTrue( expected.id == f.getId() );
+		assertTrue( expected.status.equals( FacturaStatus.ABONADA.toString() ));
 	}
 	
 	/**
@@ -121,7 +165,33 @@ public class SettleInvoiceTests extends BaseServiceTests  {
 			assertTrue( "Los cargos no igualan el importe".equals( be.getMessage() ));
 		}
 	}
+	
+	/**
+	 * Si un cargo se hace con tarjeta caducada salta ezcepción.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testNotValidCard() throws BusinessException {
+		Factura f = registerNewInvoiceForAmount( 100 );
+		TarjetaCredito tc = registerNewCreditCard();
+
+		tc.setValidez( DateUtil.yesterday() );
+
+		Map<Long, Double> cargos = new HashMap<>();
+		cargos.put(tc.getId(), f.getImporte() + 1.0);
 		
+		CashService svc = Factory.service.forCash();
+		try {
+			
+			svc.settleInvoice( f.getId(), cargos );
+			
+			fail("No salta la excepción esperada");
+		} catch (BusinessException be) {
+			assertTrue( "La tarjeta está caducada".equals( be.getMessage() ));
+		}
+	}
+	
 	/**
 	 * Si el importe de los cargos excede el importe de la factura salta
 	 * excepción.
@@ -170,76 +240,6 @@ public class SettleInvoiceTests extends BaseServiceTests  {
 			assertTrue( 
 				"No hay saldo suficiente en el bono".equals( be.getMessage() ));
 		}
-	}
-	
-	/**
-	 * Si un cargo se hace con tarjeta caducada salta ezcepción.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testNotValidCard() throws BusinessException {
-		Factura f = registerNewInvoiceForAmount( 100 );
-		TarjetaCredito tc = registerNewCreditCard();
-
-		tc.setValidez( DateUtil.yesterday() );
-
-		Map<Long, Double> cargos = new HashMap<>();
-		cargos.put(tc.getId(), f.getImporte() + 1.0);
-		
-		CashService svc = Factory.service.forCash();
-		try {
-			
-			svc.settleInvoice( f.getId(), cargos );
-			
-			fail("No salta la excepción esperada");
-		} catch (BusinessException be) {
-			assertTrue( "La tarjeta está caducada".equals( be.getMessage() ));
-		}
-	}
-	
-	/**
-	 * Al liquidar una factura se devuelven los datos de la factura y su estado
-	 * ha cambiado a ABONADA.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testInvoiceSettle() throws BusinessException {
-		Factura f = registerNewInvoiceForAmount( 100 );
-		TarjetaCredito tc = registerNewCreditCard();
-
-		Map<Long, Double> cargos = new HashMap<>();
-		cargos.put(tc.getId(), f.getImporte());
-		
-		CashService svc = Factory.service.forCash();
-		InvoiceDto expected = svc.settleInvoice( f.getId(), cargos );
-		
-		assertTrue( expected.id == f.getId() );
-		assertTrue( expected.status.equals( FacturaStatus.ABONADA.toString() ));
-	}
-	
-	/**
-	 * Al liquidar una factura con varios medios de pago cuyos cargos igualan el
-	 * importe la factura pasa a ABONADA.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testInvoiceSettleWithSeveralPaymentMeans() throws BusinessException {
-		Factura f = registerNewInvoiceForAmount( 100 );
-		TarjetaCredito tc = registerNewCreditCard();
-		Bono b = registerNewVoucherWithAvailable( 1000.0 );
-
-		Map<Long, Double> cargos = new HashMap<>();
-		cargos.put(tc.getId(), f.getImporte() / 2.0);
-		cargos.put(b.getId(), f.getImporte() / 2.0);
-		
-		CashService svc = Factory.service.forCash();
-		InvoiceDto expected = svc.settleInvoice( f.getId(), cargos );
-		
-		assertTrue( expected.id == f.getId() );
-		assertTrue( expected.status.equals( FacturaStatus.ABONADA.toString() ));
 	}
 	
 }

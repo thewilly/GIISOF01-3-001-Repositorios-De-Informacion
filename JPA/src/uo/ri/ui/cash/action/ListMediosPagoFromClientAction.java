@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.CashService;
 import uo.ri.business.dto.PaymentMeanDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -53,7 +53,7 @@ public class ListMediosPagoFromClientAction implements Action {
 		CashService cs = Factory.service.forCash();
 		List<PaymentMeanDto> list = cs.findPaymentMeansByClientId(id);
 		Console.println("\nListado de medios de pago de cliente con id: " + id);
-		Printer.printPaymentMeans(list);
+		AbstractPrinter.printPaymentMeans(list);
 	}
 
 }

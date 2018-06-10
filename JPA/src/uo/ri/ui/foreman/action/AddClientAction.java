@@ -73,20 +73,6 @@ public class AddClientAction implements Action {
 	}
 
 	/**
-	 * This method checks if the answer is yes or no, if not, it will be asked
-	 * again.
-	 *
-	 * @param ans the answer of th user
-	 * @return false if the answer was yes or no, true otherwise
-	 */
-	private boolean validAnswer(String ans) {
-		if (ans.equalsIgnoreCase("no") || ans.equalsIgnoreCase("si")) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
 	 * This method gets all the information of the dto from the console.
 	 *
 	 * @return the dto
@@ -102,6 +88,20 @@ public class AddClientAction implements Action {
 		dto.addressCity = Console.readString("Ciudad");
 		dto.addressZipcode = Console.readString("Código postal");
 		return dto;
+	}
+
+	/**
+	 * This method checks if the answer is yes or no, if not, it will be asked
+	 * again.
+	 *
+	 * @param ans the answer of th user
+	 * @return false if the answer was yes or no, true otherwise
+	 */
+	private boolean validAnswer(String ans) {
+		if (ans.equalsIgnoreCase("no") || ans.equalsIgnoreCase("si")) {
+			return false;
+		}
+		return true;
 	}
 
 }

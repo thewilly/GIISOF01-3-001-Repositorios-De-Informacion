@@ -47,6 +47,15 @@ public class ClienteJpaRepository extends BaseRepository<Cliente> implements Cli
 	}
 
 	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
+	 */
+	@Override
+	public List<Cliente> findRecomendedBy(Long id) {
+		return Jpa.getManager().createNamedQuery("Cliente.findRecommendedBy", Cliente.class).setParameter(1, id)
+				.getResultList();
+	}
+
+	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
 	 */
 	@Override
@@ -60,15 +69,6 @@ public class ClienteJpaRepository extends BaseRepository<Cliente> implements Cli
 	@Override
 	public List<Cliente> findWithThreeUnusedBreakdowns() {
 		return Jpa.getManager().createNamedQuery("Cliente.findWithThreeUnusedBreakdowns", Cliente.class)
-				.getResultList();
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
-	 */
-	@Override
-	public List<Cliente> findRecomendedBy(Long id) {
-		return Jpa.getManager().createNamedQuery("Cliente.findRecommendedBy", Cliente.class).setParameter(1, id)
 				.getResultList();
 	}
 

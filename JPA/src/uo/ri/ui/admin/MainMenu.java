@@ -40,21 +40,21 @@ import uo.ri.persistence.jpa.executor.JpaExecutorFactory;
 public class MainMenu extends BaseMenu {
 
 	/**
-	 * Instantiates a new main menu.
-	 */
-	public MainMenu() {
-		menuOptions = new Object[][] { { "Administrador", null }, { "Gestión de mecánicos", MecanicosMenu.class },
-				{ "Gestión de repuestos", RepuestosMenu.class },
-				{ "Gestión de tipos de vehículo", TiposVehiculoMenu.class }, { "Gestión de bonos", BonosMenu.class }, };
-	}
-
-	/**
 	 * The main method.
 	 *
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
 		new MainMenu().configure().execute();
+	}
+
+	/**
+	 * Instantiates a new main menu.
+	 */
+	public MainMenu() {
+		menuOptions = new Object[][] { { "Administrador", null }, { "Gestión de mecánicos", MecanicosMenu.class },
+				{ "Gestión de repuestos", RepuestosMenu.class },
+				{ "Gestión de tipos de vehículo", TiposVehiculoMenu.class }, { "Gestión de bonos", BonosMenu.class }, };
 	}
 
 	/**

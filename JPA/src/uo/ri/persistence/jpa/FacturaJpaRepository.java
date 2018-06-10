@@ -47,19 +47,19 @@ public class FacturaJpaRepository extends BaseRepository<Factura> implements Fac
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
-	 */
-	@Override
-	public Long getNextInvoiceNumber() {
-		return Jpa.getManager().createNamedQuery("Factura.getNextInvoiceNumber", Long.class).getSingleResult();
-	}
-
-	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
 	 */
 	@Override
 	public List<Factura> findUnusedWithBono500() {
 		return Jpa.getManager().createNamedQuery("Factura.findUnusedWithBono500", Factura.class).getResultList();
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
+	 */
+	@Override
+	public Long getNextInvoiceNumber() {
+		return Jpa.getManager().createNamedQuery("Factura.getNextInvoiceNumber", Long.class).getSingleResult();
 	}
 
 }

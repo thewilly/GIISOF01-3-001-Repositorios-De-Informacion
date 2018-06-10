@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.business.dto.MechanicDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -55,7 +55,7 @@ public class ListMechanicsAction implements Action {
 
 		Console.println("\nListado de mecánicos");
 		for (MechanicDto m : mechanics) {
-			Printer.printMechanic(m);
+			AbstractPrinter.printMechanic(m);
 		}
 
 	}

@@ -93,71 +93,6 @@ public class Bono extends MedioPago {
 		this.disponible = quantity;
 	}
 
-	/**
-	 * Gets the disponible.
-	 *
-	 * @return the disponible
-	 */
-	public Double getDisponible() {
-		return disponible;
-	}
-
-	/**
-	 * Sets the disponible.
-	 *
-	 * @param disponible the new disponible
-	 */
-	public void setDisponible(double disponible) {
-		this.disponible = disponible;
-	}
-
-	/**
-	 * Gets the descripcion.
-	 *
-	 * @return the descripcion
-	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * Sets the descripcion.
-	 *
-	 * @param descripcion the new descripcion
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/**
-	 * Gets the codigo.
-	 *
-	 * @return the codigo
-	 */
-	public String getCodigo() {
-		return codigo;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Bono [disponible=" + disponible + ", descripcion=" + descripcion + ", codigo=" + codigo + ", acumulado="
-				+ acumulado + "]";
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.model.MedioPago#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		return result;
-	}
-
 	/* (non-Javadoc)
 	 * @see uo.ri.model.MedioPago#equals(java.lang.Object)
 	 */
@@ -179,6 +114,44 @@ public class Bono extends MedioPago {
 	}
 
 	/**
+	 * Gets the codigo.
+	 *
+	 * @return the codigo
+	 */
+	public String getCodigo() {
+		return codigo;
+	}
+
+	/**
+	 * Gets the descripcion.
+	 *
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * Gets the disponible.
+	 *
+	 * @return the disponible
+	 */
+	public Double getDisponible() {
+		return disponible;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.model.MedioPago#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		return result;
+	}
+
+	/**
 	 * This method add a charge in the accumulated money of the payment method,
 	 * if there is not enough money, and exception will be raised.
 	 *
@@ -193,6 +166,33 @@ public class Bono extends MedioPago {
 		} else {
 			throw new BusinessException("No hay saldo suficiente en el bono");
 		}
+	}
+
+	/**
+	 * Sets the descripcion.
+	 *
+	 * @param descripcion the new descripcion
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * Sets the disponible.
+	 *
+	 * @param disponible the new disponible
+	 */
+	public void setDisponible(double disponible) {
+		this.disponible = disponible;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Bono [disponible=" + disponible + ", descripcion=" + descripcion + ", codigo=" + codigo + ", acumulado="
+				+ acumulado + "]";
 	}
 
 }

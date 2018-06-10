@@ -47,87 +47,6 @@ import uo.ri.util.exception.BusinessException;
 public class GenerateVouchersByInvoiceOver500Tests extends BaseServiceTests {
 
 	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * No se genera bono por factura sin pagar.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWithNotSettledInvoice() throws BusinessException {
-		Cliente c = registerNewClient();
-		registerNewInvoiceForClientWithAmount( c, 550 );
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0);
-	}
-
-	/**
-	 * No se genera bono por factura pagada de menos de 500 euros.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWitSettledInvoiceUnder500() throws BusinessException {
-		Cliente c = registerNewClient();
-		registerNewSettledInvoiceForAmount(c, 450);
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0);
-	}
-
-	/**
-	 * No se genera bono por factura ya usada para bono500.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWithAlreadyUsedInvoiceOver500() throws BusinessException {
-		Cliente c = registerNewClient();
-		Factura f = registerNewSettledInvoiceForAmount(c, 550);
-		
-		f.markAsBono500Used();
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0);
-	}
-
-	/**
-	 * Se genera bono con factura de más de 500 €, pagada - La factura queda
-	 * marcada como usada para bono500 - El bono generado tiene descripcion
-	 * correcta - El bono generado es por 30 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testValidInvoice() throws BusinessException {
-		Cliente c = registerNewClient();
-		Factura f = registerNewSettledInvoiceForAmount(c, 550);
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 1);
-		assertTrue( f.isBono500Used() );
-		
-		Bono expected = getFirstVoucher(c);
-		assertRightVoucher(c, expected);
-	}
-
-	/**
 	 * Assert right voucher.
 	 *
 	 * @param c the c
@@ -140,7 +59,16 @@ public class GenerateVouchersByInvoiceOver500Tests extends BaseServiceTests {
 		assertTrue( expected.getDescripcion().equals("Por factura superior a 500€") );
 		assertTrue( expected.getDisponible() == 30.0 /*€*/ );
 	}
-	
+
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+	}
+
 	/**
 	 * Con varias facturas: - f1: pagada, 550€, genera bono - f2: pagada, 450€,
 	 * no genera bono - f3: no pagada, 450€, no genera bono - f4: no pagada,
@@ -168,7 +96,7 @@ public class GenerateVouchersByInvoiceOver500Tests extends BaseServiceTests {
 		Bono expected = getFirstVoucher(c);
 		assertRightVoucher(c, expected);
 	}
-	
+
 	/**
 	 * Varios clientes con facturas que pueden generar bonos c1 y c3 generan
 	 * bono.
@@ -199,6 +127,78 @@ public class GenerateVouchersByInvoiceOver500Tests extends BaseServiceTests {
 
 		expected = getFirstVoucher(c3);
 		assertRightVoucher(c3, expected);		
+	}
+
+	/**
+	 * Se genera bono con factura de más de 500 €, pagada - La factura queda
+	 * marcada como usada para bono500 - El bono generado tiene descripcion
+	 * correcta - El bono generado es por 30 €.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testValidInvoice() throws BusinessException {
+		Cliente c = registerNewClient();
+		Factura f = registerNewSettledInvoiceForAmount(c, 550);
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 1);
+		assertTrue( f.isBono500Used() );
+		
+		Bono expected = getFirstVoucher(c);
+		assertRightVoucher(c, expected);
+	}
+
+	/**
+	 * No se genera bono por factura ya usada para bono500.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testWithAlreadyUsedInvoiceOver500() throws BusinessException {
+		Cliente c = registerNewClient();
+		Factura f = registerNewSettledInvoiceForAmount(c, 550);
+		
+		f.markAsBono500Used();
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0);
+	}
+	
+	/**
+	 * No se genera bono por factura sin pagar.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testWithNotSettledInvoice() throws BusinessException {
+		Cliente c = registerNewClient();
+		registerNewInvoiceForClientWithAmount( c, 550 );
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0);
+	}
+	
+	/**
+	 * No se genera bono por factura pagada de menos de 500 euros.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testWitSettledInvoiceUnder500() throws BusinessException {
+		Cliente c = registerNewClient();
+		registerNewSettledInvoiceForAmount(c, 450);
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0);
 	}
 
 }

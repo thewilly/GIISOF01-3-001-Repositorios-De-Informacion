@@ -97,24 +97,6 @@ public class BonoPorFactura500Tests {
 	}
 	
 	/**
-	 * Un factura por importe superior a 500 € pero no pagada no puede generar
-	 * bono500 y no puede ser marcada como usada para Bono500.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testMas500NoPagadaGenerateVoucher() throws BusinessException {
-		a.markAsFinished();
-		Factura f = new Factura(123L, Arrays.asList(a) ); // no pagada
-		
-		assertTrue( f.puedeGenerarBono500() == false );
-		try {
-			f.markAsBono500Used();
-			fail( "An exception must be thrown" );
-		} catch (BusinessException be) {}
-	}
-
-	/**
 	 * Una factura con importe inferior a 500 € sin pagar no puede generar bono
 	 * y no pueder ser marcada como usada para ello.
 	 *
@@ -133,7 +115,7 @@ public class BonoPorFactura500Tests {
 		} catch (BusinessException be) {}
 
 	}
-	
+
 	/**
 	 * Una factura con importe inferior a 500 € pagada no puede generar bono y
 	 * no puede ser marcada como usada para ello.
@@ -154,7 +136,7 @@ public class BonoPorFactura500Tests {
 			fail( "An exception must be thrown" );
 		} catch (BusinessException be) {}
 	}
-
+	
 	/**
 	 * Una factura que ha generado bono ya no puede generar otro.
 	 *
@@ -169,6 +151,24 @@ public class BonoPorFactura500Tests {
 		f.markAsBono500Used();
 
 		assertTrue( f.puedeGenerarBono500() == false );
+	}
+
+	/**
+	 * Un factura por importe superior a 500 € pero no pagada no puede generar
+	 * bono500 y no puede ser marcada como usada para Bono500.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testMas500NoPagadaGenerateVoucher() throws BusinessException {
+		a.markAsFinished();
+		Factura f = new Factura(123L, Arrays.asList(a) ); // no pagada
+		
+		assertTrue( f.puedeGenerarBono500() == false );
+		try {
+			f.markAsBono500Used();
+			fail( "An exception must be thrown" );
+		} catch (BusinessException be) {}
 	}
 
 }

@@ -55,6 +55,26 @@ public class UpdateClientTests extends BaseServiceTests {
 	}
 
 	/**
+	 * El atributo dni no se actualiza aunque el dto lleve nuevo dni.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testDniDoesNotUpdate() throws BusinessException {
+		Cliente c = FixtureRepository.registerNewClient();
+		ClientDto dto = DtoAssembler.toDto( c );
+		String previousDni = c.getDni();
+
+		dto.dni = "m-" + dto.dni; // <-- must be ignored
+		
+		ForemanService svc = Factory.service.forForeman();
+		svc.updateClient( dto );
+		
+		Cliente expected = FixtureRepository.findClientByDni( c.getDni() );
+		assertTrue( expected.getDni().equals( previousDni ));
+	}
+	
+	/**
 	 * Se actualiza el cliente con todos los campos del dto.
 	 *
 	 * @throws BusinessException the business exception
@@ -93,26 +113,6 @@ public class UpdateClientTests extends BaseServiceTests {
 		
 		ForemanService svc = Factory.service.forForeman();
 		svc.updateClient( dto );
-	}
-	
-	/**
-	 * El atributo dni no se actualiza aunque el dto lleve nuevo dni.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testDniDoesNotUpdate() throws BusinessException {
-		Cliente c = FixtureRepository.registerNewClient();
-		ClientDto dto = DtoAssembler.toDto( c );
-		String previousDni = c.getDni();
-
-		dto.dni = "m-" + dto.dni; // <-- must be ignored
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.updateClient( dto );
-		
-		Cliente expected = FixtureRepository.findClientByDni( c.getDni() );
-		assertTrue( expected.getDni().equals( previousDni ));
 	}
 
 }

@@ -39,6 +39,26 @@ import uo.ri.util.exception.BusinessException;
 public class BonoTests {
 
 	/**
+	 * Generate new code.
+	 *
+	 * @return the string
+	 */
+	private String generateNewCode() {
+		return "V-" + Random.string(5) + "-" + Random.integer(1000, 9999);
+	}
+	
+	/**
+	 * A voucher cannot be charged with an amount greater than its available.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test(expected=BusinessException.class)
+	public void testCannotBeCharged() throws BusinessException {
+		Bono b = new Bono("123", "For test", 10.0);
+		b.pagar( 11.0 ); // raises exception
+	}
+
+	/**
 	 * Any new payment mean has 0 accumulated.
 	 */
 	@Test
@@ -67,26 +87,6 @@ public class BonoTests {
 		assertTrue( b.getCodigo().equals( code ));
 		assertTrue( b.getAcumulado() == 10.0 );
 		assertTrue( b.getDisponible() == 90.0 );
-	}
-
-	/**
-	 * A voucher cannot be charged with an amount greater than its available.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected=BusinessException.class)
-	public void testCannotBeCharged() throws BusinessException {
-		Bono b = new Bono("123", "For test", 10.0);
-		b.pagar( 11.0 ); // raises exception
-	}
-	
-	/**
-	 * Generate new code.
-	 *
-	 * @return the string
-	 */
-	private String generateNewCode() {
-		return "V-" + Random.string(5) + "-" + Random.integer(1000, 9999);
 	}
 
 }

@@ -57,22 +57,12 @@ public abstract class BaseMemoryRepository<T> {
 	}
 
 	/**
-	 * Next id.
+	 * Find all.
 	 *
-	 * @return the long
+	 * @return the list
 	 */
-	private Long nextId() {
-		return ++counter;
-	}
-
-	/**
-	 * Removes the.
-	 *
-	 * @param t the t
-	 */
-	public void remove(T t) {
-		Long id = getAttr(t, "id");
-		entities.remove( id );
+	public List<T> findAll() {
+		return new ArrayList<>( entities.values() );
 	}
 
 	/**
@@ -86,12 +76,24 @@ public abstract class BaseMemoryRepository<T> {
 	}
 
 	/**
-	 * Find all.
+	 * Gets the attr.
 	 *
-	 * @return the list
+	 * @param owner the owner
+	 * @param fieldName the field name
+	 * @return the attr
 	 */
-	public List<T> findAll() {
-		return new ArrayList<>( entities.values() );
+	private Long getAttr(T owner, String fieldName) {
+		Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
+		return (Long) ReflectionUtil.getFieldValue(owner, field);
+	}
+
+	/**
+	 * Next id.
+	 *
+	 * @return the long
+	 */
+	private Long nextId() {
+		return ++counter;
 	}
 
 	/**
@@ -107,15 +109,13 @@ public abstract class BaseMemoryRepository<T> {
 	}
 
 	/**
-	 * Gets the attr.
+	 * Removes the.
 	 *
-	 * @param owner the owner
-	 * @param fieldName the field name
-	 * @return the attr
+	 * @param t the t
 	 */
-	private Long getAttr(T owner, String fieldName) {
-		Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
-		return (Long) ReflectionUtil.getFieldValue(owner, field);
+	public void remove(T t) {
+		Long id = getAttr(t, "id");
+		entities.remove( id );
 	}
 
 }

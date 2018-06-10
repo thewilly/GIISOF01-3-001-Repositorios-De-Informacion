@@ -72,6 +72,23 @@ public class DeleteClientTests extends BaseServiceTests {
 	}
 
 	/**
+	 * Al tratar de borrar un cliente que no existe salta excepcion.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testDeleteNonExistingClient() throws BusinessException {
+		Long NON_EXISTING_ID = -12345L;
+
+		ForemanService svc = Factory.service.forForeman();
+		try {
+			svc.deleteClient(NON_EXISTING_ID);
+		} catch (BusinessException be) {
+			assertMsg(be, "El cliente no existe");
+		}
+	}
+
+	/**
 	 * Al borrar un cliente se borra la recomendación recibida.
 	 *
 	 * @throws BusinessException the business exception
@@ -110,23 +127,6 @@ public class DeleteClientTests extends BaseServiceTests {
 		assertTrue(expected == null);
 		assertTrue(recommended1.getRecomendacionRecibida() == null);
 		assertTrue(recommended2.getRecomendacionRecibida() == null);
-	}
-
-	/**
-	 * Al tratar de borrar un cliente que no existe salta excepcion.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testDeleteNonExistingClient() throws BusinessException {
-		Long NON_EXISTING_ID = -12345L;
-
-		ForemanService svc = Factory.service.forForeman();
-		try {
-			svc.deleteClient(NON_EXISTING_ID);
-		} catch (BusinessException be) {
-			assertMsg(be, "El cliente no existe");
-		}
 	}
 
 	/**

@@ -41,34 +41,6 @@ public class InMemoryMediosPagoRepository
 		implements MedioPagoRepository {
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByClientId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findByClientId(Long id) {
-		return entities.values().stream()
-				.filter(m -> m.getCliente().getId().equals( id ))
-				.collect( Collectors.toList() );
-	}
-
-	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.MedioPagoRepository#findAggregateVoucherDataByClientId(java.lang.Long)
 	 */
 	@Override
@@ -92,6 +64,16 @@ public class InMemoryMediosPagoRepository
 	}
 
 	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.Long)
+	 */
+	@Override
+	public List<MedioPago> findByClientId(Long id) {
+		return entities.values().stream()
+				.filter(m -> m.getCliente().getId().equals( id ))
+				.collect( Collectors.toList() );
+	}
+
+	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.MedioPagoRepository#findCreditCardByNumber(java.lang.String)
 	 */
 	@Override
@@ -100,6 +82,37 @@ public class InMemoryMediosPagoRepository
 				.filter( m -> m instanceof TarjetaCredito)
 				.map( m -> (TarjetaCredito) m)
 				.filter(tc -> tc.getNumero().equals( pan ))
+				.findFirst()
+				.orElse( null );
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(java.lang.Long)
+	 */
+	@Override
+	public List<MedioPago> findPaymentMeansByClientId(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId(java.lang.Long)
+	 */
+	@Override
+	public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang.String)
+	 */
+	@Override
+	public Bono findVoucherByCode(String code) {
+		return entities.values().stream()
+				.filter( m -> m instanceof Bono)
+				.map( m -> (Bono) m)
+				.filter(b -> b.getCodigo().equals( code ))
 				.findFirst()
 				.orElse( null );
 	}
@@ -114,19 +127,6 @@ public class InMemoryMediosPagoRepository
 				.map( m -> (Bono) m)
 				.filter(b -> b.getCliente().getId().equals( id ))
 				.collect( Collectors.toList() );
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang.String)
-	 */
-	@Override
-	public Bono findVoucherByCode(String code) {
-		return entities.values().stream()
-				.filter( m -> m instanceof Bono)
-				.map( m -> (Bono) m)
-				.filter(b -> b.getCodigo().equals( code ))
-				.findFirst()
-				.orElse( null );
 	}
 
 }

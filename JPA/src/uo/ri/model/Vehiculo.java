@@ -105,78 +105,6 @@ public class Vehiculo {
 	}
 
 	/**
-	 * Gets the marca.
-	 *
-	 * @return the marca
-	 */
-	public String getMarca() {
-		return marca;
-	}
-
-	/**
-	 * Sets the marca.
-	 *
-	 * @param marca the new marca
-	 */
-	public void setMarca(String marca) {
-		this.marca = marca;
-	}
-
-	/**
-	 * Gets the modelo.
-	 *
-	 * @return the modelo
-	 */
-	public String getModelo() {
-		return modelo;
-	}
-
-	/**
-	 * Sets the modelo.
-	 *
-	 * @param modelo the new modelo
-	 */
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
-
-	/**
-	 * Gets the num averias.
-	 *
-	 * @return the num averias
-	 */
-	public int getNumAverias() {
-		return numAverias;
-	}
-
-	/**
-	 * Sets the num averias.
-	 *
-	 * @param numAverias the new num averias
-	 */
-	public void setNumAverias(int numAverias) {
-		this.numAverias = numAverias;
-	}
-
-	/**
-	 * Gets the matricula.
-	 *
-	 * @return the matricula
-	 */
-	public String getMatricula() {
-		return matricula;
-	}
-
-	/**
-	 * Gets the averias.
-	 *
-	 * @return the averias
-	 */
-	public Set<Averia> getAverias() {
-		return new HashSet<>(averias);
-	}
-
-	/**
 	 * Gets the averias.
 	 *
 	 * @return the sets the
@@ -185,24 +113,22 @@ public class Vehiculo {
 		return averias;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Sets the cliente.
+	 *
+	 * @param cliente the cliente
 	 */
-	@Override
-	public String toString() {
-		return "Vehiculo [marca=" + marca + ", matricula=" + matricula + ", modelo=" + modelo + ", numAverias="
-				+ numAverias + "]";
+	void _setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * Sets the tipo.
+	 *
+	 * @param tipo the tipo
 	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((matricula == null) ? 0 : matricula.hashCode());
-		return result;
+	void _setTipo(TipoVehiculo tipo) {
+		this.tipo = tipo;
 	}
 
 	/* (non-Javadoc)
@@ -226,6 +152,15 @@ public class Vehiculo {
 	}
 
 	/**
+	 * Gets the averias.
+	 *
+	 * @return the averias
+	 */
+	public Set<Averia> getAverias() {
+		return new HashSet<>(averias);
+	}
+
+	/**
 	 * Gets the cliente.
 	 *
 	 * @return the cliente
@@ -235,12 +170,48 @@ public class Vehiculo {
 	}
 
 	/**
-	 * Sets the cliente.
+	 * Gets the id.
 	 *
-	 * @param cliente the cliente
+	 * @return the id
 	 */
-	void _setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Gets the marca.
+	 *
+	 * @return the marca
+	 */
+	public String getMarca() {
+		return marca;
+	}
+
+	/**
+	 * Gets the matricula.
+	 *
+	 * @return the matricula
+	 */
+	public String getMatricula() {
+		return matricula;
+	}
+
+	/**
+	 * Gets the modelo.
+	 *
+	 * @return the modelo
+	 */
+	public String getModelo() {
+		return modelo;
+	}
+
+	/**
+	 * Gets the num averias.
+	 *
+	 * @return the num averias
+	 */
+	public int getNumAverias() {
+		return numAverias;
 	}
 
 	/**
@@ -252,13 +223,15 @@ public class Vehiculo {
 		return tipo;
 	}
 
-	/**
-	 * Sets the tipo.
-	 *
-	 * @param tipo the tipo
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
-	void _setTipo(TipoVehiculo tipo) {
-		this.tipo = tipo;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((matricula == null) ? 0 : matricula.hashCode());
+		return result;
 	}
 
 	/**
@@ -269,12 +242,39 @@ public class Vehiculo {
 	}
 
 	/**
-	 * Gets the id.
+	 * Sets the marca.
 	 *
-	 * @return the id
+	 * @param marca the new marca
 	 */
-	public Long getId() {
-		return id;
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+	/**
+	 * Sets the modelo.
+	 *
+	 * @param modelo the new modelo
+	 */
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+
+	/**
+	 * Sets the num averias.
+	 *
+	 * @param numAverias the new num averias
+	 */
+	public void setNumAverias(int numAverias) {
+		this.numAverias = numAverias;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Vehiculo [marca=" + marca + ", matricula=" + matricula + ", modelo=" + modelo + ", numAverias="
+				+ numAverias + "]";
 	}
 
 }

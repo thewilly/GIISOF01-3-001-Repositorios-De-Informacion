@@ -34,7 +34,7 @@ import uo.ri.business.CashService;
 import uo.ri.business.dto.InvoiceDto;
 import uo.ri.business.dto.PaymentMeanDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -63,6 +63,22 @@ public class SettleInvoiceAction implements Action {
 		Map<Long, Double> cargos = getAllThePaymentDivision(paymethods);
 		cs.settleInvoice(facturaDto.id, cargos);
 		Console.println("Factura pagada");
+	}
+
+	/**
+	 * This method takes all the possible payment methods id's of the client and
+	 * adds then into a set.
+	 * 
+	 * @param paymethods
+	 *            the possible payment methods of the client
+	 * @return a set containing all the ids of the possible payment methods
+	 */
+	private Set<Long> getAllPossiblePaymentMethodIds(List<PaymentMeanDto> paymethods) {
+		Set<Long> idsPaymentMethods = new HashSet<>();
+		for (PaymentMeanDto dto : paymethods) {
+			idsPaymentMethods.add(dto.id);
+		}
+		return idsPaymentMethods;
 	}
 
 	/**
@@ -97,22 +113,6 @@ public class SettleInvoiceAction implements Action {
 	}
 
 	/**
-	 * This method takes all the possible payment methods id's of the client and
-	 * adds then into a set.
-	 * 
-	 * @param paymethods
-	 *            the possible payment methods of the client
-	 * @return a set containing all the ids of the possible payment methods
-	 */
-	private Set<Long> getAllPossiblePaymentMethodIds(List<PaymentMeanDto> paymethods) {
-		Set<Long> idsPaymentMethods = new HashSet<>();
-		for (PaymentMeanDto dto : paymethods) {
-			idsPaymentMethods.add(dto.id);
-		}
-		return idsPaymentMethods;
-	}
-
-	/**
 	 * This method uses the cash service, to obtain the possible payment
 	 * methods, and shows them into the console.
 	 *
@@ -123,9 +123,9 @@ public class SettleInvoiceAction implements Action {
 	 */
 	private List<PaymentMeanDto> possiblePaymentMethods(InvoiceDto facturaDto) throws BusinessException {
 		List<PaymentMeanDto> paymethods = cs.findPaymentMeansForInvoice(facturaDto.id);
-		Printer.printInvoice(cs.findInvoiceByNumber(facturaDto.number));
+		AbstractPrinter.printInvoice(cs.findInvoiceByNumber(facturaDto.number));
 		Console.println("\nPosibles metodos de pago:");
-		Printer.printPaymentMeans(paymethods);
+		AbstractPrinter.printPaymentMeans(paymethods);
 		return paymethods;
 	}
 

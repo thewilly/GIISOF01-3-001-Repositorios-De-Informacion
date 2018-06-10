@@ -37,6 +37,21 @@ import uo.ri.business.dto.VoucherDto;
 public class Fixture {
 
 	/**
+	 * New card dto.
+	 *
+	 * @param clientId the client id
+	 * @return the card dto
+	 */
+	public static CardDto newCardDto(Long clientId) {
+		CardDto card = new CardDto();
+		card.clientId = clientId;
+		card.cardType = "VISA";
+		card.cardNumber = Random.string(16);
+		card.cardExpirationDate = DateUtil.tomorrow();
+		return card;
+	}
+
+	/**
 	 * New client dto.
 	 *
 	 * @return the client dto
@@ -52,21 +67,6 @@ public class Fixture {
 		c.addressCity = "city";
 		c.addressZipcode = "zipcode";
 		return c;
-	}
-
-	/**
-	 * New card dto.
-	 *
-	 * @param clientId the client id
-	 * @return the card dto
-	 */
-	public static CardDto newCardDto(Long clientId) {
-		CardDto card = new CardDto();
-		card.clientId = clientId;
-		card.cardType = "VISA";
-		card.cardNumber = Random.string(16);
-		card.cardExpiration = DateUtil.tomorrow();
-		return card;
 	}
 
 	/**

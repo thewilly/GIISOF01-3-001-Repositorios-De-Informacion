@@ -60,15 +60,6 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	private AveriaRepository averias = new InMemoryAveriaRepository();
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
-	 */
-	@Override
-	public MecanicoRepository forMechanic() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.RepositoryFactory#forAveria()
 	 */
 	@Override
@@ -77,19 +68,11 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
 	 */
 	@Override
-	public MedioPagoRepository forMedioPago() {
-		return mediosPago;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
-	 */
-	@Override
-	public FacturaRepository forFactura() {
-		return facturas;
+	public CargoRepository forCargo() {
+		return cargos;
 	}
 
 	/* (non-Javadoc)
@@ -101,12 +84,28 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
+	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
 	 */
 	@Override
-	public RepuestoRepository forRepuesto() {
+	public FacturaRepository forFactura() {
+		return facturas;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
+	 */
+	@Override
+	public MecanicoRepository forMechanic() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+	 */
+	@Override
+	public MedioPagoRepository forMedioPago() {
+		return mediosPago;
 	}
 
 	/* (non-Javadoc)
@@ -118,11 +117,12 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
+	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
 	 */
 	@Override
-	public CargoRepository forCargo() {
-		return cargos;
+	public RepuestoRepository forRepuesto() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/* (non-Javadoc)

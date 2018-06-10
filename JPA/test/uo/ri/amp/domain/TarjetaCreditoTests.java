@@ -54,6 +54,44 @@ public class TarjetaCreditoTests {
 	}
 	
 	/**
+	 * A credit card with a past date cannot be used to pay.
+	 */
+	@Test
+	public void testNotValidAfterDate() {
+		TarjetaCredito t = new TarjetaCredito("123", "VISA", DateUtil.yesterday());
+		assertFalse( t.isValidNow() );
+	}
+
+	/**
+	 * After paying with a card its accumulated increases.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testPagoTarjeta() throws BusinessException {
+		TarjetaCredito t = new TarjetaCredito("123");
+		t.pagar( 10 );
+		
+		assertTrue( t.getAcumulado() == 10.0 );
+	}
+	
+
+	/**
+	 * If validity date is changed to past and the card is used to pay an
+	 * exception is raised.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test(expected=BusinessException.class)
+	public void testSetAndTryToPayAfterDate() throws BusinessException {
+		TarjetaCredito t = new TarjetaCredito("123", "VISA", DateUtil.tomorrow());
+		t.pagar( 10 );
+		
+		t.setValidez( DateUtil.yesterday() );
+		t.pagar( 10 );
+	}
+	
+	/**
 	 * A credit card created with the basic constructor has one day validity and
 	 * is of UNKNOWN type.
 	 */
@@ -74,29 +112,6 @@ public class TarjetaCreditoTests {
 	}
 
 	/**
-	 * A credit card with a past date cannot be used to pay.
-	 */
-	@Test
-	public void testNotValidAfterDate() {
-		TarjetaCredito t = new TarjetaCredito("123", "VISA", DateUtil.yesterday());
-		assertFalse( t.isValidNow() );
-	}
-	
-
-	/**
-	 * After paying with a card its accumulated increases.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagoTarjeta() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123");
-		t.pagar( 10 );
-		
-		assertTrue( t.getAcumulado() == 10.0 );
-	}
-	
-	/**
 	 * If a card is used to pay after its valid date an exception is raised.
 	 *
 	 * @throws BusinessException the business exception
@@ -104,21 +119,6 @@ public class TarjetaCreditoTests {
 	@Test(expected=BusinessException.class)
 	public void testTryToPayAfterDate() throws BusinessException {
 		TarjetaCredito t = new TarjetaCredito("123", "VISA", DateUtil.yesterday());
-		t.pagar( 10 );
-	}
-
-	/**
-	 * If validity date is changed to past and the card is used to pay an
-	 * exception is raised.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected=BusinessException.class)
-	public void testSetAndTryToPayAfterDate() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123", "VISA", DateUtil.tomorrow());
-		t.pagar( 10 );
-		
-		t.setValidez( DateUtil.yesterday() );
 		t.pagar( 10 );
 	}
 

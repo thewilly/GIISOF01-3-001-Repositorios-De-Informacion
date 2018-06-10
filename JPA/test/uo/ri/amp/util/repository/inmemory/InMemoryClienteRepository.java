@@ -50,6 +50,15 @@ public class InMemoryClienteRepository
 	}
 
 	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
+	 */
+	@Override
+	public List<Cliente> findRecomendedBy(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
 	 */
 	@Override
@@ -75,15 +84,6 @@ public class InMemoryClienteRepository
 				.map(a -> a.getVehiculo().getCliente())
 				.distinct()
 				.collect( Collectors.toList() );
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
-	 */
-	@Override
-	public List<Cliente> findRecomendedBy(Long id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

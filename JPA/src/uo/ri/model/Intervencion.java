@@ -94,12 +94,12 @@ public class Intervencion {
 	}
 
 	/**
-	 * Gets the averia.
+	 * Gets the sustituciones.
 	 *
-	 * @return the averia
+	 * @return the sets the
 	 */
-	public Averia getAveria() {
-		return averia;
+	Set<Sustitucion> _getSustituciones() {
+		return sustituciones;
 	}
 
 	/**
@@ -112,59 +112,12 @@ public class Intervencion {
 	}
 
 	/**
-	 * Gets the mecanico.
-	 *
-	 * @return the mecanico
-	 */
-	public Mecanico getMecanico() {
-		return mecanico;
-	}
-
-	/**
 	 * Sets the mecanico.
 	 *
 	 * @param mecanico the mecanico
 	 */
 	void _setMecanico(Mecanico mecanico) {
 		this.mecanico = mecanico;
-	}
-
-	/**
-	 * Gets the minutos.
-	 *
-	 * @return the minutos
-	 */
-	public int getMinutos() {
-		return minutos;
-	}
-
-	/**
-	 * Sets the minutos.
-	 *
-	 * @param minutos the new minutos
-	 */
-	public void setMinutos(int minutos) {
-		this.minutos = minutos;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Intervencion [averia=" + averia + ", mecanico=" + mecanico + ", minutos=" + minutos + "]";
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((averia == null) ? 0 : averia.hashCode());
-		result = prime * result + ((mecanico == null) ? 0 : mecanico.hashCode());
-		return result;
 	}
 
 	/* (non-Javadoc)
@@ -193,21 +146,21 @@ public class Intervencion {
 	}
 
 	/**
-	 * Gets the sustituciones.
+	 * Gets the averia.
 	 *
-	 * @return the sustituciones
+	 * @return the averia
 	 */
-	public Set<Sustitucion> getSustituciones() {
-		return new HashSet<>(sustituciones);
+	public Averia getAveria() {
+		return averia;
 	}
 
 	/**
-	 * Gets the sustituciones.
+	 * Gets the id.
 	 *
-	 * @return the sets the
+	 * @return the id
 	 */
-	Set<Sustitucion> _getSustituciones() {
-		return sustituciones;
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -227,12 +180,59 @@ public class Intervencion {
 	}
 
 	/**
-	 * Gets the id.
+	 * Gets the mecanico.
 	 *
-	 * @return the id
+	 * @return the mecanico
 	 */
-	public Long getId() {
-		return id;
+	public Mecanico getMecanico() {
+		return mecanico;
+	}
+
+	/**
+	 * Gets the minutos.
+	 *
+	 * @return the minutos
+	 */
+	public int getMinutos() {
+		return minutos;
+	}
+
+	/**
+	 * Gets the sustituciones.
+	 *
+	 * @return the sustituciones
+	 */
+	public Set<Sustitucion> getSustituciones() {
+		return new HashSet<>(sustituciones);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((averia == null) ? 0 : averia.hashCode());
+		result = prime * result + ((mecanico == null) ? 0 : mecanico.hashCode());
+		return result;
+	}
+
+	/**
+	 * Sets the minutos.
+	 *
+	 * @param minutos the new minutos
+	 */
+	public void setMinutos(int minutos) {
+		this.minutos = minutos;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Intervencion [averia=" + averia + ", mecanico=" + mecanico + ", minutos=" + minutos + "]";
 	}
 
 }

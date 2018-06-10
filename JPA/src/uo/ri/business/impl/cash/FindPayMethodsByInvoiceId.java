@@ -60,6 +60,16 @@ public class FindPayMethodsByInvoiceId implements Command<List<PaymentMeanDto>> 
 		this.invoiceId = invoiceId;
 	}
 
+	/**
+	 * This method checks that the invoice exists in the system.
+	 *
+	 * @param factura the invoice
+	 * @throws BusinessException the business exception
+	 */
+	private void assertInvoiceExists(Factura factura) throws BusinessException {
+		Check.isNotNull(factura, "La factura no existe");
+	}
+
 	/* (non-Javadoc)
 	 * @see uo.ri.business.impl.Command#execute()
 	 */
@@ -87,16 +97,6 @@ public class FindPayMethodsByInvoiceId implements Command<List<PaymentMeanDto>> 
 			return averia.getVehiculo().getCliente();
 		}
 		return null;
-	}
-
-	/**
-	 * This method checks that the invoice exists in the system.
-	 *
-	 * @param factura the invoice
-	 * @throws BusinessException the business exception
-	 */
-	private void assertInvoiceExists(Factura factura) throws BusinessException {
-		Check.isNotNull(factura, "La factura no existe");
 	}
 
 }

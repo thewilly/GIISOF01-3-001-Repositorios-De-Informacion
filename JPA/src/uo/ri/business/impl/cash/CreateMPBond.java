@@ -22,6 +22,9 @@
  */
 package uo.ri.business.impl.cash;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import alb.util.random.Random;
 import uo.ri.business.dto.VoucherDto;
 import uo.ri.business.impl.Command;
@@ -47,10 +50,10 @@ public class CreateMPBond implements Command<Void> {
 
 	/** The voucher. */
 	private VoucherDto voucher;
-	
+
 	/** The mppayment methods repository. */
-	private MedioPagoRepository mppaymentMethodsRepository = Factory.repository.forMedioPago();
-	
+	private MedioPagoRepository paymentMethodsRepository = Factory.repository.forMedioPago();
+
 	/** The clients repository. */
 	private ClienteRepository clientsRepository = Factory.repository.forCliente();
 
@@ -59,21 +62,8 @@ public class CreateMPBond implements Command<Void> {
 	 *
 	 * @param voucher the voucher
 	 */
-	public CreateMPBond(VoucherDto voucher) {
+	public CreateMPBond( VoucherDto voucher ) {
 		this.voucher = voucher;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		Cliente cliente = clientsRepository.findById(voucher.clientId);
-		voucher.code = createCodeOfBono();
-		Bono b = DtoAssembler.toEntity(voucher);
-		assertExistenceClient(voucher.clientId);
-		Association.Pagar.link(cliente, b);
-		mppaymentMethodsRepository.add(b);
-		return null;
 	}
 
 	/**
@@ -83,9 +73,23 @@ public class CreateMPBond implements Command<Void> {
 	 * @param clientId the id of the client
 	 * @throws BusinessException the business exception
 	 */
-	private void assertExistenceClient(Long clientId) throws BusinessException {
-		Cliente c = clientsRepository.findById(clientId);
-		Check.isNotNull(c, "Ese cliente no existe");
+	private void assertExistenceClient( Long clientId ) throws BusinessException {
+		Cliente c = clientsRepository.findById( clientId );
+		Check.isNotNull( c, "Ese cliente no existe" );
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public Void execute() throws BusinessException {
+		Cliente cliente = clientsRepository.findById( voucher.clientId );
+		voucher.code = generateBondCode();
+		Bono b = DtoAssembler.toEntity( voucher );
+		assertExistenceClient( voucher.clientId );
+		Association.Pagar.link( cliente, b );
+		paymentMethodsRepository.add( b );
+		return null;
 	}
 
 	/**
@@ -94,13 +98,26 @@ public class CreateMPBond implements Command<Void> {
 	 *
 	 * @return the new code to be added
 	 */
-	private String createCodeOfBono() {
+	private String generateBondCode() {
 		String code = "";
-		Bono b = null;
+		Bono bond = null;
 		do {
-			code = "V-" + Random.string(5) + "-" + Random.integer(1000, 9999);
-			b = mppaymentMethodsRepository.findVoucherByCode(code);
-		} while (b != null);
+			try {
+				byte[] hashArray = MessageDigest.getInstance( "MD5" )
+						.digest( Random.string( 30 ).getBytes() );
+				StringBuffer buffer = new StringBuffer();
+				for (int i = 0; i < hashArray.length; i++) {
+					buffer.append( Integer.toString( ( hashArray[i] & 0xff ) + 0x100, 16 )
+							.substring( 1 ) );
+				}
+				code = "B-" + buffer.toString();
+
+			} catch (NoSuchAlgorithmException e) {
+				// Fall back method in case of error with the algorithm
+				code = "B-" + Random.string( 5 ) + "-" + Random.integer( 0, 9999 );
+			}
+			bond = paymentMethodsRepository.findVoucherByCode( code );
+		} while (bond != null);
 		return code;
 	}
 

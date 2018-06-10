@@ -79,52 +79,6 @@ public class Recomendacion {
 	}
 
 	/**
-	 * Gets the recomendador.
-	 *
-	 * @return the recomendador
-	 */
-	public Cliente getRecomendador() {
-		return recomendador;
-	}
-
-	/**
-	 * Gets the recomendado.
-	 *
-	 * @return the recomendado
-	 */
-	public Cliente getRecomendado() {
-		return recomendado;
-	}
-
-	/**
-	 * This method marks the usada attribute as true, if and only if it is not
-	 * already true.
-	 */
-	public void markAsUsadaBono() {
-		if (!isUsada()) {
-			this.usada = true;
-		}
-	}
-
-	/**
-	 * Checks if is usada.
-	 *
-	 * @return true, if is usada
-	 */
-	public boolean isUsada() {
-		return usada;
-	}
-
-	/**
-	 * Sets the recomendador.
-	 *
-	 * @param recomendador the recomendador
-	 */
-	void _setRecomendador(Cliente recomendador) {
-		this.recomendador = recomendador;
-	}
-
-	/**
 	 * Sets the recomendado.
 	 *
 	 * @param recomendado the recomendado
@@ -134,22 +88,12 @@ public class Recomendacion {
 	}
 
 	/**
-	 * This method unlinks the recommendation.
+	 * Sets the recomendador.
+	 *
+	 * @param recomendador the recomendador
 	 */
-	public void unlink() {
-		Association.Recomendar.unlink(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((recomendado == null) ? 0 : recomendado.hashCode());
-		result = prime * result + ((recomendador == null) ? 0 : recomendador.hashCode());
-		return result;
+	void _setRecomendador(Cliente recomendador) {
+		this.recomendador = recomendador;
 	}
 
 	/* (non-Javadoc)
@@ -175,6 +119,62 @@ public class Recomendacion {
 		} else if (!recomendador.equals(other.recomendador))
 			return false;
 		return true;
+	}
+
+	/**
+	 * Gets the recomendado.
+	 *
+	 * @return the recomendado
+	 */
+	public Cliente getRecomendado() {
+		return recomendado;
+	}
+
+	/**
+	 * Gets the recomendador.
+	 *
+	 * @return the recomendador
+	 */
+	public Cliente getRecomendador() {
+		return recomendador;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((recomendado == null) ? 0 : recomendado.hashCode());
+		result = prime * result + ((recomendador == null) ? 0 : recomendador.hashCode());
+		return result;
+	}
+
+	/**
+	 * Checks if is usada.
+	 *
+	 * @return true, if is usada
+	 */
+	public boolean isUsada() {
+		return usada;
+	}
+
+	/**
+	 * This method marks the usada attribute as true, if and only if it is not
+	 * already true.
+	 */
+	public void markAsUsadaBono() {
+		if (!isUsada()) {
+			this.usada = true;
+		}
+	}
+
+	/**
+	 * This method unlinks the recommendation.
+	 */
+	public void unlink() {
+		Association.Recomendar.unlink(this);
 	}
 
 }

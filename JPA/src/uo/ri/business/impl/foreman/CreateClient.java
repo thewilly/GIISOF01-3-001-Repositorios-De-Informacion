@@ -69,21 +69,6 @@ public class CreateClient implements Command<Void> {
 		this.recommenderId = recommenderId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public Void execute() throws BusinessException {
-		client = DtoAssembler.toEntity(clientDto);
-		assertNotRepeatedClient();
-		addRecomendationAndClient();
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		Metalico metalico = new Metalico(client);
-		mp.add(metalico);
-		Association.Pagar.link(client, metalico);
-		return null;
-	}
-
 	/**
 	 * This method adds a new recommendation from the id, to the client. And
 	 * checks if that id exists, if it does, the client will be added.
@@ -112,6 +97,21 @@ public class CreateClient implements Command<Void> {
 	private void assertNotRepeatedClient() throws BusinessException {
 		Cliente aux = clientsRepository.findByDni(client.getDni());
 		Check.isNull(aux, "Ya existe un cliente con ese dni");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	@Override
+	public Void execute() throws BusinessException {
+		client = DtoAssembler.toEntity(clientDto);
+		assertNotRepeatedClient();
+		addRecomendationAndClient();
+		MedioPagoRepository mp = Factory.repository.forMedioPago();
+		Metalico metalico = new Metalico(client);
+		mp.add(metalico);
+		Association.Pagar.link(client, metalico);
+		return null;
 	}
 
 }

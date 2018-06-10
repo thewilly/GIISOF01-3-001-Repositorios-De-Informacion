@@ -65,12 +65,12 @@ public abstract class MedioPago {
 	private Set<Cargo> cargos = new HashSet<>();
 
 	/**
-	 * Gets the cliente.
+	 * Gets the cargos.
 	 *
-	 * @return the cliente
+	 * @return the sets the
 	 */
-	public Cliente getCliente() {
-		return cliente;
+	Set<Cargo> _getCargos() {
+		return cargos;
 	}
 
 	/**
@@ -83,60 +83,12 @@ public abstract class MedioPago {
 	}
 
 	/**
-	 * Gets the acumulado.
-	 *
-	 * @return the acumulado
-	 */
-	public double getAcumulado() {
-		return acumulado;
-	}
-
-	/**
-	 * Gets the cargos.
-	 *
-	 * @return the cargos
-	 */
-	public Set<Cargo> getCargos() {
-		return new HashSet<>(cargos);
-	}
-
-	/**
-	 * Gets the cargos.
-	 *
-	 * @return the sets the
-	 */
-	Set<Cargo> _getCargos() {
-		return cargos;
-	}
-
-	/**
-	 * Incrementar acumulado.
-	 *
-	 * @param importe the importe
-	 * @throws BusinessException the business exception
-	 */
-	void incrementarAcumulado(Double importe) throws BusinessException {
-		pagar(importe);
-	}
-
-	/**
 	 * Decrementar acumulado.
 	 *
 	 * @param importe the importe
 	 */
 	void decrementarAcumulado(Double importe) {
 		acumulado -= importe;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-		return result;
 	}
 
 	/* (non-Javadoc)
@@ -160,12 +112,60 @@ public abstract class MedioPago {
 	}
 
 	/**
+	 * Gets the acumulado.
+	 *
+	 * @return the acumulado
+	 */
+	public double getAcumulado() {
+		return acumulado;
+	}
+
+	/**
+	 * Gets the cargos.
+	 *
+	 * @return the cargos
+	 */
+	public Set<Cargo> getCargos() {
+		return new HashSet<>(cargos);
+	}
+
+	/**
+	 * Gets the cliente.
+	 *
+	 * @return the cliente
+	 */
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	/**
 	 * Gets the id.
 	 *
 	 * @return the id
 	 */
 	public Long getId() {
 		return id;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		return result;
+	}
+
+	/**
+	 * Incrementar acumulado.
+	 *
+	 * @param importe the importe
+	 * @throws BusinessException the business exception
+	 */
+	void incrementarAcumulado(Double importe) throws BusinessException {
+		pagar(importe);
 	}
 
 	/**

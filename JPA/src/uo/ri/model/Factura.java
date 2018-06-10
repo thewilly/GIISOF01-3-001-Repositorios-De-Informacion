@@ -98,23 +98,25 @@ public class Factura {
 	/**
 	 * Instantiates a new factura.
 	 *
-	 * @param numero the numero
-	 */
-	public Factura(Long numero) {
-		super();
-		this.numero = numero;
-		this.fecha = new Date();
-	}
-
-	/**
-	 * Instantiates a new factura.
-	 *
 	 * @param num the num
 	 * @param today the today
 	 */
 	public Factura(long num, Date today) {
 		this(num);
 		this.fecha = today;
+	}
+
+	/**
+	 * Instantiates a new factura.
+	 *
+	 * @param num the num
+	 * @param fecha the fecha
+	 * @param averias the averias
+	 * @throws BusinessException the business exception
+	 */
+	public Factura(long num, Date fecha, List<Averia> averias) throws BusinessException {
+		this(num, fecha);
+		addAverias(averias);
 	}
 
 	/**
@@ -132,81 +134,12 @@ public class Factura {
 	/**
 	 * Instantiates a new factura.
 	 *
-	 * @param num the num
-	 * @param fecha the fecha
-	 * @param averias the averias
-	 * @throws BusinessException the business exception
+	 * @param numero the numero
 	 */
-	public Factura(long num, Date fecha, List<Averia> averias) throws BusinessException {
-		this(num, fecha);
-		addAverias(averias);
-	}
-
-	/**
-	 * Gets the iva.
-	 *
-	 * @return the iva
-	 */
-	public double getIva() {
-		if (iva == null)
-			obtenerIVA();
-		return iva;
-	}
-
-	/**
-	 * Obtiene el IVA dependiendo de la fecha de la factura. Si la fecha es
-	 * anterior al 1/7/2012 se aplica 18%, sino 21%.
-	 */
-	void obtenerIVA() {
-		iva = getFecha().before(DateUtil.fromString("1/7/2012")) ? 18.0 : 21.0;
-	}
-
-	/**
-	 * Gets the numero.
-	 *
-	 * @return the numero
-	 */
-	public Long getNumero() {
-		return numero;
-	}
-
-	/**
-	 * Gets the fecha.
-	 *
-	 * @return the fecha
-	 */
-	public Date getFecha() {
-		if (fecha == null)
-			return fecha = new Date();
-		return new Date(fecha.getTime());
-	}
-
-	/**
-	 * Gets the importe.
-	 *
-	 * @return the importe
-	 */
-	public double getImporte() {
-		calcularImporte();
-		return importe;
-	}
-
-	/**
-	 * Gets the status.
-	 *
-	 * @return the status
-	 */
-	public FacturaStatus getStatus() {
-		return status;
-	}
-
-	/**
-	 * Gets the averias.
-	 *
-	 * @return the averias
-	 */
-	public Set<Averia> getAverias() {
-		return new HashSet<>(averias);
+	public Factura(Long numero) {
+		super();
+		this.numero = numero;
+		this.fecha = new Date();
 	}
 
 	/**
@@ -221,30 +154,70 @@ public class Factura {
 	/**
 	 * Gets the cargos.
 	 *
-	 * @return the cargos
-	 */
-	public Set<Cargo> getCargos() {
-		return new HashSet<>(cargos);
-	}
-
-	/**
-	 * Gets the cargos.
-	 *
 	 * @return the sets the
 	 */
 	Set<Cargo> _getCargos() {
 		return cargos;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	/**
+	 * Añade la averia a la factura.
+	 *
+	 * @param averia the averia
+	 * @throws BusinessException the business exception
 	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		return result;
+	public void addAveria(Averia averia) throws BusinessException {
+		if (getStatus() != FacturaStatus.SIN_ABONAR) {
+			throw new BusinessException("Factura ya está abonada.");
+		}
+		if (averia.getStatus() != AveriaStatus.TERMINADA) {
+			throw new BusinessException("Avería no está terminada.");
+		}
+		Association.Facturar.link(averia, this);
+		averia.markAsInvoiced();
+		calcularImporte();
+	}
+
+	/**
+	 * Añade la lista de averias a la factura.
+	 *
+	 * @param av the av
+	 * @throws BusinessException the business exception
+	 */
+	private void addAverias(List<Averia> av) throws BusinessException {
+		for (Averia a : av) {
+			addAveria(a);
+		}
+	}
+
+	/**
+	 * Calcula el importe de la avería y su IVA, teniendo en cuenta la fecha de
+	 * factura.
+	 */
+	void calcularImporte() {
+		Double total = 0.0;
+		for (Averia a : getAverias()) {
+			total += a.getImporte();
+		}
+		importe = total + total * getIva() / 100;
+		importe = Round.twoCents(importe);
+	}
+
+	/**
+	 * This method checks if all the charges of the invoice sum up the import or
+	 * a number less than 0.01€
+	 * 
+	 * @return true if the charges are in the interval +-0.01, false otherwise
+	 */
+	private boolean chargesOnInterval() {
+		Double total = 0.0;
+		for (Cargo cargo : cargos) {
+			total += cargo.getImporte();
+		}
+		if (total <= getImporte() + 0.01 && total >= getImporte() - 0.01) {
+			return true;
+		}
+		return false;
 	}
 
 	/* (non-Javadoc)
@@ -267,56 +240,146 @@ public class Factura {
 		return true;
 	}
 
+	/**
+	 * Gets the averias.
+	 *
+	 * @return the averias
+	 */
+	public Set<Averia> getAverias() {
+		return new HashSet<>(averias);
+	}
+
+	/**
+	 * Gets the cargos.
+	 *
+	 * @return the cargos
+	 */
+	public Set<Cargo> getCargos() {
+		return new HashSet<>(cargos);
+	}
+
+	/**
+	 * Gets the fecha.
+	 *
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		if (fecha == null)
+			return fecha = new Date();
+		return new Date(fecha.getTime());
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Gets the importe.
+	 *
+	 * @return the importe
+	 */
+	public double getImporte() {
+		calcularImporte();
+		return importe;
+	}
+
+	/**
+	 * Gets the iva.
+	 *
+	 * @return the iva
+	 */
+	public double getIva() {
+		if (iva == null)
+			obtenerIVA();
+		return iva;
+	}
+
+	/**
+	 * Gets the numero.
+	 *
+	 * @return the numero
+	 */
+	public Long getNumero() {
+		return numero;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public FacturaStatus getStatus() {
+		return status;
+	}
+
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	public String toString() {
-		return "Factura [numero=" + numero + ", fecha=" + fecha + ", importe=" + importe + ", iva=" + iva + ", status="
-				+ status + ", averias=" + averias + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		return result;
 	}
 
 	/**
-	 * Añade la lista de averias a la factura.
+	 * Checks if is bono 500 used.
 	 *
-	 * @param av the av
+	 * @return true, if is bono 500 used
+	 */
+	public boolean isBono500Used() {
+		return usadaBono500;
+	}
+
+	/**
+	 * This method checks if the invoice is settled or not.
+	 *
+	 * @return true if it is settled, false otherwise
+	 */
+	public boolean isSettled() {
+		return getStatus() == FacturaStatus.ABONADA;
+	}
+
+	/**
+	 * This method checks that the invoice can be used to generate a voucher,
+	 * and if it can, it is marked as used, otherwise, an exception will be
+	 * thrown.
+	 *
 	 * @throws BusinessException the business exception
 	 */
-	private void addAverias(List<Averia> av) throws BusinessException {
-		for (Averia a : av) {
-			addAveria(a);
+	public void markAsBono500Used() throws BusinessException {
+		if (!puedeGenerarBono500()) {
+			throw new BusinessException("Esta factura no puede ser usada para generar un bono");
 		}
+		this.usadaBono500 = true;
 	}
 
 	/**
-	 * Añade la averia a la factura.
-	 *
-	 * @param averia the averia
-	 * @throws BusinessException the business exception
+	 * Obtiene el IVA dependiendo de la fecha de la factura. Si la fecha es
+	 * anterior al 1/7/2012 se aplica 18%, sino 21%.
 	 */
-	public void addAveria(Averia averia) throws BusinessException {
-		if (getStatus() != FacturaStatus.SIN_ABONAR) {
-			throw new BusinessException("Factura ya está abonada.");
-		}
-		if (averia.getStatus() != AveriaStatus.TERMINADA) {
-			throw new BusinessException("Avería no está terminada.");
-		}
-		Association.Facturar.link(averia, this);
-		averia.markAsInvoiced();
-		calcularImporte();
+	void obtenerIVA() {
+		iva = getFecha().before(DateUtil.fromString("1/7/2012")) ? 18.0 : 21.0;
 	}
 
 	/**
-	 * Calcula el importe de la avería y su IVA, teniendo en cuenta la fecha de
-	 * factura.
+	 * This method checks if the invoice can generate a special voucher. The
+	 * condition is that it has been payed, and the money payed was 500 euro or
+	 * more, and the invoice could not have been used for another voucher.
+	 * 
+	 * @return true, if the conditions has been fulfilled, false otherwise
 	 */
-	void calcularImporte() {
-		Double total = 0.0;
-		for (Averia a : getAverias()) {
-			total += a.getImporte();
+	public boolean puedeGenerarBono500() {
+		if (getStatus() == FacturaStatus.ABONADA && getImporte() >= 500 && !isBono500Used()) {
+			return true;
 		}
-		importe = total + total * getIva() / 100;
-		importe = Round.twoCents(importe);
+		return false;
 	}
 
 	/**
@@ -333,15 +396,6 @@ public class Factura {
 		Association.Facturar.unlink(averia, this);
 		averia.markBackToFinished();
 		calcularImporte();
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
 	}
 
 	/**
@@ -368,66 +422,12 @@ public class Factura {
 		this.status = FacturaStatus.ABONADA;
 	}
 
-	/**
-	 * This method checks if all the charges of the invoice sum up the import or
-	 * a number less than 0.01€
-	 * 
-	 * @return true if the charges are in the interval +-0.01, false otherwise
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
 	 */
-	private boolean chargesOnInterval() {
-		Double total = 0.0;
-		for (Cargo cargo : cargos) {
-			total += cargo.getImporte();
-		}
-		if (total <= getImporte() + 0.01 && total >= getImporte() - 0.01) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * This method checks if the invoice is settled or not.
-	 *
-	 * @return true if it is settled, false otherwise
-	 */
-	public boolean isSettled() {
-		return getStatus() == FacturaStatus.ABONADA;
-	}
-
-	/**
-	 * This method checks if the invoice can generate a special voucher. The
-	 * condition is that it has been payed, and the money payed was 500 euro or
-	 * more, and the invoice could not have been used for another voucher.
-	 * 
-	 * @return true, if the conditions has been fulfilled, false otherwise
-	 */
-	public boolean puedeGenerarBono500() {
-		if (getStatus() == FacturaStatus.ABONADA && getImporte() >= 500 && !isBono500Used()) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * This method checks that the invoice can be used to generate a voucher,
-	 * and if it can, it is marked as used, otherwise, an exception will be
-	 * thrown.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void markAsBono500Used() throws BusinessException {
-		if (!puedeGenerarBono500()) {
-			throw new BusinessException("Esta factura no puede ser usada para generar un bono");
-		}
-		this.usadaBono500 = true;
-	}
-
-	/**
-	 * Checks if is bono 500 used.
-	 *
-	 * @return true, if is bono 500 used
-	 */
-	public boolean isBono500Used() {
-		return usadaBono500;
+	@Override
+	public String toString() {
+		return "Factura [numero=" + numero + ", fecha=" + fecha + ", importe=" + importe + ", iva=" + iva + ", status="
+				+ status + ", averias=" + averias + "]";
 	}
 }

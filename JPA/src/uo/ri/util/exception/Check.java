@@ -31,48 +31,6 @@ package uo.ri.util.exception;
 public class Check {
 
 	/**
-	 * Checks if is null.
-	 *
-	 * @param o the o
-	 * @param errorMsg the error msg
-	 * @throws BusinessException the business exception
-	 */
-	public static void isNull(Object o, String errorMsg) throws BusinessException {
-		isTrue( o == null, errorMsg); 
-	}
-
-	/**
-	 * Checks if is null.
-	 *
-	 * @param o the o
-	 * @throws BusinessException the business exception
-	 */
-	public static void isNull(Object o) throws BusinessException {
-		isTrue( o == null, o.getClass().getName() + " cannot be null here"); 
-	}
-
-	/**
-	 * Checks if is not null.
-	 *
-	 * @param o the o
-	 * @param errorMsg the error msg
-	 * @throws BusinessException the business exception
-	 */
-	public static void isNotNull(Object o, String errorMsg) throws BusinessException {
-		isTrue( o != null, errorMsg); 
-	}
-
-	/**
-	 * Checks if is not null.
-	 *
-	 * @param o the o
-	 * @throws BusinessException the business exception
-	 */
-	public static void isNotNull(Object o) throws BusinessException {
-		isTrue( o != null, o.getClass().getName() + " cannot be null here"); 
-	}
-
-	/**
 	 * Checks if is false.
 	 *
 	 * @param condition the condition
@@ -91,6 +49,48 @@ public class Check {
 	 */
 	public static void isFalse(boolean condition, String errorMsg) throws BusinessException {
 		isTrue( ! condition, errorMsg);
+	}
+
+	/**
+	 * Checks if is not null.
+	 *
+	 * @param o the o
+	 * @throws BusinessException the business exception
+	 */
+	public static void isNotNull(Object o) throws BusinessException {
+		isTrue( o != null, o.getClass().getName() + " cannot be null here"); 
+	}
+
+	/**
+	 * Checks if is not null.
+	 *
+	 * @param o the o
+	 * @param errorMsg the error msg
+	 * @throws BusinessException the business exception
+	 */
+	public static void isNotNull(Object o, String errorMsg) throws BusinessException {
+		isTrue( o != null, errorMsg); 
+	}
+
+	/**
+	 * Checks if is null.
+	 *
+	 * @param o the o
+	 * @throws BusinessException the business exception
+	 */
+	public static void isNull(Object o) throws BusinessException {
+		isTrue( o == null, o.getClass().getName() + " cannot be null here"); 
+	}
+
+	/**
+	 * Checks if is null.
+	 *
+	 * @param o the o
+	 * @param errorMsg the error msg
+	 * @throws BusinessException the business exception
+	 */
+	public static void isNull(Object o, String errorMsg) throws BusinessException {
+		isTrue( o == null, errorMsg); 
 	}
 
 	/**

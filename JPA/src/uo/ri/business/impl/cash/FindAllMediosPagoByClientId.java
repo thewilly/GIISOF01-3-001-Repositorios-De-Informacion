@@ -57,16 +57,6 @@ public class FindAllMediosPagoByClientId implements Command<List<PaymentMeanDto>
 		this.clientId = clientId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public List<PaymentMeanDto> execute() throws BusinessException {
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		assertExistenceClient(clientId);
-		List<MedioPago> list = mp.findPaymentMeansByClientId(clientId);
-		return DtoAssembler.toPaymentMeanDtoList(list);
-	}
-
 	/**
 	 * This method checks that the client id corresponds to a real client in the
 	 * system.
@@ -78,5 +68,15 @@ public class FindAllMediosPagoByClientId implements Command<List<PaymentMeanDto>
 		ClienteRepository cr = Factory.repository.forCliente();
 		Cliente c = cr.findById(clientId);
 		Check.isNotNull(c, "Ese cliente no existe");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public List<PaymentMeanDto> execute() throws BusinessException {
+		MedioPagoRepository mp = Factory.repository.forMedioPago();
+		assertExistenceClient(clientId);
+		List<MedioPago> list = mp.findPaymentMeansByClientId(clientId);
+		return DtoAssembler.toPaymentMeanDtoList(list);
 	}
 }

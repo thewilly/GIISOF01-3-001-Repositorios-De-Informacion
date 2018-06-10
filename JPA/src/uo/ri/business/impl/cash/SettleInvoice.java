@@ -68,52 +68,16 @@ public class SettleInvoice implements Command<InvoiceDto> {
 		this.cargos = cargos;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public InvoiceDto execute() throws BusinessException {
-		FacturaRepository fp = Factory.repository.forFactura();
-		Factura factura = fp.findById(id);
-		assertCheckCorrectInvoice(factura);
-		chargesCreation(factura);
-		Set<Cargo> cargos = factura.getCargos();
-		if (correctAmount(cargos, factura)) {
-			return DtoCreation(factura);
-		} else {
-			removeCharges(cargos);
-			throw new BusinessException("Los cargos no igualan el importe");
-		}
-	}
-
 	/**
-	 * This method unlinks all the charges that had been created due to the
-	 * amount was not correct.
+	 * This method checks if the invoice is correct to be used, by checking it
+	 * exists and that it's not already invoiced.
 	 *
-	 * @param cargos the charges created
+	 * @param factura the invoice to be checked
+	 * @throws BusinessException the business exception
 	 */
-	private void removeCharges(Set<Cargo> cargos) {
-		for (Cargo cargo : cargos) {
-			Association.Cargar.unlink(cargo);
-		}
-	}
-
-	/**
-	 * This method gives the dto that will be returned, all the data from the
-	 * invoice.
-	 *
-	 * @param fac the invoice
-	 * @return thw invoice dto with all the information
-	 */
-	private InvoiceDto DtoCreation(Factura fac) {
-		InvoiceDto dto = new InvoiceDto();
-		dto.id = fac.getId();
-		dto.date = fac.getFecha();
-		dto.number = fac.getNumero();
-		dto.status = fac.getStatus().toString();
-		dto.taxes = fac.getIva();
-		dto.total = fac.getImporte();
-		return dto;
+	private void assertCheckCorrectInvoice(Factura factura) throws BusinessException {
+		Check.isNotNull(factura, "La factura no existe");
+		Check.isFalse(factura.getStatus() == FacturaStatus.ABONADA, "Ya está abonada");
 	}
 
 	/**
@@ -162,14 +126,50 @@ public class SettleInvoice implements Command<InvoiceDto> {
 	}
 
 	/**
-	 * This method checks if the invoice is correct to be used, by checking it
-	 * exists and that it's not already invoiced.
+	 * This method gives the dto that will be returned, all the data from the
+	 * invoice.
 	 *
-	 * @param factura the invoice to be checked
-	 * @throws BusinessException the business exception
+	 * @param fac the invoice
+	 * @return thw invoice dto with all the information
 	 */
-	private void assertCheckCorrectInvoice(Factura factura) throws BusinessException {
-		Check.isNotNull(factura, "La factura no existe");
-		Check.isFalse(factura.getStatus() == FacturaStatus.ABONADA, "Ya está abonada");
+	private InvoiceDto DtoCreation(Factura fac) {
+		InvoiceDto dto = new InvoiceDto();
+		dto.id = fac.getId();
+		dto.date = fac.getFecha();
+		dto.number = fac.getNumero();
+		dto.status = fac.getStatus().toString();
+		dto.taxes = fac.getIva();
+		dto.total = fac.getImporte();
+		return dto;
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	@Override
+	public InvoiceDto execute() throws BusinessException {
+		FacturaRepository fp = Factory.repository.forFactura();
+		Factura factura = fp.findById(id);
+		assertCheckCorrectInvoice(factura);
+		chargesCreation(factura);
+		Set<Cargo> cargos = factura.getCargos();
+		if (correctAmount(cargos, factura)) {
+			return DtoCreation(factura);
+		} else {
+			removeCharges(cargos);
+			throw new BusinessException("Los cargos no igualan el importe");
+		}
+	}
+
+	/**
+	 * This method unlinks all the charges that had been created due to the
+	 * amount was not correct.
+	 *
+	 * @param cargos the charges created
+	 */
+	private void removeCharges(Set<Cargo> cargos) {
+		for (Cargo cargo : cargos) {
+			Association.Cargar.unlink(cargo);
+		}
 	}
 }

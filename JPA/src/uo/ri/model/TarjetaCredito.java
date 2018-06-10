@@ -84,62 +84,6 @@ public class TarjetaCredito extends MedioPago {
 		this.validez = (Date) val.clone();
 	}
 
-	/**
-	 * Gets the tipo.
-	 *
-	 * @return the tipo
-	 */
-	public String getTipo() {
-		return tipo;
-	}
-
-	/**
-	 * Sets the tipo.
-	 *
-	 * @param tipo the new tipo
-	 */
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	/**
-	 * Gets the validez.
-	 *
-	 * @return the validez
-	 */
-	public Date getValidez() {
-		return (Date) validez.clone();
-	}
-
-	/**
-	 * Sets the validez.
-	 *
-	 * @param validez the new validez
-	 */
-	public void setValidez(Date validez) {
-		this.validez = validez;
-	}
-
-	/**
-	 * Gets the numero.
-	 *
-	 * @return the numero
-	 */
-	public String getNumero() {
-		return numero;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.model.MedioPago#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		return result;
-	}
-
 	/* (non-Javadoc)
 	 * @see uo.ri.model.MedioPago#equals(java.lang.Object)
 	 */
@@ -160,13 +104,42 @@ public class TarjetaCredito extends MedioPago {
 		return true;
 	}
 
+	/**
+	 * Gets the numero.
+	 *
+	 * @return the numero
+	 */
+	public String getNumero() {
+		return numero;
+	}
+
+	/**
+	 * Gets the tipo.
+	 *
+	 * @return the tipo
+	 */
+	public String getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * Gets the validez.
+	 *
+	 * @return the validez
+	 */
+	public Date getValidez() {
+		return (Date) validez.clone();
+	}
+
 	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * @see uo.ri.model.MedioPago#hashCode()
 	 */
 	@Override
-	public String toString() {
-		return "TarjetaCredito [numero=" + numero + ", tipo=" + tipo + ", validez=" + validez + ", acumulado="
-				+ acumulado + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+		return result;
 	}
 
 	/**
@@ -193,6 +166,33 @@ public class TarjetaCredito extends MedioPago {
 		} else {
 			throw new BusinessException("La tarjeta está caducada");
 		}
+	}
+
+	/**
+	 * Sets the tipo.
+	 *
+	 * @param tipo the new tipo
+	 */
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	/**
+	 * Sets the validez.
+	 *
+	 * @param validez the new validez
+	 */
+	public void setValidez(Date validez) {
+		this.validez = validez;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "TarjetaCredito [numero=" + numero + ", tipo=" + tipo + ", validez=" + validez + ", acumulado="
+				+ acumulado + "]";
 	}
 
 }

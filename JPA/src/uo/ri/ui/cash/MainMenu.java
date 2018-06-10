@@ -45,6 +45,15 @@ import uo.ri.ui.cash.action.SettleInvoiceAction;
 public class MainMenu extends BaseMenu {
 
 	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) {
+		new MainMenu().config().execute();
+	}
+
+	/**
 	 * Instantiates a new main menu.
 	 */
 	public MainMenu() {
@@ -55,15 +64,6 @@ public class MainMenu extends BaseMenu {
 				{ "Liquidar factura", SettleInvoiceAction.class },
 				{ "Buscar factura", FindInvoiceByNumberAction.class },
 				{ "Gestión de medios de pago", MediosPagoMenu.class }, };
-	}
-
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		new MainMenu().config().execute();
 	}
 
 	/**

@@ -74,33 +74,6 @@ public class Sustitucion {
 	}
 
 	/**
-	 * Gets the repuesto.
-	 *
-	 * @return the repuesto
-	 */
-	public Repuesto getRepuesto() {
-		return repuesto;
-	}
-
-	/**
-	 * Sets the repuesto.
-	 *
-	 * @param repuesto the repuesto
-	 */
-	void _setRepuesto(Repuesto repuesto) {
-		this.repuesto = repuesto;
-	}
-
-	/**
-	 * Gets the intervencion.
-	 *
-	 * @return the intervencion
-	 */
-	public Intervencion getIntervencion() {
-		return intervencion;
-	}
-
-	/**
 	 * Sets the intervencion.
 	 *
 	 * @param intervencion the intervencion
@@ -110,33 +83,12 @@ public class Sustitucion {
 	}
 
 	/**
-	 * Gets the cantidad.
+	 * Sets the repuesto.
 	 *
-	 * @return the cantidad
+	 * @param repuesto the repuesto
 	 */
-	public int getCantidad() {
-		return cantidad;
-	}
-
-	/**
-	 * Sets the cantidad.
-	 *
-	 * @param cantidad the new cantidad
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((intervencion == null) ? 0 : intervencion.hashCode());
-		result = prime * result + ((repuesto == null) ? 0 : repuesto.hashCode());
-		return result;
+	void _setRepuesto(Repuesto repuesto) {
+		this.repuesto = repuesto;
 	}
 
 	/* (non-Javadoc)
@@ -164,12 +116,22 @@ public class Sustitucion {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Gets the cantidad.
+	 *
+	 * @return the cantidad
 	 */
-	@Override
-	public String toString() {
-		return "Sustitucion [repuesto=" + repuesto + ", intervencion=" + intervencion + ", cantidad=" + cantidad + "]";
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
 	/**
@@ -182,11 +144,49 @@ public class Sustitucion {
 	}
 
 	/**
-	 * Gets the id.
+	 * Gets the intervencion.
 	 *
-	 * @return the id
+	 * @return the intervencion
 	 */
-	public Long getId() {
-		return id;
+	public Intervencion getIntervencion() {
+		return intervencion;
+	}
+
+	/**
+	 * Gets the repuesto.
+	 *
+	 * @return the repuesto
+	 */
+	public Repuesto getRepuesto() {
+		return repuesto;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((intervencion == null) ? 0 : intervencion.hashCode());
+		result = prime * result + ((repuesto == null) ? 0 : repuesto.hashCode());
+		return result;
+	}
+
+	/**
+	 * Sets the cantidad.
+	 *
+	 * @param cantidad the new cantidad
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Sustitucion [repuesto=" + repuesto + ", intervencion=" + intervencion + ", cantidad=" + cantidad + "]";
 	}
 }

@@ -63,6 +63,59 @@ public class BonoPor3RecomendacionesTests {
 	private Mecanico m;
 
 	/**
+	 * Adds the averia.
+	 *
+	 * @param v2 the v 2
+	 * @param m2 the m 2
+	 * @return the averia
+	 * @throws BusinessException the business exception
+	 */
+	private Averia addAveria(Vehiculo v2, Mecanico m2) throws BusinessException {
+		sleep( 10 /*msec*/ );
+		Averia a = new Averia( v2 );
+		a.assignTo( m2 );
+		a.markAsFinished();
+		return a;
+	}
+
+	/**
+	 * Adds the vehiculo.
+	 *
+	 * @param c2 the c 2
+	 * @return the vehiculo
+	 */
+	private Vehiculo addVehiculo(Cliente c2) {
+		Vehiculo v = new Vehiculo( Random.string( 7 ));
+		Association.Poseer.link(c2, v);
+		return v;
+	}
+	
+	/**
+	 * Adds the vehiculo con averia.
+	 *
+	 * @param c2 the c 2
+	 * @param m2 the m 2
+	 * @return the vehiculo
+	 * @throws BusinessException the business exception
+	 */
+	private Vehiculo addVehiculoConAveria(Cliente c2, Mecanico m2) throws BusinessException {
+		Vehiculo v = addVehiculo(c2);
+		addAveria(v, m2);
+		return v;
+	}
+
+	/**
+	 * Recomendar.
+	 *
+	 * @param recomendador the recomendador
+	 * @param recomendado the recomendado
+	 * @return the recomendacion
+	 */
+	private Recomendacion recomendar(Cliente recomendador, Cliente recomendado) {
+		return new Recomendacion(recomendador, recomendado);
+	}
+	
+	/**
 	 * Sets the up.
 	 *
 	 * @throws Exception the exception
@@ -78,75 +131,16 @@ public class BonoPor3RecomendacionesTests {
 	}
 
 	/**
-	 * Un cliente recien registrado no puede tener derecho a bono por
-	 * recomendaciones.
-	 */
-	@Test
-	public void testClienteNuevo() {
-		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
-	}
-	
-	/**
-	 * Un cliente con vehiculo pero sin averias no puede ser elegible para bono
-	 * por recomendaciones.
-	 */
-	@Test
-	public void testClienteConVehiculo() {
-		addVehiculo( c );
-		
-		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
-	}
-
-	/**
-	 * Un cliente con vehiculo y averia pero sin recomendados no puede ser
-	 * elejible para bono por recomendaciones.
+	 * Sleep.
 	 *
-	 * @throws BusinessException the business exception
+	 * @param millis the millis
 	 */
-	@Test
-	public void testClienteConVehiculoYAveria() throws BusinessException {
-		addVehiculoConAveria(c, m);
-		
-		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
-	}
-	
-	/**
-	 * Un cliente con 3 recomendados que han hecho reparaciones, pero sin
-	 * reparaciones realizadas por él no puede ser elegible para bono por
-	 * recomendaciones.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testClienteSinReparaciones3Recomendados() throws BusinessException {
-		recomendar(c, cr1);
-		recomendar(c, cr2);
-		recomendar(c, cr3);
-		addVehiculo( c );
-		addVehiculoConAveria(cr1, m);
-		addVehiculoConAveria(cr2, m);
-		addVehiculoConAveria(cr3, m);
-		
-		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
-	}
-
-	/**
-	 * Un cliente con reparaciones y 3 recomendaciones no puede ser elegible si
-	 * sus recomendados no han hecho reparaciones.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCliente3RecomendadosSinReparaciones() throws BusinessException {
-		recomendar(c, cr1);
-		recomendar(c, cr2);
-		recomendar(c, cr3);
-		addVehiculoConAveria(c, m);
-		addVehiculo(cr1);	// <-- Sin averia
-		addVehiculo(cr2);	// <-- Sin averia
-		addVehiculo(cr3);	// <-- Sin averia
-		
-		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
+	private void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			// dont't care if this occurs
+		}
 	}
 	
 	/**
@@ -211,6 +205,25 @@ public class BonoPor3RecomendacionesTests {
 	}
 
 	/**
+	 * Un cliente con reparaciones y 3 recomendaciones no puede ser elegible si
+	 * sus recomendados no han hecho reparaciones.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testCliente3RecomendadosSinReparaciones() throws BusinessException {
+		recomendar(c, cr1);
+		recomendar(c, cr2);
+		recomendar(c, cr3);
+		addVehiculoConAveria(c, m);
+		addVehiculo(cr1);	// <-- Sin averia
+		addVehiculo(cr2);	// <-- Sin averia
+		addVehiculo(cr3);	// <-- Sin averia
+		
+		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
+	}
+
+	/**
 	 * Un cliente con reparaciones y 4 recomendaciones, solo 3 han hecho
 	 * reparaciones y una recomendacion ya usada para bono generado no es
 	 * elegible para bono por recomendaciones.
@@ -234,71 +247,58 @@ public class BonoPor3RecomendacionesTests {
 		
 		assertTrue( c.elegibleBonoPorRecomendaciones() == false);
 	}
+	
+	/**
+	 * Un cliente con vehiculo pero sin averias no puede ser elegible para bono
+	 * por recomendaciones.
+	 */
+	@Test
+	public void testClienteConVehiculo() {
+		addVehiculo( c );
+		
+		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
+	}
 
 	/**
-	 * Adds the vehiculo.
+	 * Un cliente con vehiculo y averia pero sin recomendados no puede ser
+	 * elejible para bono por recomendaciones.
 	 *
-	 * @param c2 the c 2
-	 * @return the vehiculo
+	 * @throws BusinessException the business exception
 	 */
-	private Vehiculo addVehiculo(Cliente c2) {
-		Vehiculo v = new Vehiculo( Random.string( 7 ));
-		Association.Poseer.link(c2, v);
-		return v;
+	@Test
+	public void testClienteConVehiculoYAveria() throws BusinessException {
+		addVehiculoConAveria(c, m);
+		
+		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
 	}
 	
 	/**
-	 * Adds the vehiculo con averia.
-	 *
-	 * @param c2 the c 2
-	 * @param m2 the m 2
-	 * @return the vehiculo
-	 * @throws BusinessException the business exception
+	 * Un cliente recien registrado no puede tener derecho a bono por
+	 * recomendaciones.
 	 */
-	private Vehiculo addVehiculoConAveria(Cliente c2, Mecanico m2) throws BusinessException {
-		Vehiculo v = addVehiculo(c2);
-		addAveria(v, m2);
-		return v;
+	@Test
+	public void testClienteNuevo() {
+		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
 	}
 
 	/**
-	 * Adds the averia.
+	 * Un cliente con 3 recomendados que han hecho reparaciones, pero sin
+	 * reparaciones realizadas por él no puede ser elegible para bono por
+	 * recomendaciones.
 	 *
-	 * @param v2 the v 2
-	 * @param m2 the m 2
-	 * @return the averia
 	 * @throws BusinessException the business exception
 	 */
-	private Averia addAveria(Vehiculo v2, Mecanico m2) throws BusinessException {
-		sleep( 10 /*msec*/ );
-		Averia a = new Averia( v2 );
-		a.assignTo( m2 );
-		a.markAsFinished();
-		return a;
-	}
-	
-	/**
-	 * Recomendar.
-	 *
-	 * @param recomendador the recomendador
-	 * @param recomendado the recomendado
-	 * @return the recomendacion
-	 */
-	private Recomendacion recomendar(Cliente recomendador, Cliente recomendado) {
-		return new Recomendacion(recomendador, recomendado);
-	}
-
-	/**
-	 * Sleep.
-	 *
-	 * @param millis the millis
-	 */
-	private void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			// dont't care if this occurs
-		}
+	@Test
+	public void testClienteSinReparaciones3Recomendados() throws BusinessException {
+		recomendar(c, cr1);
+		recomendar(c, cr2);
+		recomendar(c, cr3);
+		addVehiculo( c );
+		addVehiculoConAveria(cr1, m);
+		addVehiculoConAveria(cr2, m);
+		addVehiculoConAveria(cr3, m);
+		
+		assertTrue( c.elegibleBonoPorRecomendaciones() == false );
 	}
 
 }

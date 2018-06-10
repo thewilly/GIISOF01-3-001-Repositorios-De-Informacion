@@ -64,20 +64,6 @@ public class CreateMPTarjeta implements Command<Void> {
 		this.card = card;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		TarjetaCredito t = DtoAssembler.toEntity(card);
-		Cliente c = clientsRepository.findById(card.clientId);
-		assertExistenceClient(card.clientId);
-		assertNotRepeatedCardNumber(card.cardNumber);
-		assertNotExpiredDate(card.cardExpiration);
-		Association.Pagar.link(c, t);
-		paymentMethodsRepository.add(t);
-		return null;
-	}
-
 	/**
 	 * This method checks that the client id corresponds to a real client in the
 	 * system.
@@ -112,6 +98,20 @@ public class CreateMPTarjeta implements Command<Void> {
 	private void assertNotRepeatedCardNumber(String number) throws BusinessException {
 		TarjetaCredito t = paymentMethodsRepository.findCreditCardByNumber(number);
 		Check.isNull(t, "Ese número de tarjeta ya existe");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public Void execute() throws BusinessException {
+		TarjetaCredito t = DtoAssembler.toEntity(card);
+		Cliente c = clientsRepository.findById(card.clientId);
+		assertExistenceClient(card.clientId);
+		assertNotRepeatedCardNumber(card.cardNumber);
+		assertNotExpiredDate(card.cardExpirationDate);
+		Association.Pagar.link(c, t);
+		paymentMethodsRepository.add(t);
+		return null;
 	}
 
 }

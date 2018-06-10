@@ -37,6 +37,15 @@ import alb.util.menu.NotYetImplementedAction;
 public class MainMenu extends BaseMenu {
 
 	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) {
+		new MainMenu().config().execute();
+	}
+
+	/**
 	 * Instantiates a new main menu.
 	 */
 	public MainMenu() {
@@ -45,15 +54,6 @@ public class MainMenu extends BaseMenu {
 				{ "Añadir repuestos a reparación", NotYetImplementedAction.class },
 				{ "Eliminar repuestos a reparación", NotYetImplementedAction.class },
 				{ "Cerrar una reparación", NotYetImplementedAction.class }, };
-	}
-
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		new MainMenu().config().execute();
 	}
 
 	/**

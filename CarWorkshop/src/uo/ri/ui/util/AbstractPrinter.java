@@ -33,7 +33,7 @@ import java.util.Map;
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public abstract class Printer {
+public abstract class AbstractPrinter {
 	protected Map<String, Object> map;
 	protected List<Map<String, Object>> listMaps;
 	

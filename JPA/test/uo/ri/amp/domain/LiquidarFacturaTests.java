@@ -65,23 +65,6 @@ public class LiquidarFacturaTests {
 	private Vehiculo v;
 
 	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		Cliente c = new Cliente("123", "n", "a");
-		cash = new Metalico( c );
-		m = new Mecanico("123a");
-		v = new Vehiculo("123-ABC");
-		TipoVehiculo tv = new TipoVehiculo("v", 300 /* €/hour */);
-		Association.Clasificar.link(tv, v);
-		
-		a = crearAveriaTerminada(m, v, 83 /* min */); // gives 500 € ii
-	}
-
-	/**
 	 * Crear averia terminada.
 	 *
 	 * @param m the m
@@ -97,6 +80,23 @@ public class LiquidarFacturaTests {
 		i.setMinutos( min );
 		a.markAsFinished();
 		return a;
+	}
+
+	/**
+	 * Sets the up.
+	 *
+	 * @throws Exception the exception
+	 */
+	@Before
+	public void setUp() throws Exception {
+		Cliente c = new Cliente("123", "n", "a");
+		cash = new Metalico( c );
+		m = new Mecanico("123a");
+		v = new Vehiculo("123-ABC");
+		TipoVehiculo tv = new TipoVehiculo("v", 300 /* €/hour */);
+		Association.Clasificar.link(tv, v);
+		
+		a = crearAveriaTerminada(m, v, 83 /* min */); // gives 500 € ii
 	}
 	
 	/**
@@ -134,20 +134,6 @@ public class LiquidarFacturaTests {
 	public void testNoDelTodoPagada() throws BusinessException {
 		Factura f = new Factura(123L, Arrays.asList(a));
 		double importe = f.getImporte() - 0.011 /*€*/;
-		new Cargo(f, cash, importe);
-		f.settle();
-	}
-
-	/**
-	 * No se puede marcar como liquidada una factura sobrepagada con margen de
-	 * +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testSobrePagada() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		double importe = f.getImporte() + 0.011 /*€*/;
 		new Cargo(f, cash, importe);
 		f.settle();
 	}
@@ -197,5 +183,19 @@ public class LiquidarFacturaTests {
 		f.settle();
 		
 		assertTrue( f.isSettled() );
+	}
+
+	/**
+	 * No se puede marcar como liquidada una factura sobrepagada con margen de
+	 * +-0,01 €.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test(expected = BusinessException.class)
+	public void testSobrePagada() throws BusinessException {
+		Factura f = new Factura(123L, Arrays.asList(a));
+		double importe = f.getImporte() + 0.011 /*€*/;
+		new Cargo(f, cash, importe);
+		f.settle();
 	}
 }

@@ -51,21 +51,10 @@ public class FindAllBondsByClientId implements Command<List<VoucherDto>> {
 	/**
 	 * Instantiates a new find all bonds by client id.
 	 *
-	 * @param id the id
+	 * @param clientId the id
 	 */
-	public FindAllBondsByClientId(long id) {
-		this.clientId = id;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<VoucherDto> execute() throws BusinessException {
-		MedioPagoRepository repository = Factory.repository.forMedioPago();
-		assertClientExists(clientId);
-		List<Bono> list = repository.findVouchersByClientId(clientId);
-		return DtoAssembler.toVoucherDtoList(list);
+	public FindAllBondsByClientId(long clientId) {
+		this.clientId = clientId;
 	}
 
 	/**
@@ -79,5 +68,16 @@ public class FindAllBondsByClientId implements Command<List<VoucherDto>> {
 		ClienteRepository repository = Factory.repository.forCliente();
 		Cliente clientInDB = repository.findById(clientId);
 		Check.isNotNull(clientInDB, "Ese cliente no existe en el sistema");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	@Override
+	public List<VoucherDto> execute() throws BusinessException {
+		MedioPagoRepository repository = Factory.repository.forMedioPago();
+		assertClientExists(clientId);
+		List<Bono> vouchers = repository.findVouchersByClientId(clientId);
+		return DtoAssembler.toVoucherDtoList(vouchers);
 	}
 }

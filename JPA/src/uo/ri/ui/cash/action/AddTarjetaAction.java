@@ -68,7 +68,7 @@ public class AddTarjetaAction implements Action {
 		CardDto dto = new CardDto();
 		dto.clientId = id;
 		dto.cardNumber = numero;
-		dto.cardExpiration = d;
+		dto.cardExpirationDate = d;
 		dto.cardType = tipo;
 
 		CashService cs = Factory.service.forCash();

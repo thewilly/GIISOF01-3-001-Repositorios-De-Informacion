@@ -64,18 +64,16 @@ public class RemoveClient implements Command<Void> {
 		this.clientId = clientId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
+	/**
+	 * This method checks all the conditions that must be fulfilled for deleting
+	 * a client.
+	 *
+	 * @param c the client to be checked
+	 * @throws BusinessException the business exception
 	 */
-	@Override
-	public Void execute() throws BusinessException {
-		Cliente cliente = clientsRepository.findById(clientId);
-		assertCanBeDeleted(cliente);
-		deleteRecommendations(cliente);
-		deleteRecommendationRecibed(cliente);
-		deleteCashPayment(cliente);
-		clientsRepository.remove(cliente);
-		return null;
+	private void assertCanBeDeleted(Cliente c) throws BusinessException {
+		Check.isNotNull(c, "El cliente no existe");
+		Check.isTrue(c.getVehiculos().size() == 0, "El cliente no puede ser eliminado al tener vehículos registrados");
 	}
 
 	/**
@@ -121,16 +119,18 @@ public class RemoveClient implements Command<Void> {
 		}
 	}
 
-	/**
-	 * This method checks all the conditions that must be fulfilled for deleting
-	 * a client.
-	 *
-	 * @param c the client to be checked
-	 * @throws BusinessException the business exception
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
 	 */
-	private void assertCanBeDeleted(Cliente c) throws BusinessException {
-		Check.isNotNull(c, "El cliente no existe");
-		Check.isTrue(c.getVehiculos().size() == 0, "El cliente no puede ser eliminado al tener vehículos registrados");
+	@Override
+	public Void execute() throws BusinessException {
+		Cliente cliente = clientsRepository.findById(clientId);
+		assertCanBeDeleted(cliente);
+		deleteRecommendations(cliente);
+		deleteRecommendationRecibed(cliente);
+		deleteCashPayment(cliente);
+		clientsRepository.remove(cliente);
+		return null;
 	}
 
 }

@@ -51,6 +51,49 @@ import uo.ri.util.exception.BusinessException;
 public class GenerateVouchersByNumberOfRecommendations extends BaseServiceTests {
 
 	/**
+	 * Assert are marked as used.
+	 *
+	 * @param rs the rs
+	 * @param counter the counter
+	 */
+	private void assertAreMarkedAsUsed(List<Recomendacion> rs, int counter) {
+		assertTrue( 
+			rs.stream()
+				.filter( r -> r.isUsada() )
+				.count() == counter
+		);
+	}
+
+	/**
+	 * Assert right voucher.
+	 *
+	 * @param c the c
+	 * @param expected the expected
+	 */
+	private void assertRightVoucher(Cliente c, Bono expected) {
+		assertTrue( expected.getAcumulado() == 0.0 );
+		assertTrue( expected.getCargos().size() == 0.0 );
+		assertTrue( expected.getCliente().equals( c ) );
+		assertTrue( expected.getDescripcion().equals("Por recomendación") );
+		assertTrue( expected.getDisponible() == 25.0 /*€*/ );
+	}
+	
+	/**
+	 * Generate recommnedations.
+	 *
+	 * @param counter the counter
+	 * @return the list
+	 */
+	private List<Recomendacion> generateRecommnedations(int counter) {
+		Cliente c = registerNewClientWithBreakDown();
+		List<Recomendacion> res = new ArrayList<>();
+		for(int i = 0; i < counter; i++) {
+			res.add( registerNewClientWithBreakdownRecommendedBy( c ) );
+		}
+		return res;
+	}
+		
+	/**
 	 * Sets the up.
 	 *
 	 * @throws Exception the exception
@@ -58,7 +101,25 @@ public class GenerateVouchersByNumberOfRecommendations extends BaseServiceTests 
 	@Before
 	public void setUp() throws Exception {
 	}
-
+			
+	/**
+	 * Un cliente con (n*3)+1 recomendaciones elegibles para bono3 recibirá n
+	 * bonos y tendrá n*3 recomendaciones marcadas.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testGeneralizedVoucherGeneration() throws BusinessException {
+		int N = 10;
+		List<Recomendacion> rs = generateRecommnedations( N * 3 + 1 );
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == N );
+		assertAreMarkedAsUsed( rs, N * 3 );
+	}
+			
 	/**
 	 * Un cliente con averias, que hace tres recomendaciones, no usadas, a tres
 	 * clientes que tienen averias registradas tiene derecho a un bono por
@@ -85,73 +146,7 @@ public class GenerateVouchersByNumberOfRecommendations extends BaseServiceTests 
 		Bono expected = getFirstVoucher( c );
 		assertRightVoucher(c, expected);
 	}
-	
-	/**
-	 * A un cliente con 2 recomendaciones no se le generará bono.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWithTwoRecommends() throws BusinessException {
-		Cliente c = registerNewClientWithBreakDown();
-		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
-		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0 );
-		assertTrue( ! r1.isUsada() );
-		assertTrue( ! r2.isUsada() );
-	}
-		
-	/**
-	 * Un cliente que no ha hecho reparaciones pero que ha recomendado a otros
-	 * tres que sí han hecho reparaciones, no recibirá bono.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWithoutBreakdown() throws BusinessException {
-		Cliente c = registerNewClient(); // <-- sin reparacion
-		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
-		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
-		Recomendacion r3 = registerNewClientWithBreakdownRecommendedBy( c );
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0 );
-		assertTrue( ! r1.isUsada() );
-		assertTrue( ! r2.isUsada() );
-		assertTrue( ! r3.isUsada() );
-	}
-			
-	/**
-	 * Un cliente que ha hecho reparaciones, que ha recomendado a otros tres que
-	 * sí han hecho reparaciones, pero con una recomnedación ya usada para
-	 * generar otro bono no recibirá bono.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testWithRecommendationUsed() throws BusinessException {
-		Cliente c = registerNewClientWithBreakDown();
-		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
-		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
-		Recomendacion r3 = registerNewClientWithBreakdownRecommendedBy( c );
-		
-		r3.markAsUsadaBono();
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == 0 );
-		assertTrue( ! r1.isUsada() );
-		assertTrue( ! r2.isUsada() );
-		assertTrue( r3.isUsada() );
-	}
-			
+				
 	/**
 	 * Un cliente con tres recomendaciones hechas a sendos otros clientes, pero
 	 * uno de ellos aún no ha reparado en el taller hace que el recomendador no
@@ -173,24 +168,6 @@ public class GenerateVouchersByNumberOfRecommendations extends BaseServiceTests 
 		assertTrue( ! r1.isUsada() );
 		assertTrue( ! r2.isUsada() );
 		assertTrue( ! r3.isUsada() );
-	}
-				
-	/**
-	 * Un cliente con (n*3)+1 recomendaciones elegibles para bono3 recibirá n
-	 * bonos y tendrá n*3 recomendaciones marcadas.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testGeneralizedVoucherGeneration() throws BusinessException {
-		int N = 10;
-		List<Recomendacion> rs = generateRecommnedations( N * 3 + 1 );
-		
-		AdminService svc = Factory.service.forAdmin();
-		int qty = svc.generateVouchers();
-		
-		assertTrue( qty == N );
-		assertAreMarkedAsUsed( rs, N * 3 );
 	}
 		
 	/**
@@ -218,46 +195,69 @@ public class GenerateVouchersByNumberOfRecommendations extends BaseServiceTests 
 	}	
 	
 	/**
-	 * Assert right voucher.
+	 * Un cliente que no ha hecho reparaciones pero que ha recomendado a otros
+	 * tres que sí han hecho reparaciones, no recibirá bono.
 	 *
-	 * @param c the c
-	 * @param expected the expected
+	 * @throws BusinessException the business exception
 	 */
-	private void assertRightVoucher(Cliente c, Bono expected) {
-		assertTrue( expected.getAcumulado() == 0.0 );
-		assertTrue( expected.getCargos().size() == 0.0 );
-		assertTrue( expected.getCliente().equals( c ) );
-		assertTrue( expected.getDescripcion().equals("Por recomendación") );
-		assertTrue( expected.getDisponible() == 25.0 /*€*/ );
+	@Test
+	public void testWithoutBreakdown() throws BusinessException {
+		Cliente c = registerNewClient(); // <-- sin reparacion
+		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
+		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
+		Recomendacion r3 = registerNewClientWithBreakdownRecommendedBy( c );
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0 );
+		assertTrue( ! r1.isUsada() );
+		assertTrue( ! r2.isUsada() );
+		assertTrue( ! r3.isUsada() );
 	}	
 
 	/**
-	 * Assert are marked as used.
+	 * Un cliente que ha hecho reparaciones, que ha recomendado a otros tres que
+	 * sí han hecho reparaciones, pero con una recomnedación ya usada para
+	 * generar otro bono no recibirá bono.
 	 *
-	 * @param rs the rs
-	 * @param counter the counter
+	 * @throws BusinessException the business exception
 	 */
-	private void assertAreMarkedAsUsed(List<Recomendacion> rs, int counter) {
-		assertTrue( 
-			rs.stream()
-				.filter( r -> r.isUsada() )
-				.count() == counter
-		);
+	@Test
+	public void testWithRecommendationUsed() throws BusinessException {
+		Cliente c = registerNewClientWithBreakDown();
+		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
+		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
+		Recomendacion r3 = registerNewClientWithBreakdownRecommendedBy( c );
+		
+		r3.markAsUsadaBono();
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0 );
+		assertTrue( ! r1.isUsada() );
+		assertTrue( ! r2.isUsada() );
+		assertTrue( r3.isUsada() );
 	}
 
 	/**
-	 * Generate recommnedations.
+	 * A un cliente con 2 recomendaciones no se le generará bono.
 	 *
-	 * @param counter the counter
-	 * @return the list
+	 * @throws BusinessException the business exception
 	 */
-	private List<Recomendacion> generateRecommnedations(int counter) {
+	@Test
+	public void testWithTwoRecommends() throws BusinessException {
 		Cliente c = registerNewClientWithBreakDown();
-		List<Recomendacion> res = new ArrayList<>();
-		for(int i = 0; i < counter; i++) {
-			res.add( registerNewClientWithBreakdownRecommendedBy( c ) );
-		}
-		return res;
+		Recomendacion r1 = registerNewClientWithBreakdownRecommendedBy( c );
+		Recomendacion r2 = registerNewClientWithBreakdownRecommendedBy( c );
+		
+		AdminService svc = Factory.service.forAdmin();
+		int qty = svc.generateVouchers();
+		
+		assertTrue( qty == 0 );
+		assertTrue( ! r1.isUsada() );
+		assertTrue( ! r2.isUsada() );
 	}
 
 }

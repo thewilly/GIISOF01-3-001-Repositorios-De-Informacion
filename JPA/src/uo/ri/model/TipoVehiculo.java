@@ -87,41 +87,12 @@ public class TipoVehiculo {
 	}
 
 	/**
-	 * Gets the precio hora.
+	 * Gets the vehiculos.
 	 *
-	 * @return the precio hora
+	 * @return the sets the
 	 */
-	public double getPrecioHora() {
-		return precioHora;
-	}
-
-	/**
-	 * Sets the precio hora.
-	 *
-	 * @param precioHora the new precio hora
-	 */
-	public void setPrecioHora(double precioHora) {
-		this.precioHora = precioHora;
-	}
-
-	/**
-	 * Gets the nombre.
-	 *
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		return result;
+	Set<Vehiculo> _getVehiculos() {
+		return vehiculos;
 	}
 
 	/* (non-Javadoc)
@@ -144,12 +115,31 @@ public class TipoVehiculo {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
 	 */
-	@Override
-	public String toString() {
-		return "TipoVehiculo [nombre=" + nombre + ", precioHora=" + precioHora + "]";
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Gets the nombre.
+	 *
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * Gets the precio hora.
+	 *
+	 * @return the precio hora
+	 */
+	public double getPrecioHora() {
+		return precioHora;
 	}
 
 	/**
@@ -161,22 +151,32 @@ public class TipoVehiculo {
 		return new HashSet<>(vehiculos);
 	}
 
-	/**
-	 * Gets the vehiculos.
-	 *
-	 * @return the sets the
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
-	Set<Vehiculo> _getVehiculos() {
-		return vehiculos;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
 	}
 
 	/**
-	 * Gets the id.
+	 * Sets the precio hora.
 	 *
-	 * @return the id
+	 * @param precioHora the new precio hora
 	 */
-	public Long getId() {
-		return id;
+	public void setPrecioHora(double precioHora) {
+		this.precioHora = precioHora;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "TipoVehiculo [nombre=" + nombre + ", precioHora=" + precioHora + "]";
 	}
 
 }

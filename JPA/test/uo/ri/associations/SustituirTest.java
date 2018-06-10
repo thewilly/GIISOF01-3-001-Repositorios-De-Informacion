@@ -100,6 +100,38 @@ public class SustituirTest {
 	}
 	
 	/**
+	 * Test safe return intervencion.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testSafeReturnIntervencion() throws BusinessException {
+		Set<Sustitucion> sustituciones = intervencion.getSustituciones();
+		sustituciones.remove( sustitucion );
+
+		assertTrue( sustituciones.size() == 0 );
+		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
+			intervencion.getSustituciones().size() == 1
+		);
+	}
+
+	/**
+	 * Test safe return repuesto.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testSafeReturnRepuesto() throws BusinessException {
+		Set<Sustitucion> sustituciones = repuesto.getSustituciones();
+		sustituciones.remove( sustitucion );
+
+		assertTrue( sustituciones.size() == 0 );
+		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
+			repuesto.getSustituciones().size() == 1
+		);
+	}
+
+	/**
 	 * Test sustituir add.
 	 *
 	 * @throws BusinessException the business exception
@@ -130,38 +162,6 @@ public class SustituirTest {
 
 		assertTrue( ! intervencion.getSustituciones().contains( sustitucion ));
 		assertTrue( intervencion.getSustituciones().size() == 0 );
-	}
-
-	/**
-	 * Test safe return intervencion.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturnIntervencion() throws BusinessException {
-		Set<Sustitucion> sustituciones = intervencion.getSustituciones();
-		sustituciones.remove( sustitucion );
-
-		assertTrue( sustituciones.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			intervencion.getSustituciones().size() == 1
-		);
-	}
-
-	/**
-	 * Test safe return repuesto.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturnRepuesto() throws BusinessException {
-		Set<Sustitucion> sustituciones = repuesto.getSustituciones();
-		sustituciones.remove( sustitucion );
-
-		assertTrue( sustituciones.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			repuesto.getSustituciones().size() == 1
-		);
 	}
 
 }

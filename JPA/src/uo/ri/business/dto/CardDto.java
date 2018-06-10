@@ -36,7 +36,7 @@ public class CardDto extends PaymentMeanDto {
 	public String cardNumber;
 	
 	/** The card expiration. */
-	public Date cardExpiration;
+	public Date cardExpirationDate;
 	
 	/** The card type. */
 	public String cardType;

@@ -56,16 +56,6 @@ public class FindRecommendedClientsByClientId implements Command<List<ClientDto>
 		this.recommenderId = clientId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<ClientDto> execute() throws BusinessException {
-		assertRecommenderExists();
-		List<Cliente> recomendados = clientsRepository.findRecomendedBy( recommenderId );
-		return DtoAssembler.toClientDtoList( recomendados );
-	}
-
 	/**
 	 * This method checks if the id of the recommender passed in the constructor
 	 * exists as a client in the system, or not.
@@ -75,6 +65,16 @@ public class FindRecommendedClientsByClientId implements Command<List<ClientDto>
 	private void assertRecommenderExists() throws BusinessException {
 		Cliente client = clientsRepository.findById( recommenderId );
 		Check.isNotNull( client, "El cliente recomendador no existe" );
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	@Override
+	public List<ClientDto> execute() throws BusinessException {
+		assertRecommenderExists();
+		List<Cliente> recomendados = clientsRepository.findRecomendedBy( recommenderId );
+		return DtoAssembler.toClientDtoList( recomendados );
 	}
 
 }

@@ -28,13 +28,6 @@ package uo.ri.business.repository;
 public interface RepositoryFactory {
 
 	/**
-	 * For mechanic.
-	 *
-	 * @return the mecanico repository
-	 */
-	MecanicoRepository forMechanic();
-
-	/**
 	 * For averia.
 	 *
 	 * @return the averia repository
@@ -42,18 +35,11 @@ public interface RepositoryFactory {
 	AveriaRepository forAveria();
 
 	/**
-	 * For medio pago.
+	 * For cargo.
 	 *
-	 * @return the medio pago repository
+	 * @return the cargo repository
 	 */
-	MedioPagoRepository forMedioPago();
-
-	/**
-	 * For factura.
-	 *
-	 * @return the factura repository
-	 */
-	FacturaRepository forFactura();
+	CargoRepository forCargo();
 
 	/**
 	 * For cliente.
@@ -63,11 +49,25 @@ public interface RepositoryFactory {
 	ClienteRepository forCliente();
 
 	/**
-	 * For repuesto.
+	 * For factura.
 	 *
-	 * @return the repuesto repository
+	 * @return the factura repository
 	 */
-	RepuestoRepository forRepuesto();
+	FacturaRepository forFactura();
+
+	/**
+	 * For mechanic.
+	 *
+	 * @return the mecanico repository
+	 */
+	MecanicoRepository forMechanic();
+
+	/**
+	 * For medio pago.
+	 *
+	 * @return the medio pago repository
+	 */
+	MedioPagoRepository forMedioPago();
 
 	/**
 	 * For recomendacion.
@@ -77,11 +77,11 @@ public interface RepositoryFactory {
 	RecomendacionRepository forRecomendacion();
 
 	/**
-	 * For cargo.
+	 * For repuesto.
 	 *
-	 * @return the cargo repository
+	 * @return the repuesto repository
 	 */
-	CargoRepository forCargo();
+	RepuestoRepository forRepuesto();
 
 	/**
 	 * For vehiculo.

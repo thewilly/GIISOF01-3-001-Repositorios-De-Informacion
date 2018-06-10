@@ -30,7 +30,7 @@ import alb.util.menu.Action;
 import uo.ri.business.CashService;
 import uo.ri.business.dto.InvoiceDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -61,7 +61,7 @@ public class FacturarReparacionesAction implements Action {
 		CashService cs = Factory.service.forCash();
 		InvoiceDto factura = cs.createInvoiceFor(idsAveria);
 
-		Printer.printInvoice(factura);
+		AbstractPrinter.printInvoice(factura);
 	}
 
 	/**

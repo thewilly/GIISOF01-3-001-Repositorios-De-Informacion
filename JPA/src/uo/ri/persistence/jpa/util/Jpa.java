@@ -63,15 +63,6 @@ public class Jpa {
 	}
 
 	/**
-	 * Gets the manager.
-	 *
-	 * @return the manager
-	 */
-	public static EntityManager getManager() {
-		return emThread.get();
-	}
-
-	/**
 	 * Gets the emf.
 	 *
 	 * @return the emf
@@ -82,6 +73,15 @@ public class Jpa {
 			emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 		}
 		return emf;
+	}
+
+	/**
+	 * Gets the manager.
+	 *
+	 * @return the manager
+	 */
+	public static EntityManager getManager() {
+		return emThread.get();
 	}
 
 	/**

@@ -45,6 +45,14 @@ public interface ClienteRepository extends Repository<Cliente> {
 	Cliente findByDni(String dni);
 
 	/**
+	 * Find recomended by.
+	 *
+	 * @param id the id
+	 * @return the list
+	 */
+	List<Cliente> findRecomendedBy(Long id);
+
+	/**
 	 * Find with recomendations.
 	 *
 	 * @return the list
@@ -57,13 +65,5 @@ public interface ClienteRepository extends Repository<Cliente> {
 	 * @return the list
 	 */
 	List<Cliente> findWithThreeUnusedBreakdowns();
-
-	/**
-	 * Find recomended by.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<Cliente> findRecomendedBy(Long id);
 
 }

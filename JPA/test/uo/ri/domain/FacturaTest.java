@@ -81,6 +81,33 @@ public class FacturaTest {
 	private Cliente cliente;
 
 	/**
+	 * Genera nueva factura esperando 100 milisegundos para evitar que coincida
+	 * el campo fecha si se generan dos facturas muy seguidas (en el mismo
+	 * milisegundo)
+	 * 
+	 * Puede dar problemas si la fecha forma parte de la identidad de la avería.
+	 *
+	 * @return the averia
+	 * @throws BusinessException the business exception
+	 */
+	private Averia crearOtraAveria() throws BusinessException {
+		sleep( 100 );
+		Averia averia = new Averia(vehiculo, "falla la junta la trocla otra vez");
+		averia.assignTo( mecanico );
+		
+		Intervencion intervencion = new Intervencion(mecanico, averia);
+		intervencion.setMinutos( 45 );
+		
+		Sustitucion sustitucion = new Sustitucion(repuesto, intervencion);
+		sustitucion.setCantidad( 1 );
+		
+		averia.markAsFinished();
+		
+		// importe = 100 € repuesto + 37.5 € mano de obra
+		return averia;
+	}
+	
+	/**
 	 * Sets the up.
 	 *
 	 * @throws BusinessException the business exception
@@ -107,95 +134,18 @@ public class FacturaTest {
 		
 		averia.markAsFinished();
 	}
-	
-	/**
-	 * Cálculo del importe de factura con una avería de 260€ + IVA 21% La averia
-	 * se añade en el constructor .
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testImporteFactura() throws BusinessException {
-		List<Averia> averias = new ArrayList<>();
-		averias.add( averia );
-		Factura factura = new Factura( 0L, averias );
-		
-		assertTrue( factura.getImporte() ==  302.5 );
-	}
 
 	/**
-	 * Cálculo del importe de factura con una avería de 260€ + IVA 21% La averia
-	 * se añade por asociacion .
+	 * Sleep.
 	 *
-	 * @throws BusinessException the business exception
+	 * @param millis the millis
 	 */
-	@Test
-	public void testImporteFacturaAddAveria() throws BusinessException {
-		Factura factura = new Factura( 0L ); // 0L es el numero de factura
-		factura.addAveria(averia);
-		
-		assertTrue( factura.getImporte() ==  302.5 );
-	}
-
-	/**
-	 * Dos averías añadidas a la factura en el constructor.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testImporteFacturadDosAverias() throws BusinessException {
-		List<Averia> averias = new ArrayList<Averia>();
-		averias.add( averia );
-		averias.add( crearOtraAveria() );
-		Factura factura = new Factura( 0L, averias );
-		
-		// importe = (137.5 nueva averia + 250.0 primera averia) * 21% iva
-		assertTrue( factura.getImporte() ==  468.88 ); // redondeo a 2 centimos
-	}
-
-	/**
-	 * Dos averias añadidas a la factura por asociación.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testImporteFacturaAddDosAverias() throws BusinessException {
-		Factura factura = new Factura( 0L );
-		factura.addAveria( averia );
-		factura.addAveria( crearOtraAveria() );
-		
-		assertTrue( factura.getImporte() ==  468.88 ); // redondeo a 2 centimos
-	}
-
-	/**
-	 * Una factura creada y con averías está SIN_ABONAR.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFacturaCreadaSinAbonar() throws BusinessException {
-		List<Averia> averias = new ArrayList<Averia>();
-		averias.add( averia );
-		Factura factura = new Factura( 0L, averias );
-		
-		assertTrue( factura.getStatus() ==  FacturaStatus.SIN_ABONAR );
-	}
-
-	/**
-	 * Si la factura es anterior al 1/7/2012 el IVA es el 18%, el importe es
-	 * 250€ + IVA 18%.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testImporteFacturaAntesDeJulio() throws BusinessException {
-		Date JUNE_6_2012 = DateUtil.fromString("15/6/2012");
-		
-		List<Averia> averias = new ArrayList<Averia>();
-		averias.add( averia );
-		Factura factura = new Factura( 0L, JUNE_6_2012, averias ); // iva 18%
-		
-		assertTrue( factura.getImporte() ==  295.0 );
+	private void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			// dont't care if this occurs
+		}
 	}
 
 	/**
@@ -243,32 +193,95 @@ public class FacturaTest {
 	}
 
 	/**
-	 * Genera nueva factura esperando 100 milisegundos para evitar que coincida
-	 * el campo fecha si se generan dos facturas muy seguidas (en el mismo
-	 * milisegundo)
-	 * 
-	 * Puede dar problemas si la fecha forma parte de la identidad de la avería.
+	 * Una factura creada y con averías está SIN_ABONAR.
 	 *
-	 * @return the averia
 	 * @throws BusinessException the business exception
 	 */
-	private Averia crearOtraAveria() throws BusinessException {
-		sleep( 100 );
-		Averia averia = new Averia(vehiculo, "falla la junta la trocla otra vez");
-		averia.assignTo( mecanico );
+	@Test
+	public void testFacturaCreadaSinAbonar() throws BusinessException {
+		List<Averia> averias = new ArrayList<Averia>();
+		averias.add( averia );
+		Factura factura = new Factura( 0L, averias );
 		
-		Intervencion intervencion = new Intervencion(mecanico, averia);
-		intervencion.setMinutos( 45 );
+		assertTrue( factura.getStatus() ==  FacturaStatus.SIN_ABONAR );
+	}
+
+	/**
+	 * Cálculo del importe de factura con una avería de 260€ + IVA 21% La averia
+	 * se añade en el constructor .
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testImporteFactura() throws BusinessException {
+		List<Averia> averias = new ArrayList<>();
+		averias.add( averia );
+		Factura factura = new Factura( 0L, averias );
 		
-		Sustitucion sustitucion = new Sustitucion(repuesto, intervencion);
-		sustitucion.setCantidad( 1 );
+		assertTrue( factura.getImporte() ==  302.5 );
+	}
+
+	/**
+	 * Cálculo del importe de factura con una avería de 260€ + IVA 21% La averia
+	 * se añade por asociacion .
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testImporteFacturaAddAveria() throws BusinessException {
+		Factura factura = new Factura( 0L ); // 0L es el numero de factura
+		factura.addAveria(averia);
 		
-		averia.markAsFinished();
+		assertTrue( factura.getImporte() ==  302.5 );
+	}
+
+	/**
+	 * Dos averias añadidas a la factura por asociación.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testImporteFacturaAddDosAverias() throws BusinessException {
+		Factura factura = new Factura( 0L );
+		factura.addAveria( averia );
+		factura.addAveria( crearOtraAveria() );
 		
-		// importe = 100 € repuesto + 37.5 € mano de obra
-		return averia;
+		assertTrue( factura.getImporte() ==  468.88 ); // redondeo a 2 centimos
+	}
+
+	/**
+	 * Si la factura es anterior al 1/7/2012 el IVA es el 18%, el importe es
+	 * 250€ + IVA 18%.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testImporteFacturaAntesDeJulio() throws BusinessException {
+		Date JUNE_6_2012 = DateUtil.fromString("15/6/2012");
+		
+		List<Averia> averias = new ArrayList<Averia>();
+		averias.add( averia );
+		Factura factura = new Factura( 0L, JUNE_6_2012, averias ); // iva 18%
+		
+		assertTrue( factura.getImporte() ==  295.0 );
 	}
 	
+	/**
+	 * Dos averías añadidas a la factura en el constructor.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testImporteFacturadDosAverias() throws BusinessException {
+		List<Averia> averias = new ArrayList<Averia>();
+		averias.add( averia );
+		averias.add( crearOtraAveria() );
+		Factura factura = new Factura( 0L, averias );
+		
+		// importe = (137.5 nueva averia + 250.0 primera averia) * 21% iva
+		assertTrue( factura.getImporte() ==  468.88 ); // redondeo a 2 centimos
+	}
+
 	/**
 	 * La fecha de factura se devuelve clonada.
 	 */
@@ -281,19 +294,6 @@ public class FacturaTest {
 		d.setYear( 0 );
 		
 		assertTrue( averia.getFecha().getYear() == new Date().getYear());
-	}
-
-	/**
-	 * Sleep.
-	 *
-	 * @param millis the millis
-	 */
-	private void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			// dont't care if this occurs
-		}
 	}
 
 }

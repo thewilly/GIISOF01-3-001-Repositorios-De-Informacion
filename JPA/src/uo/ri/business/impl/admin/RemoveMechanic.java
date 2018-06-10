@@ -51,17 +51,6 @@ public class RemoveMechanic implements Command<Void> {
 		this.mechanicId = mechanicId;
 	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		MecanicoRepository repository = Factory.repository.forMechanic();
-		Mecanico mechanic = repository.findById(mechanicId);
-		assertCanBeDeleted(mechanic);
-		repository.remove(mechanic);
-		return null;
-	}
-
 	/**
 	 * This method checks if the mechanic can be deleted, by checking if it
 	 * exists, if it doesn't have any kind of intervention nor any assignment.
@@ -73,6 +62,17 @@ public class RemoveMechanic implements Command<Void> {
 		Check.isNotNull(mechanic, "El mecánico no existe");
 		Check.isTrue(mechanic.getIntervenciones().size() == 0, "El mecánico tiene interveciones");
 		Check.isTrue(mechanic.getAsignadas().size() == 0, "El mecánico tiene interveciones");
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public Void execute() throws BusinessException {
+		MecanicoRepository repository = Factory.repository.forMechanic();
+		Mecanico mechanic = repository.findById(mechanicId);
+		assertCanBeDeleted(mechanic);
+		repository.remove(mechanic);
+		return null;
 	}
 
 }

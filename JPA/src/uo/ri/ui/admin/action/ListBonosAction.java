@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.business.dto.VoucherSummary;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -51,6 +51,6 @@ public class ListBonosAction implements Action {
 		Console.println("Listado de bonos");
 		AdminService admin = Factory.service.forAdmin();
 		List<VoucherSummary> list = admin.getVoucherSummary();
-		Printer.printVoucherSummary(list);
+		AbstractPrinter.printBondsSummary(list);
 	}
 }

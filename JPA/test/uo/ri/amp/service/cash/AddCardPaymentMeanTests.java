@@ -78,25 +78,7 @@ public class AddCardPaymentMeanTests extends BaseServiceTests {
 		assertTrue( expected.getAcumulado() == 0.0 );
 		assertTrue( expected.getNumero().equals( card.cardNumber ) );
 		assertTrue( expected.getTipo().equals( card.cardType ) );
-		assertTrue( expected.getValidez().equals( card.cardExpiration ) );
-	}
-	
-	/**
-	 * El valor de acumulado se ignora al añadir nueva tarjeta.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAddNewCardWithAccumulated() throws BusinessException {
-		CardDto card = Fixture.newCardDto( c.getId() );
-		card.accumulated = 1000.0; /* € */
-		
-		CashService svc = Factory.service.forCash();
-		svc.addCardPaymentMean(card);
-		
-		TarjetaCredito expected = FixtureRepository.findCardByNumber( card.cardNumber );
-		
-		assertTrue( expected.getAcumulado() == 0.0 );
+		assertTrue( expected.getValidez().equals( card.cardExpirationDate ) );
 	}
 	
 	/**
@@ -111,7 +93,6 @@ public class AddCardPaymentMeanTests extends BaseServiceTests {
 		CashService svc = Factory.service.forCash();
 		svc.addCardPaymentMean(card);  // must raise exception
 	}
-	
 	
 	/**
 	 * No se puede añadir una tarjeta cuyo número ya existe en el sistema.
@@ -132,7 +113,8 @@ public class AddCardPaymentMeanTests extends BaseServiceTests {
 		cardWithRepeatedNumber.cardNumber = card.cardNumber;
 		svc.addCardPaymentMean( cardWithRepeatedNumber );   // must raise exception
 	}
-
+	
+	
 	/**
 	 * No se puede añadir una tarjeta cuyo número ya existe en el sistema
 	 * incluso si es de otro cliente.
@@ -153,6 +135,24 @@ public class AddCardPaymentMeanTests extends BaseServiceTests {
 		CardDto cardWithRepeatedNumber = Fixture.newCardDto( otherClient.getId() );
 		cardWithRepeatedNumber.cardNumber = card.cardNumber;
 		svc.addCardPaymentMean( cardWithRepeatedNumber );   // must raise exception
+	}
+
+	/**
+	 * El valor de acumulado se ignora al añadir nueva tarjeta.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testAddNewCardWithAccumulated() throws BusinessException {
+		CardDto card = Fixture.newCardDto( c.getId() );
+		card.accumulated = 1000.0; /* € */
+		
+		CashService svc = Factory.service.forCash();
+		svc.addCardPaymentMean(card);
+		
+		TarjetaCredito expected = FixtureRepository.findCardByNumber( card.cardNumber );
+		
+		assertTrue( expected.getAcumulado() == 0.0 );
 	}
 
 }

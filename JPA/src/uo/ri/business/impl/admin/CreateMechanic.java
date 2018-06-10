@@ -50,20 +50,10 @@ public class CreateMechanic implements Command<Void> {
 	/**
 	 * Instantiates a new creates the mechanic.
 	 *
-	 * @param mecanico the mecanico
+	 * @param mechanic the mecanico
 	 */
-	public CreateMechanic( MechanicDto mecanico ) {
-		this.dto = mecanico;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		Mecanico mechanic = DtoAssembler.toEntity( dto );
-		assertNotRepeatedDni( dto.dni );
-		repository.add( mechanic );
-		return null;
+	public CreateMechanic( MechanicDto mechanic ) {
+		this.dto = mechanic;
 	}
 
 	/**
@@ -76,5 +66,15 @@ public class CreateMechanic implements Command<Void> {
 	 */
 	private void assertNotRepeatedDni( String dni ) throws BusinessException {
 		Check.isNull( repository.findByDni( dni ), "Ese dni ya existe" );
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.impl.Command#execute()
+	 */
+	public Void execute() throws BusinessException {
+		Mecanico mechanic = DtoAssembler.toEntity( dto );
+		assertNotRepeatedDni( dto.dni );
+		repository.add( mechanic );
+		return null;
 	}
 }

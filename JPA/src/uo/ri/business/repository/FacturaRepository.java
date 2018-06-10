@@ -43,16 +43,16 @@ public interface FacturaRepository extends Repository<Factura> {
 	Factura findByNumber(Long numero);
 
 	/**
-	 * Gets the next invoice number.
-	 *
-	 * @return the next invoice number
-	 */
-	Long getNextInvoiceNumber();
-
-	/**
 	 * Find unused with bono 500.
 	 *
 	 * @return the list
 	 */
 	List<Factura> findUnusedWithBono500();
+
+	/**
+	 * Gets the next invoice number.
+	 *
+	 * @return the next invoice number
+	 */
+	Long getNextInvoiceNumber();
 }

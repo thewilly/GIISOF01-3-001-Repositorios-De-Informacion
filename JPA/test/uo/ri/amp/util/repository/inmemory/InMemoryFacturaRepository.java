@@ -50,15 +50,6 @@ public class InMemoryFacturaRepository
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
-	 */
-	@Override
-	public Long getNextInvoiceNumber() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
 	 */
 	@Override
@@ -67,6 +58,15 @@ public class InMemoryFacturaRepository
 				.filter(f -> f.getImporte() >= 500)
 				.filter(f -> ! f.isBono500Used())
 				.collect( Collectors.toList());
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
+	 */
+	@Override
+	public Long getNextInvoiceNumber() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

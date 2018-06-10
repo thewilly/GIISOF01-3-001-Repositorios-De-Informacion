@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.ForemanService;
 import uo.ri.business.dto.ClientDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 
 /**
  * This class is the one that is called in the menu when an option that does not
@@ -50,7 +50,7 @@ public class ListClientsAction implements Action {
 		List<ClientDto> clientes = fp.findAllClients();
 		Console.println("Listado de clientes:");
 		for (ClientDto clientDto : clientes) {
-			Printer.printClient(clientDto);
+			AbstractPrinter.printClient(clientDto);
 		}
 	}
 

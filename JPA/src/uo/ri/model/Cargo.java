@@ -94,6 +94,24 @@ public class Cargo {
 	}
 
 	/**
+	 * Sets the factura.
+	 *
+	 * @param factura the factura
+	 */
+	void _setFactura(Factura factura) {
+		this.factura = factura;
+	}
+
+	/**
+	 * Sets the medio pago.
+	 *
+	 * @param medioPago the medio pago
+	 */
+	void _setMedioPago(MedioPago medioPago) {
+		this.medioPago = medioPago;
+	}
+
+	/**
 	 * This method checks if the payment method fulfills the condition for the
 	 * charge it will have. If it is a credit card, the date shouldn't be
 	 * expired, and the voucher should have enough money available.
@@ -116,6 +134,78 @@ public class Cargo {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals( Object obj ) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!( obj instanceof Cargo )) {
+			return false;
+		}
+		Cargo other = (Cargo) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals( other.id )) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Gets the factura.
+	 *
+	 * @return the factura
+	 */
+	public Factura getFactura() {
+		return factura;
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Gets the importe.
+	 *
+	 * @return the importe
+	 */
+	public Double getImporte() {
+		return importe;
+	}
+
+	/**
+	 * Gets the medio pago.
+	 *
+	 * @return the medio pago
+	 */
+	public MedioPago getMedioPago() {
+		return medioPago;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
+		return result;
+	}
+
 	/**
 	 * Anula (retrocede) este cargo de la factura y el medio de pago Solo se
 	 * puede hacer si la factura no está abonada Decrementar el acumulado del
@@ -129,59 +219,5 @@ public class Cargo {
 		}
 		medioPago.decrementarAcumulado(importe);
 		Association.Cargar.unlink(this);
-	}
-
-	/**
-	 * Gets the factura.
-	 *
-	 * @return the factura
-	 */
-	public Factura getFactura() {
-		return factura;
-	}
-
-	/**
-	 * Sets the factura.
-	 *
-	 * @param factura the factura
-	 */
-	void _setFactura(Factura factura) {
-		this.factura = factura;
-	}
-
-	/**
-	 * Gets the medio pago.
-	 *
-	 * @return the medio pago
-	 */
-	public MedioPago getMedioPago() {
-		return medioPago;
-	}
-
-	/**
-	 * Sets the medio pago.
-	 *
-	 * @param medioPago the medio pago
-	 */
-	void _setMedioPago(MedioPago medioPago) {
-		this.medioPago = medioPago;
-	}
-
-	/**
-	 * Gets the importe.
-	 *
-	 * @return the importe
-	 */
-	public Double getImporte() {
-		return importe;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
 	}
 }

@@ -39,14 +39,6 @@ import uo.ri.business.repository.VehiculoRepository;
 public class JpaRepositoryFactory implements RepositoryFactory {
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
-	 */
-	@Override
-	public MecanicoRepository forMechanic() {
-		return new MechanicJpaRepository();
-	}
-
-	/* (non-Javadoc)
 	 * @see uo.ri.business.repository.RepositoryFactory#forAveria()
 	 */
 	@Override
@@ -55,19 +47,11 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
 	 */
 	@Override
-	public MedioPagoRepository forMedioPago() {
-		return new MedioPagoJpaRepository();
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
-	 */
-	@Override
-	public FacturaRepository forFactura() {
-		return new FacturaJpaRepository();
+	public CargoRepository forCargo() {
+		return new CargoJpaRepository();
 	}
 
 	/* (non-Javadoc)
@@ -79,11 +63,27 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
+	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
 	 */
 	@Override
-	public RepuestoRepository forRepuesto() {
-		return new RepuestoJpaRepository();
+	public FacturaRepository forFactura() {
+		return new FacturaJpaRepository();
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
+	 */
+	@Override
+	public MecanicoRepository forMechanic() {
+		return new MechanicJpaRepository();
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+	 */
+	@Override
+	public MedioPagoRepository forMedioPago() {
+		return new MedioPagoJpaRepository();
 	}
 
 	/* (non-Javadoc)
@@ -95,11 +95,11 @@ public class JpaRepositoryFactory implements RepositoryFactory {
 	}
 
 	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
+	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
 	 */
 	@Override
-	public CargoRepository forCargo() {
-		return new CargoJpaRepository();
+	public RepuestoRepository forRepuesto() {
+		return new RepuestoJpaRepository();
 	}
 
 	/* (non-Javadoc)

@@ -122,30 +122,30 @@ public class Averia {
 	}
 
 	/**
-	 * Gets the descripcion.
+	 * Gets the intervenciones.
 	 *
-	 * @return the descripcion
+	 * @return the sets the
 	 */
-	public String getDescripcion() {
-		return descripcion;
+	Set<Intervencion> _getIntervenciones() {
+		return intervenciones;
 	}
 
 	/**
-	 * Sets the descripcion.
+	 * Sets the factura.
 	 *
-	 * @param descripcion the new descripcion
+	 * @param factura the factura
 	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	void _setFactura(Factura factura) {
+		this.factura = factura;
 	}
 
 	/**
-	 * Gets the vehiculo.
+	 * Sets the mecanico.
 	 *
-	 * @return the vehiculo
+	 * @param mecanico the mecanico
 	 */
-	public Vehiculo getVehiculo() {
-		return vehiculo;
+	void _setMecanico(Mecanico mecanico) {
+		this.mecanico = mecanico;
 	}
 
 	/**
@@ -158,88 +158,42 @@ public class Averia {
 	}
 
 	/**
-	 * Gets the fecha.
+	 * Asigna la averia al mecanico.
 	 *
-	 * @return the fecha
+	 * @param mecanico the mecanico
+	 * @throws BusinessException the business exception
 	 */
-	public Date getFecha() {
-		return new Date(fecha.getTime());
+	public void assignTo(Mecanico mecanico) throws BusinessException {
+		if (getStatus() != AveriaStatus.ABIERTA) {
+			throw new BusinessException("Avería no está en estado abierto.");
+		}
+		Association.Asignar.link(mecanico, this);
+		this.status = AveriaStatus.ASIGNADA;
 	}
 
 	/**
-	 * Gets the importe.
-	 *
-	 * @return the importe
+	 * This method calculates the total amount of all the interventions of the
+	 * breakdown.
 	 */
-	public double getImporte() {
-		calcularImporte();
-		return importe;
+	void calcularImporte() {
+		Double total = 0.0;
+		for (Intervencion i : intervenciones)
+			total += i.getImporte();
+		importe = total;
 	}
 
 	/**
-	 * Gets the status.
+	 * This method breaks the assignment with the mechanic that is has been
+	 * assign to the breakdown with itself.
 	 *
-	 * @return the status
+	 * @throws BusinessException the business exception
 	 */
-	public AveriaStatus getStatus() {
-		return status;
-	}
-
-	/**
-	 * Gets the intervenciones.
-	 *
-	 * @return the intervenciones
-	 */
-	public Set<Intervencion> getIntervenciones() {
-		return new HashSet<>(intervenciones);
-	}
-
-	/**
-	 * Gets the intervenciones.
-	 *
-	 * @return the sets the
-	 */
-	Set<Intervencion> _getIntervenciones() {
-		return intervenciones;
-	}
-
-	/**
-	 * Gets the factura.
-	 *
-	 * @return the factura
-	 */
-	public Factura getFactura() {
-		return factura;
-	}
-
-	/**
-	 * Sets the factura.
-	 *
-	 * @param factura the factura
-	 */
-	void _setFactura(Factura factura) {
-		this.factura = factura;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Averia [descripcion=" + descripcion + ", fecha=" + fecha + ", importe=" + importe + ", status=" + status
-				+ ", vehiculo=" + vehiculo + ", mecanico=" + mecanico + "]";
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
-		result = prime * result + ((vehiculo == null) ? 0 : vehiculo.hashCode());
-		return result;
+	public void desassign() throws BusinessException {
+		if (getStatus() != AveriaStatus.ASIGNADA) {
+			throw new BusinessException("Avería no está asignada.");
+		}
+		Association.Asignar.unlink(mecanico, this);
+		this.status = AveriaStatus.ABIERTA;
 	}
 
 	/* (non-Javadoc)
@@ -268,125 +222,6 @@ public class Averia {
 	}
 
 	/**
-	 * Gets the mecanico.
-	 *
-	 * @return the mecanico
-	 */
-	public Mecanico getMecanico() {
-		return mecanico;
-	}
-
-	/**
-	 * Sets the mecanico.
-	 *
-	 * @param mecanico the mecanico
-	 */
-	void _setMecanico(Mecanico mecanico) {
-		this.mecanico = mecanico;
-	}
-
-	/**
-	 * Asigna la averia al mecanico.
-	 *
-	 * @param mecanico the mecanico
-	 * @throws BusinessException the business exception
-	 */
-	public void assignTo(Mecanico mecanico) throws BusinessException {
-		if (getStatus() != AveriaStatus.ABIERTA) {
-			throw new BusinessException("Avería no está en estado abierto.");
-		}
-		Association.Asignar.link(mecanico, this);
-		this.status = AveriaStatus.ASIGNADA;
-	}
-
-	/**
-	 * El mecánico da por finalizada esta avería, entonces se calcula el
-	 * importe.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void markAsFinished() throws BusinessException {
-		if (getStatus() != AveriaStatus.ASIGNADA) {
-			throw new BusinessException("Avería no está asignada.");
-		}
-		calcularImporte();
-		Association.Asignar.unlink(mecanico, this);
-		this.status = AveriaStatus.TERMINADA;
-	}
-
-	/**
-	 * This method calculates the total amount of all the interventions of the
-	 * breakdown.
-	 */
-	void calcularImporte() {
-		Double total = 0.0;
-		for (Intervencion i : intervenciones)
-			total += i.getImporte();
-		importe = total;
-	}
-
-	/**
-	 * Una averia en estado TERMINADA se puede asignar a otro mecánico (el
-	 * primero no ha podido terminar la reparación), pero debe ser pasada a
-	 * ABIERTA primero.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void reopen() throws BusinessException {
-		if (getStatus() != AveriaStatus.TERMINADA) {
-			throw new BusinessException("Avería no está terminada.");
-		}
-		this.status = AveriaStatus.ABIERTA;
-	}
-
-	/**
-	 * This method breaks the assignment with the mechanic that is has been
-	 * assign to the breakdown with itself.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void desassign() throws BusinessException {
-		if (getStatus() != AveriaStatus.ASIGNADA) {
-			throw new BusinessException("Avería no está asignada.");
-		}
-		Association.Asignar.unlink(mecanico, this);
-		this.status = AveriaStatus.ABIERTA;
-	}
-
-	/**
-	 * Una avería ya facturada se elimina de la factura.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void markBackToFinished() throws BusinessException {
-		if (getStatus() != AveriaStatus.FACTURADA) {
-			throw new BusinessException("Avería no está facturada");
-		}
-		this.status = AveriaStatus.TERMINADA;
-	}
-
-	/**
-	 * Se marca la avería como facturada.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	public void markAsInvoiced() throws BusinessException {
-		if (factura == null) {
-			throw new BusinessException("Factura inexistente");
-		}
-		this.status = AveriaStatus.FACTURADA;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
 	 * This method checks if the current breakdown is suitable for been used for
 	 * creating a voucher. it should be invoiced, payed, and not used other
 	 * time.
@@ -406,13 +241,106 @@ public class Averia {
 	}
 
 	/**
-	 * This method changes the state of the breakdown to used for creating a
-	 * voucher.
+	 * Gets the descripcion.
+	 *
+	 * @return the descripcion
 	 */
-	public void markAsBono3Used() {
-		if (!isUsadaBono3()) {
-			this.usadaBono3 = true;
-		}
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * Gets the factura.
+	 *
+	 * @return the factura
+	 */
+	public Factura getFactura() {
+		return factura;
+	}
+
+	/**
+	 * Gets the fecha.
+	 *
+	 * @return the fecha
+	 */
+	public Date getFecha() {
+		return new Date(fecha.getTime());
+	}
+
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * Gets the importe.
+	 *
+	 * @return the importe
+	 */
+	public double getImporte() {
+		calcularImporte();
+		return importe;
+	}
+
+	/**
+	 * Gets the intervenciones.
+	 *
+	 * @return the intervenciones
+	 */
+	public Set<Intervencion> getIntervenciones() {
+		return new HashSet<>(intervenciones);
+	}
+
+	/**
+	 * Gets the mecanico.
+	 *
+	 * @return the mecanico
+	 */
+	public Mecanico getMecanico() {
+		return mecanico;
+	}
+
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
+	public AveriaStatus getStatus() {
+		return status;
+	}
+
+	/**
+	 * Gets the vehiculo.
+	 *
+	 * @return the vehiculo
+	 */
+	public Vehiculo getVehiculo() {
+		return vehiculo;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		result = prime * result + ((vehiculo == null) ? 0 : vehiculo.hashCode());
+		return result;
+	}
+
+	/**
+	 * This method checks if the breakdown is already invoiced.
+	 *
+	 * @return true if it is, false otherwise
+	 */
+	public boolean isInvoiced() {
+		return this.status == AveriaStatus.FACTURADA;
 	}
 
 	/**
@@ -425,11 +353,83 @@ public class Averia {
 	}
 
 	/**
-	 * This method checks if the breakdown is already invoiced.
-	 *
-	 * @return true if it is, false otherwise
+	 * This method changes the state of the breakdown to used for creating a
+	 * voucher.
 	 */
-	public boolean isInvoiced() {
-		return this.status == AveriaStatus.FACTURADA;
+	public void markAsBono3Used() {
+		if (!isUsadaBono3()) {
+			this.usadaBono3 = true;
+		}
+	}
+
+	/**
+	 * El mecánico da por finalizada esta avería, entonces se calcula el
+	 * importe.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	public void markAsFinished() throws BusinessException {
+		if (getStatus() != AveriaStatus.ASIGNADA) {
+			throw new BusinessException("Avería no está asignada.");
+		}
+		calcularImporte();
+		Association.Asignar.unlink(mecanico, this);
+		this.status = AveriaStatus.TERMINADA;
+	}
+
+	/**
+	 * Se marca la avería como facturada.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	public void markAsInvoiced() throws BusinessException {
+		if (factura == null) {
+			throw new BusinessException("Factura inexistente");
+		}
+		this.status = AveriaStatus.FACTURADA;
+	}
+
+	/**
+	 * Una avería ya facturada se elimina de la factura.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	public void markBackToFinished() throws BusinessException {
+		if (getStatus() != AveriaStatus.FACTURADA) {
+			throw new BusinessException("Avería no está facturada");
+		}
+		this.status = AveriaStatus.TERMINADA;
+	}
+
+	/**
+	 * Una averia en estado TERMINADA se puede asignar a otro mecánico (el
+	 * primero no ha podido terminar la reparación), pero debe ser pasada a
+	 * ABIERTA primero.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	public void reopen() throws BusinessException {
+		if (getStatus() != AveriaStatus.TERMINADA) {
+			throw new BusinessException("Avería no está terminada.");
+		}
+		this.status = AveriaStatus.ABIERTA;
+	}
+
+	/**
+	 * Sets the descripcion.
+	 *
+	 * @param descripcion the new descripcion
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Averia [descripcion=" + descripcion + ", fecha=" + fecha + ", importe=" + importe + ", status=" + status
+				+ ", vehiculo=" + vehiculo + ", mecanico=" + mecanico + "]";
 	}
 }

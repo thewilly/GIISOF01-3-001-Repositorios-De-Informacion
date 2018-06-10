@@ -54,33 +54,16 @@ public class CargoTests {
 	}
 
 	/**
-	 * A charge to a card increases the accumulated.
+	 * A credit card cannot be charged if its expiration date is over.
 	 *
 	 * @throws BusinessException the business exception
 	 */
-	@Test
-	public void testCargoTarjeta() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123");
+	@Test(expected=BusinessException.class)
+	public void tesChargeExpiredCard() throws BusinessException {
+		TarjetaCredito t = new TarjetaCredito("123", "TTT", DateUtil.yesterday());
 		Factura f = new Factura(123L);
 
-		new Cargo(f, t, 100.0);
-
-		assertTrue(t.getAcumulado() == 100.0);
-	}
-
-	/**
-	 * A charge to cash increases the accumulated.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargoMetalico() throws BusinessException {
-		Metalico m = new Metalico(new Cliente("123", "n", "a"));
-		Factura f = new Factura(123L);
-
-		new Cargo(f, m, 100.0);
-
-		assertTrue(m.getAcumulado() == 100.0);
+		new Cargo(f, t, 100.0); // Card validity date expired exception
 	}
 
 	/**
@@ -101,16 +84,33 @@ public class CargoTests {
 	}
 
 	/**
-	 * A credit card cannot be charged if its expiration date is over.
+	 * A charge to cash increases the accumulated.
 	 *
 	 * @throws BusinessException the business exception
 	 */
-	@Test(expected=BusinessException.class)
-	public void tesChargeExpiredCard() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123", "TTT", DateUtil.yesterday());
+	@Test
+	public void testCargoMetalico() throws BusinessException {
+		Metalico m = new Metalico(new Cliente("123", "n", "a"));
 		Factura f = new Factura(123L);
 
-		new Cargo(f, t, 100.0); // Card validity date expired exception
+		new Cargo(f, m, 100.0);
+
+		assertTrue(m.getAcumulado() == 100.0);
+	}
+
+	/**
+	 * A charge to a card increases the accumulated.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testCargoTarjeta() throws BusinessException {
+		TarjetaCredito t = new TarjetaCredito("123");
+		Factura f = new Factura(123L);
+
+		new Cargo(f, t, 100.0);
+
+		assertTrue(t.getAcumulado() == 100.0);
 	}
 
 	/**

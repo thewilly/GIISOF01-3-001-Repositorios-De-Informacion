@@ -34,7 +34,7 @@ import uo.ri.business.impl.admin.FindAllBonds;
 import uo.ri.business.impl.admin.FindAllMechanics;
 import uo.ri.business.impl.admin.FindAllBondsByClientId;
 import uo.ri.business.impl.admin.FindMechanicById;
-import uo.ri.business.impl.admin.GenerateVouchers;
+import uo.ri.business.impl.admin.GenerateBonds;
 import uo.ri.business.impl.admin.UpdateMechanic;
 import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
@@ -58,14 +58,6 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void addMechanic(MechanicDto mecanico) throws BusinessException {
 		executor.execute(new CreateMechanic(mecanico));
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#updateMechanic(uo.ri.business.dto.MechanicDto)
-	 */
-	@Override
-	public void updateMechanic(MechanicDto mecanico) throws BusinessException {
-		executor.execute(new UpdateMechanic(mecanico));
 	}
 
 	/* (non-Javadoc)
@@ -105,7 +97,7 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	@Override
 	public int generateVouchers() throws BusinessException {
-		return (executor.execute(new GenerateVouchers()));
+		return (executor.execute(new GenerateBonds()));
 	}
 
 	/* (non-Javadoc)
@@ -114,6 +106,14 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<VoucherSummary> getVoucherSummary() throws BusinessException {
 		return executor.execute(new FindAllBonds());
+	}
+
+	/* (non-Javadoc)
+	 * @see uo.ri.business.AdminService#updateMechanic(uo.ri.business.dto.MechanicDto)
+	 */
+	@Override
+	public void updateMechanic(MechanicDto mecanico) throws BusinessException {
+		executor.execute(new UpdateMechanic(mecanico));
 	}
 
 }

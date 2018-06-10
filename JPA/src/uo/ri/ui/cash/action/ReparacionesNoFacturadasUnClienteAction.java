@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.CashService;
 import uo.ri.business.dto.FailureDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -63,7 +63,7 @@ public class ReparacionesNoFacturadasUnClienteAction implements Action {
 		}
 
 		for (FailureDto rep : reps) {
-			Printer.printRepairing(rep);
+			AbstractPrinter.printRepairing(rep);
 		}
 	}
 

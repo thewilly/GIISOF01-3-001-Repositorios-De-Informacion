@@ -91,68 +91,13 @@ public class Repuesto {
 		this.precio = precio;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Repuesto [codigo=" + codigo + ", descripcion=" + descripcion + ", precio=" + precio + "]";
-	}
-
 	/**
-	 * Gets the descripcion.
+	 * Gets the sustituciones.
 	 *
-	 * @return the descripcion
+	 * @return the sets the
 	 */
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	/**
-	 * Sets the descripcion.
-	 *
-	 * @param descripcion the new descripcion
-	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	/**
-	 * Gets the precio.
-	 *
-	 * @return the precio
-	 */
-	public double getPrecio() {
-		return precio;
-	}
-
-	/**
-	 * Sets the precio.
-	 *
-	 * @param precio the new precio
-	 */
-	public void setPrecio(double precio) {
-		this.precio = precio;
-	}
-
-	/**
-	 * Gets the codigo.
-	 *
-	 * @return the codigo
-	 */
-	public String getCodigo() {
-		return codigo;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
-		return result;
+	Set<Sustitucion> _getSustituciones() {
+		return sustituciones;
 	}
 
 	/* (non-Javadoc)
@@ -176,21 +121,21 @@ public class Repuesto {
 	}
 
 	/**
-	 * Gets the sustituciones.
+	 * Gets the codigo.
 	 *
-	 * @return the sustituciones
+	 * @return the codigo
 	 */
-	public Set<Sustitucion> getSustituciones() {
-		return new HashSet<>(sustituciones);
+	public String getCodigo() {
+		return codigo;
 	}
 
 	/**
-	 * Gets the sustituciones.
+	 * Gets the descripcion.
 	 *
-	 * @return the sets the
+	 * @return the descripcion
 	 */
-	Set<Sustitucion> _getSustituciones() {
-		return sustituciones;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
 	/**
@@ -200,5 +145,60 @@ public class Repuesto {
 	 */
 	public Long getId() {
 		return id;
+	}
+
+	/**
+	 * Gets the precio.
+	 *
+	 * @return the precio
+	 */
+	public double getPrecio() {
+		return precio;
+	}
+
+	/**
+	 * Gets the sustituciones.
+	 *
+	 * @return the sustituciones
+	 */
+	public Set<Sustitucion> getSustituciones() {
+		return new HashSet<>(sustituciones);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
+		return result;
+	}
+
+	/**
+	 * Sets the descripcion.
+	 *
+	 * @param descripcion the new descripcion
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * Sets the precio.
+	 *
+	 * @param precio the new precio
+	 */
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Repuesto [codigo=" + codigo + ", descripcion=" + descripcion + ", precio=" + precio + "]";
 	}
 }

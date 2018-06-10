@@ -41,11 +41,11 @@ public interface Repository<T> {
 	void add(T t);
 	
 	/**
-	 * Removes the.
+	 * Find all.
 	 *
-	 * @param t the t
+	 * @return the list
 	 */
-	void remove(T t);
+	List<T> findAll();
 	
 	/**
 	 * Find by id.
@@ -56,10 +56,10 @@ public interface Repository<T> {
 	T findById(Long id);
 	
 	/**
-	 * Find all.
+	 * Removes the.
 	 *
-	 * @return the list
+	 * @param t the t
 	 */
-	List<T> findAll();
+	void remove(T t);
 }
 

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import alb.util.console.Console;
 
-public class InvoicePrinter extends Printer {
+public class InvoicePrinter extends AbstractPrinter {
 
 	public InvoicePrinter( Map<String, Object> invoiceToPrint ) {
 		super.map = invoiceToPrint;

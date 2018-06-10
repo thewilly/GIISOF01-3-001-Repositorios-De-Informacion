@@ -67,6 +67,24 @@ public class BonoPor3AveriasTests {
 	private Mecanico m;
 
 	/**
+	 * Crear averia.
+	 *
+	 * @param v the v
+	 * @param m the m
+	 * @return the averia
+	 * @throws BusinessException the business exception
+	 */
+	private Averia crearAveria(Vehiculo v, Mecanico m) throws BusinessException {
+		sleep( 10 /*msec*/);   // retardo para evitar repetición de identidad averia
+		Averia a = new Averia(v, "for test");
+		a.assignTo(m);
+		Intervencion i = new Intervencion(m, a);
+		i.setMinutos(10 /* min */);
+		a.markAsFinished();
+		return a;
+	}
+
+	/**
 	 * Sets the up.
 	 *
 	 * @throws Exception the exception
@@ -88,74 +106,16 @@ public class BonoPor3AveriasTests {
 	}
 
 	/**
-	 * Crear averia.
+	 * Sleep.
 	 *
-	 * @param v the v
-	 * @param m the m
-	 * @return the averia
-	 * @throws BusinessException the business exception
+	 * @param millis the millis
 	 */
-	private Averia crearAveria(Vehiculo v, Mecanico m) throws BusinessException {
-		sleep( 10 /*msec*/);   // retardo para evitar repetición de identidad averia
-		Averia a = new Averia(v, "for test");
-		a.assignTo(m);
-		Intervencion i = new Intervencion(m, a);
-		i.setMinutos(10 /* min */);
-		a.markAsFinished();
-		return a;
-	}
-
-	/**
-	 * Un cliente con tres averias pagadas y no usuadas para bono devuelve esas
-	 * tres averias como elegibles para bono por 3 averías (bono3).
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void test3AveriasGeneranBono() throws BusinessException {
-		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
-		new Cargo(f, cash, f.getImporte());	
-		f.settle();							// Factura pasa a pagada
-
-		List<Averia> averias = c.getAveriasBono3NoUsadas();
-		assertTrue( averias.size() == 3 );
-		assertTrue( averias.stream().allMatch(av -> av.esElegibleParaBono3() ) );
-	}
-
-	/**
-	 * Un cliente con tres averias facturadas y no pagadas no devuelve averías
-	 * como elegibles para bono por 3 averías.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void test3AveriasNoPagadas() throws BusinessException {
-		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
-		new Cargo(f, cash, f.getImporte());	
-		// f.settle();						<-- La factura no se liquida
-
-		assertTrue( c.getAveriasBono3NoUsadas().size() == 0 );
-	}
-
-	/**
-	 * Un cliente con dos averias pagadas y no usuadas para bono devuelve solo
-	 * dos averias como elegibles para bono por 3 averías.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testMenos3Averias() throws BusinessException {
-		Averia a = as.get(0);
-		Association.Averiar.unlink(v, a);
-		as.remove( a );						// Solo dos averias
-		
-		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
-		new Cargo(f, cash, f.getImporte());	
-		f.settle();							// Factura pasa a pagada
-		
-		List<Averia> averias = c.getAveriasBono3NoUsadas();
-		assertTrue( averias.size() == 2 );
-		assertTrue( averias.stream().allMatch(av -> av.esElegibleParaBono3() ) );
+	private void sleep(int millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			// dont't care if this occurs
+		}
 	}
 
 	/**
@@ -195,6 +155,38 @@ public class BonoPor3AveriasTests {
 		List<Averia> averias = c.getAveriasBono3NoUsadas();
 		assertTrue( averias.size() == 2 );
 		assertTrue( averias.stream().allMatch(av -> av.esElegibleParaBono3() ) );
+	}
+
+	/**
+	 * Un cliente con tres averias pagadas y no usuadas para bono devuelve esas
+	 * tres averias como elegibles para bono por 3 averías (bono3).
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void test3AveriasGeneranBono() throws BusinessException {
+		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
+		new Cargo(f, cash, f.getImporte());	
+		f.settle();							// Factura pasa a pagada
+
+		List<Averia> averias = c.getAveriasBono3NoUsadas();
+		assertTrue( averias.size() == 3 );
+		assertTrue( averias.stream().allMatch(av -> av.esElegibleParaBono3() ) );
+	}
+
+	/**
+	 * Un cliente con tres averias facturadas y no pagadas no devuelve averías
+	 * como elegibles para bono por 3 averías.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void test3AveriasNoPagadas() throws BusinessException {
+		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
+		new Cargo(f, cash, f.getImporte());	
+		// f.settle();						<-- La factura no se liquida
+
+		assertTrue( c.getAveriasBono3NoUsadas().size() == 0 );
 	}
 
 	/**
@@ -243,15 +235,23 @@ public class BonoPor3AveriasTests {
 	}
 
 	/**
-	 * Sleep.
+	 * Un cliente con dos averias pagadas y no usuadas para bono devuelve solo
+	 * dos averias como elegibles para bono por 3 averías.
 	 *
-	 * @param millis the millis
+	 * @throws BusinessException the business exception
 	 */
-	private void sleep(int millis) {
-		try {
-			Thread.sleep(millis);
-		} catch (InterruptedException e) {
-			// dont't care if this occurs
-		}
+	@Test
+	public void testMenos3Averias() throws BusinessException {
+		Averia a = as.get(0);
+		Association.Averiar.unlink(v, a);
+		as.remove( a );						// Solo dos averias
+		
+		Factura f = new Factura(123L, as);  // Averias pasan a facturadas
+		new Cargo(f, cash, f.getImporte());	
+		f.settle();							// Factura pasa a pagada
+		
+		List<Averia> averias = c.getAveriasBono3NoUsadas();
+		assertTrue( averias.size() == 2 );
+		assertTrue( averias.stream().allMatch(av -> av.esElegibleParaBono3() ) );
 	}
 }

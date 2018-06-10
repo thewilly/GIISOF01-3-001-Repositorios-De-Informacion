@@ -84,15 +84,6 @@ public class AveriaTests {
 	}
 
 	/**
-	 * Una averia no facturada no puede ser elegida para Bono3.
-	 */
-	@Test
-	public void testAveriaNoFacturadaNoElegibleBono3() {
-		assertTrue( a.esElegibleParaBono3() == false );
-	}
-
-
-	/**
 	 * Una averia facturada pero no pagada no puede ser elegida para Bono3.
 	 *
 	 * @throws BusinessException the business exception
@@ -118,6 +109,15 @@ public class AveriaTests {
 		f.settle();  // Factura liquidada
 		
 		assertTrue( a.esElegibleParaBono3() );
+	}
+
+
+	/**
+	 * Una averia no facturada no puede ser elegida para Bono3.
+	 */
+	@Test
+	public void testAveriaNoFacturadaNoElegibleBono3() {
+		assertTrue( a.esElegibleParaBono3() == false );
 	}
 
 

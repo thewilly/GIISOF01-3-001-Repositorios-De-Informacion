@@ -29,7 +29,7 @@ import alb.util.menu.Action;
 import uo.ri.business.AdminService;
 import uo.ri.business.dto.VoucherDto;
 import uo.ri.conf.Factory;
-import uo.ri.ui.util.Printer;
+import uo.ri.ui.util.AbstractPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
@@ -53,6 +53,6 @@ public class ListBonosClientsAction implements Action {
 		AdminService as = Factory.service.forAdmin();
 		List<VoucherDto> list = as.findVouchersByClientId(id);
 		Console.println("Listado de bonos de cliente con id: " + id + "\n");
-		Printer.printVouchers(list);
+		AbstractPrinter.printBonds(list);
 	}
 }

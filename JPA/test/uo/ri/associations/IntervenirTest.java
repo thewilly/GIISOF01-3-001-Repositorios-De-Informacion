@@ -113,31 +113,6 @@ public class IntervenirTest {
 	}
 
 	/**
-	 * Test trabajar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testTrabajarAdd() throws BusinessException {
-		assertTrue( mecanico.getIntervenciones().contains( intervencion ));
-		assertTrue( intervencion.getMecanico() == mecanico );
-	}
-
-	/**
-	 * Test trabajar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testTrabajarRemove() throws BusinessException {
-		Association.Intervenir.unlink(intervencion);
-		
-		assertTrue( ! mecanico.getIntervenciones().contains( intervencion ));
-		assertTrue( mecanico.getIntervenciones().size() == 0 );
-		assertTrue( intervencion.getMecanico() == null );
-	}
-
-	/**
 	 * Test safe return mecanico.
 	 *
 	 * @throws BusinessException the business exception
@@ -167,6 +142,31 @@ public class IntervenirTest {
 		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
 			averia.getIntervenciones().size() == 1
 		);
+	}
+
+	/**
+	 * Test trabajar add.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testTrabajarAdd() throws BusinessException {
+		assertTrue( mecanico.getIntervenciones().contains( intervencion ));
+		assertTrue( intervencion.getMecanico() == mecanico );
+	}
+
+	/**
+	 * Test trabajar remove.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testTrabajarRemove() throws BusinessException {
+		Association.Intervenir.unlink(intervencion);
+		
+		assertTrue( ! mecanico.getIntervenciones().contains( intervencion ));
+		assertTrue( mecanico.getIntervenciones().size() == 0 );
+		assertTrue( intervencion.getMecanico() == null );
 	}
 
 

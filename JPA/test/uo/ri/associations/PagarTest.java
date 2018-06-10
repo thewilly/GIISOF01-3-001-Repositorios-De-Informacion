@@ -119,31 +119,6 @@ public class PagarTest {
 	}
 	
 	/**
-	 * Test pagar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagarAdd() throws BusinessException {
-		assertTrue( cliente.getMediosPago().contains( metalico ));
-		assertTrue( metalico.getCliente() == cliente );
-	}
-
-	/**
-	 * Test pagar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagarRemove() throws BusinessException {
-		Association.Pagar.unlink(cliente, metalico);
-		
-		assertTrue( ! cliente.getMediosPago().contains( metalico ));
-		assertTrue( cliente.getMediosPago().size() == 0 );
-		assertTrue( metalico.getCliente() == null );
-	}
-
-	/**
 	 * Test cargar add.
 	 *
 	 * @throws BusinessException the business exception
@@ -176,6 +151,31 @@ public class PagarTest {
 		
 		assertTrue( cargo.getFactura() == null );
 		assertTrue( cargo.getMedioPago() == null );
+	}
+
+	/**
+	 * Test pagar add.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testPagarAdd() throws BusinessException {
+		assertTrue( cliente.getMediosPago().contains( metalico ));
+		assertTrue( metalico.getCliente() == cliente );
+	}
+
+	/**
+	 * Test pagar remove.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testPagarRemove() throws BusinessException {
+		Association.Pagar.unlink(cliente, metalico);
+		
+		assertTrue( ! cliente.getMediosPago().contains( metalico ));
+		assertTrue( cliente.getMediosPago().size() == 0 );
+		assertTrue( metalico.getCliente() == null );
 	}
 
 }

@@ -81,212 +81,6 @@ public class PersistenceTest {
 	private Cargo cargo;
 
 	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		factory = Persistence.createEntityManagerFactory("carworkshop");
-		List<Object> graph = createGraph();
-		persistGraph(graph);
-	}
-
-	/**
-	 * Tear down.
-	 */
-	@After
-	public void tearDown() {
-		removeGraph();
-		factory.close();
-	}
-
-	/**
-	 * Test cliente.
-	 */
-	@Test
-	public void testCliente() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-		
-		Cliente cl = mapper.merge( cliente );
-		
-		assertNotNull( cl.getId() );
-		assertEquals( cl.getApellidos(), "apellidos");
-		assertEquals( cl.getNombre(), "nombre");
-		assertEquals( cl.getDni(), "dni");
-		
-		trx.commit();
-		mapper.close();	
-	}
-
-	/**
-	 * Test vehiculos.
-	 */
-	@Test
-	public void testVehiculos() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-		
-		Cliente cl = mapper.merge(cliente);
-		Set<Vehiculo> vehiculos = cl.getVehiculos();
-		Vehiculo v = vehiculos.iterator().next();
-		
-		assertTrue( vehiculos.size() == 1 );
-		assertSame( v.getCliente(), cl);
-		assertNotNull( v.getId());
-		assertEquals( v.getMarca(), "seat" );
-		assertEquals( v.getModelo(), "ibiza" );
-		assertEquals( v.getMatricula(), "1234 GJI" );
-		
-		trx.commit();
-		mapper.close();
-	}
-
-	/**
-	 * Test sustituir.
-	 */
-	@Test
-	public void testSustituir() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-		
-		Sustitucion s = mapper.merge( sustitucion );
-		Repuesto r = s.getRepuesto();
-		Intervencion i = s.getIntervencion();
-		
-		assertTrue( r.getSustituciones().contains(s) ); 
-		assertTrue( i.getSustituciones().contains(s) );
-
-		trx.commit();
-		mapper.close();		
-	}
-		
-	/**
-	 * Test trabajar arreglar.
-	 */
-	@Test
-	public void testTrabajarArreglar() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Sustitucion s = mapper.merge( sustitucion );
-		Intervencion i = s.getIntervencion();
-		Mecanico m = i.getMecanico();
-		Averia a = i.getAveria();
-		
-		assertTrue( m.getIntervenciones().contains(i) ); 
-		assertTrue( a.getIntervenciones().contains(i) ); 
-		
-		trx.commit();
-		mapper.close();		
-	}
-	
-	/**
-	 * Test tener.
-	 */
-	@Test
-	public void testTener() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Sustitucion s = mapper.merge( sustitucion );
-		Averia a = s.getIntervencion().getAveria();
-		Vehiculo v = a.getVehiculo();
-		
-		assertTrue( v.getAverias().contains(a) ); 
-		
-		trx.commit();
-		mapper.close();		
-	}
-
-	/**
-	 * Test ser poseer.
-	 */
-	@Test
-	public void testSerPoseer() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Sustitucion s = mapper.merge( sustitucion );
-		Vehiculo v = s.getIntervencion().getAveria().getVehiculo();
-		TipoVehiculo tv = v.getTipo();
-		Cliente c = v.getCliente();
-		
-		assertTrue( tv.getVehiculos().contains(v) ); 
-		assertTrue( c.getVehiculos().contains(v) ); 
-		
-		trx.commit();
-		mapper.close();		
-	}
-
-	/**
-	 * Test cargar.
-	 */
-	@Test
-	public void testCargar() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Cargo c = mapper.merge( cargo );
-		Factura f = c.getFactura();
-		MedioPago mp = c.getMedioPago();
-		
-		assertTrue( mp.getCargos().contains(c) );
-		assertTrue( f.getCargos().contains(c) );
-		
-		trx.commit();
-		mapper.close();		
-	}
-
-	/**
-	 * Test facturar.
-	 */
-	@Test
-	public void testFacturar() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Sustitucion s = mapper.merge( sustitucion );
-		Averia a = s.getIntervencion().getAveria();
-		Factura f = a.getFactura();
-		
-		assertTrue( f.getAverias().contains(a) );
-		
-		trx.commit();
-		mapper.close();		
-	}
-
-	/**
-	 * Test pagar.
-	 */
-	@Test
-	public void testPagar() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-
-		Sustitucion s = mapper.merge( sustitucion );
-		Cliente c = s.getIntervencion().getAveria().getVehiculo().getCliente();
-		Set<MedioPago> medios = c.getMediosPago();
-
-		for(MedioPago mp: medios) {
-			assertSame( mp.getCliente(), c );
-		}
-		
-		trx.commit();
-		mapper.close();		
-	}
-
-	/**
 	 * Creates the graph.
 	 *
 	 * @return the list
@@ -350,42 +144,6 @@ public class PersistenceTest {
 		
 		return res;
 	}
-	
-	/**
-	 * Persist graph.
-	 *
-	 * @param graph the graph
-	 */
-	private void persistGraph(List<Object> graph) {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-		
-		for(Object o: graph) {
-			mapper.persist(o);
-		}
-
-		trx.commit();
-		mapper.close();
-	}
-	
-	/**
-	 * Removes the graph.
-	 */
-	private void removeGraph() {
-		EntityManager mapper = factory.createEntityManager();
-		EntityTransaction trx = mapper.getTransaction();
-		trx.begin();
-		
-		List<Object> merged = mergeGraph(mapper);
-		
-		for(Object o: merged) {
-			mapper.remove(o);
-		}
-
-		trx.commit();
-		mapper.close();
-	}
 
 	/**
 	 * Merge graph.
@@ -415,6 +173,248 @@ public class PersistenceTest {
 		res.add( cl );
 		
 		return res;
+	}
+
+	/**
+	 * Persist graph.
+	 *
+	 * @param graph the graph
+	 */
+	private void persistGraph(List<Object> graph) {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+		
+		for(Object o: graph) {
+			mapper.persist(o);
+		}
+
+		trx.commit();
+		mapper.close();
+	}
+
+	/**
+	 * Removes the graph.
+	 */
+	private void removeGraph() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+		
+		List<Object> merged = mergeGraph(mapper);
+		
+		for(Object o: merged) {
+			mapper.remove(o);
+		}
+
+		trx.commit();
+		mapper.close();
+	}
+
+	/**
+	 * Sets the up.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Before
+	public void setUp() throws BusinessException {
+		factory = Persistence.createEntityManagerFactory("carworkshop");
+		List<Object> graph = createGraph();
+		persistGraph(graph);
+	}
+		
+	/**
+	 * Tear down.
+	 */
+	@After
+	public void tearDown() {
+		removeGraph();
+		factory.close();
+	}
+	
+	/**
+	 * Test cargar.
+	 */
+	@Test
+	public void testCargar() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Cargo c = mapper.merge( cargo );
+		Factura f = c.getFactura();
+		MedioPago mp = c.getMedioPago();
+		
+		assertTrue( mp.getCargos().contains(c) );
+		assertTrue( f.getCargos().contains(c) );
+		
+		trx.commit();
+		mapper.close();		
+	}
+
+	/**
+	 * Test cliente.
+	 */
+	@Test
+	public void testCliente() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+		
+		Cliente cl = mapper.merge( cliente );
+		
+		assertNotNull( cl.getId() );
+		assertEquals( cl.getApellidos(), "apellidos");
+		assertEquals( cl.getNombre(), "nombre");
+		assertEquals( cl.getDni(), "dni");
+		
+		trx.commit();
+		mapper.close();	
+	}
+
+	/**
+	 * Test facturar.
+	 */
+	@Test
+	public void testFacturar() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Sustitucion s = mapper.merge( sustitucion );
+		Averia a = s.getIntervencion().getAveria();
+		Factura f = a.getFactura();
+		
+		assertTrue( f.getAverias().contains(a) );
+		
+		trx.commit();
+		mapper.close();		
+	}
+
+	/**
+	 * Test pagar.
+	 */
+	@Test
+	public void testPagar() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Sustitucion s = mapper.merge( sustitucion );
+		Cliente c = s.getIntervencion().getAveria().getVehiculo().getCliente();
+		Set<MedioPago> medios = c.getMediosPago();
+
+		for(MedioPago mp: medios) {
+			assertSame( mp.getCliente(), c );
+		}
+		
+		trx.commit();
+		mapper.close();		
+	}
+
+	/**
+	 * Test ser poseer.
+	 */
+	@Test
+	public void testSerPoseer() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Sustitucion s = mapper.merge( sustitucion );
+		Vehiculo v = s.getIntervencion().getAveria().getVehiculo();
+		TipoVehiculo tv = v.getTipo();
+		Cliente c = v.getCliente();
+		
+		assertTrue( tv.getVehiculos().contains(v) ); 
+		assertTrue( c.getVehiculos().contains(v) ); 
+		
+		trx.commit();
+		mapper.close();		
+	}
+
+	/**
+	 * Test sustituir.
+	 */
+	@Test
+	public void testSustituir() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+		
+		Sustitucion s = mapper.merge( sustitucion );
+		Repuesto r = s.getRepuesto();
+		Intervencion i = s.getIntervencion();
+		
+		assertTrue( r.getSustituciones().contains(s) ); 
+		assertTrue( i.getSustituciones().contains(s) );
+
+		trx.commit();
+		mapper.close();		
+	}
+	
+	/**
+	 * Test tener.
+	 */
+	@Test
+	public void testTener() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Sustitucion s = mapper.merge( sustitucion );
+		Averia a = s.getIntervencion().getAveria();
+		Vehiculo v = a.getVehiculo();
+		
+		assertTrue( v.getAverias().contains(a) ); 
+		
+		trx.commit();
+		mapper.close();		
+	}
+	
+	/**
+	 * Test trabajar arreglar.
+	 */
+	@Test
+	public void testTrabajarArreglar() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+
+		Sustitucion s = mapper.merge( sustitucion );
+		Intervencion i = s.getIntervencion();
+		Mecanico m = i.getMecanico();
+		Averia a = i.getAveria();
+		
+		assertTrue( m.getIntervenciones().contains(i) ); 
+		assertTrue( a.getIntervenciones().contains(i) ); 
+		
+		trx.commit();
+		mapper.close();		
+	}
+
+	/**
+	 * Test vehiculos.
+	 */
+	@Test
+	public void testVehiculos() {
+		EntityManager mapper = factory.createEntityManager();
+		EntityTransaction trx = mapper.getTransaction();
+		trx.begin();
+		
+		Cliente cl = mapper.merge(cliente);
+		Set<Vehiculo> vehiculos = cl.getVehiculos();
+		Vehiculo v = vehiculos.iterator().next();
+		
+		assertTrue( vehiculos.size() == 1 );
+		assertSame( v.getCliente(), cl);
+		assertNotNull( v.getId());
+		assertEquals( v.getMarca(), "seat" );
+		assertEquals( v.getModelo(), "ibiza" );
+		assertEquals( v.getMatricula(), "1234 GJI" );
+		
+		trx.commit();
+		mapper.close();
 	}
 
 }

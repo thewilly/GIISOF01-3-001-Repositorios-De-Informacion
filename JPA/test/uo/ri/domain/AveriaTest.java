@@ -105,6 +105,33 @@ public class AveriaTest {
 	}
 	
 	/**
+	 * No se puede añadir a una factura una averia no terminada.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test( expected = BusinessException.class )
+	public void testAveriaNoTerminadaException() throws BusinessException {
+		averia.reopen();
+		List<Averia> averias = new ArrayList<>();
+		averias.add( averia );
+		new Factura( 0L,  averias ); // debe saltar excepcion: averia no terminada
+	}
+
+	/**
+	 * Una factura creada y con averias asignadas está en estado SIN_ABONAR.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test
+	public void testFacturaCreadaSinAbonar() throws BusinessException {
+		List<Averia> averias = new ArrayList<>();
+		averias.add( averia );
+		Factura factura = new Factura( 0L, averias );
+		
+		assertTrue( factura.getStatus() ==  FacturaStatus.SIN_ABONAR );
+	}
+
+	/**
 	 * El importe de la averia de referencia es 250.0
 	 */
 	@Test
@@ -151,44 +178,6 @@ public class AveriaTest {
 	}
 
 	/**
-	 * No se puede añadir a una factura una averia no terminada.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test( expected = BusinessException.class )
-	public void testAveriaNoTerminadaException() throws BusinessException {
-		averia.reopen();
-		List<Averia> averias = new ArrayList<>();
-		averias.add( averia );
-		new Factura( 0L,  averias ); // debe saltar excepcion: averia no terminada
-	}
-
-	/**
-	 * Una factura creada y con averias asignadas está en estado SIN_ABONAR.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFacturaCreadaSinAbonar() throws BusinessException {
-		List<Averia> averias = new ArrayList<>();
-		averias.add( averia );
-		Factura factura = new Factura( 0L, averias );
-		
-		assertTrue( factura.getStatus() ==  FacturaStatus.SIN_ABONAR );
-	}
-
-	/**
-	 * Una averia no puede ser marcada como facturada si no tiene factura
-	 * asignada.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected=BusinessException.class)
-	public void testSinFacturaNoMarcarFacturada() throws BusinessException {
-		averia.markAsInvoiced();  // Lanza excepción "No factura asignada"
-	}
-	
-	/**
 	 * La fecha de averia se devuelve clonada.
 	 */
 	@SuppressWarnings("deprecation")
@@ -199,6 +188,17 @@ public class AveriaTest {
 		d.setYear( 0 );
 		
 		assertTrue( averia.getFecha().getYear() == new Date().getYear());
+	}
+	
+	/**
+	 * Una averia no puede ser marcada como facturada si no tiene factura
+	 * asignada.
+	 *
+	 * @throws BusinessException the business exception
+	 */
+	@Test(expected=BusinessException.class)
+	public void testSinFacturaNoMarcarFacturada() throws BusinessException {
+		averia.markAsInvoiced();  // Lanza excepción "No factura asignada"
 	}
 
 }
