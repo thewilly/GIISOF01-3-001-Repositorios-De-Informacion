@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings 
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+  	version="2.0">
+
+	<!-- Averia queries --> 
+	<named-query name="Averia.findByIds">
+		<query>select a from Averia a where a.id in ?1</query>
+	</named-query>
+
+	<named-query name="Averia.findNoFacturadasByDni">
+		<query>
+			select a 
+			from Averia a 
+			where a.vehiculo.cliente.dni = ?1 
+				and a.status = uo.ri.model.types.AveriaStatus.TERMINADA 
+		</query>
+	</named-query>
+	
+	<named-query name="Averia.findWithUnusedBono3ByClienteId">
+		<query>
+			select a 
+			from Averia a 
+			where a.vehiculo.cliente.id = ?1 
+				and a.usadaBono3 = false 
+		</query>
+	</named-query>
+	
+	<!-- MedioPago queries -->
+	<named-query name="MedioPago.findByInvoiceId">
+		<query>
+			select m 
+			from Factura f join f.averias a join a.vehiculo.cliente c join 
+				c.mediosPago m 
+			where f.id = ?1
+		</query>
+	</named-query>
+
+	<named-query name="MedioPago.findForClient">
+		<query>
+			select m 
+			from Cliente c join c.mediosPago m 
+			where c.id=?1
+		</query>
+	</named-query>	
+	
+	<named-query name="MedioPago.findPaymentMeansByInvoiceId">
+		<query>
+			select c.medioPago
+			from Factura f join f.cargos c
+			where f.id = ?1
+		</query>
+	</named-query>
+	
+	<!-- Bono queries -->
+	<named-query name="Bono.findBonoFromClient">
+		<query>
+			select b 
+			from Bono b
+			where b.cliente.id = ?1
+		</query>
+	</named-query>
+	
+	<named-query name="Bono.findVoucherByCode">
+		<query>select b from Bono b where b.codigo = ?1</query>
+	</named-query>
+	
+	<named-query name="Bono.findAvailableVouchersByClientId">
+		<query>
+			select sum(b.disponible)
+			from Bono b
+			where b.cliente.id = ?1
+		</query>
+	</named-query>
+	
+	<named-query name="Bono.findSpentVouchersByClientId">
+		<query>
+			select sum(b.acumulado)
+			from Bono b
+			where b.cliente.id = ?1
+		</query>
+	</named-query>
+	
+	<!-- TarjetaCredito queries -->
+	<named-query name="Tarjeta.findByCardNumber">
+		<query>
+			select t 
+			from TarjetaCredito t
+			where t.numero = ?1
+		</query>
+	</named-query>	
+	
+	<!-- Factura queries -->
+	<named-query name="Factura.findByNumber">
+		<query>select f from Factura f where f.numero = ?1</query>
+	</named-query>
+	
+	<named-query name="Factura.getNextInvoiceNumber">
+		<query>select max(f.numero) + 1 from Factura f</query>
+	</named-query>
+	
+	<named-query name="Factura.findUnusedWithBono500">
+		<query>
+			select f
+			from Factura f
+			where f.usadaBono500 = false
+		</query>
+	</named-query>
+	
+	<!-- Mecanico queries -->
+	<named-query name="Mecanico.findAll">
+		<query>select m from Mecanico m</query>
+	</named-query>
+	
+	<named-query name="Mecanico.findByDni">
+		<query>select m from Mecanico m where m.dni = ?1</query>
+	</named-query>
+	
+	<!-- Cliente queries -->
+	<named-query name="Cliente.findByDni">
+		<query>select c from Cliente c where c.dni = ?1</query>
+	</named-query>
+	
+	<named-query name="Cliente.findRecommendedBy">
+		<query>select c from Cliente c where c.recomendador.id = ?1</query>
+	</named-query>
+	
+	<named-query name="Cliente.findWithRecomendations">
+		<query>
+			<![CDATA[
+			select distinct c 
+			from Cliente c join c.recomendados r
+			where r.usada = false
+			group by c
+			having count(r)>0
+			]]>
+		</query>
+	</named-query>
+
+	<named-query name="Cliente.findWithThreeUnusedBreakdowns">
+		<query>
+		<![CDATA[
+			select distinct c 
+			from Averia av join av.vehiculo v join v.cliente c 
+			where av.usadaBono3 = false and 
+				av.status = uo.ri.model.types.AveriaStatus.FACTURADA and
+				av.factura.status = uo.ri.model.types.FacturaStatus.ABONADA
+			group by c
+			having count(av)>=3
+			]]>
+		</query>
+	</named-query>	
+
+</entity-mappings>
