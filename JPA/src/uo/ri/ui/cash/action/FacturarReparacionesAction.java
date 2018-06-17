@@ -31,17 +31,16 @@ import uo.ri.business.CashService;
 import uo.ri.business.dto.InvoiceDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.InvoicePrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to make the invoice of all the
- * breakdowns the user is typing, and whenever he finishes, it will make the
- * operations, and after that, it will be printed thanks to the printer class.
- * 
- * @author uo250878
+ * FacturarReparacionesAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class FacturarReparacionesAction implements Action {
 
@@ -60,8 +59,8 @@ public class FacturarReparacionesAction implements Action {
 
 		CashService cs = Factory.service.forCash();
 		InvoiceDto factura = cs.createInvoiceFor(idsAveria);
-
-		AbstractPrinter.printInvoice(factura);
+		
+		new AbstractPrinter( new InvoicePrinter( factura ) ).print();
 	}
 
 	/**

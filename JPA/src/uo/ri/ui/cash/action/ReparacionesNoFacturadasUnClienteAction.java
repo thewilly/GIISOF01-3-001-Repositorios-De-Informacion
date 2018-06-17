@@ -30,17 +30,16 @@ import uo.ri.business.CashService;
 import uo.ri.business.dto.FailureDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.FailurePrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is listing all the ways of payment of a
- * specific client, by its id. The information will in this case be printed by
- * the Printer class.
- * 
- * @author uo250878
+ * ReparacionesNoFacturadasUnClienteAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class ReparacionesNoFacturadasUnClienteAction implements Action {
 
@@ -63,7 +62,7 @@ public class ReparacionesNoFacturadasUnClienteAction implements Action {
 		}
 
 		for (FailureDto rep : reps) {
-			AbstractPrinter.printRepairing(rep);
+			new AbstractPrinter( new FailurePrinter( rep ) );
 		}
 	}
 

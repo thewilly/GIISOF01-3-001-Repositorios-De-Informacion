@@ -27,13 +27,12 @@ import uo.ri.ui.cash.action.AddBonoAction;
 import uo.ri.ui.cash.action.AddTarjetaAction;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. in
- * this case the menu is just for the addition of a new way of payment of a
- * client, it could be a credit card or a bonus.
- * 
- * @author uo250878
+ * AddMedioPagoMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class AddMedioPagoMenu extends BaseMenu {
 

@@ -30,17 +30,16 @@ import uo.ri.business.AdminService;
 import uo.ri.business.dto.VoucherDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.BondsPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to listing all the bonus from a
- * client, whose id is read from the console. The Printer class is called for it
- * to print all the information of the map with the data.
- * 
- * @author uo250878
+ * ListBonosClientsAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class ListBonosClientsAction implements Action {
 
@@ -53,6 +52,6 @@ public class ListBonosClientsAction implements Action {
 		AdminService as = Factory.service.forAdmin();
 		List<VoucherDto> list = as.findVouchersByClientId(id);
 		Console.println("Listado de bonos de cliente con id: " + id + "\n");
-		AbstractPrinter.printBonds(list);
+		new AbstractPrinter( new BondsPrinter( list ) ).print();
 	}
 }

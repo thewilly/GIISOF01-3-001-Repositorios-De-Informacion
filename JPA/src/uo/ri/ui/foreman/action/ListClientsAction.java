@@ -30,14 +30,15 @@ import uo.ri.business.ForemanService;
 import uo.ri.business.dto.ClientDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.ClientPrinter;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the foreman. In this
- * case, the action of the class is to list all the clients of the system.
- * 
- * @author uo250878
+ * ListClientsAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class ListClientsAction implements Action {
 
@@ -50,7 +51,7 @@ public class ListClientsAction implements Action {
 		List<ClientDto> clientes = fp.findAllClients();
 		Console.println("Listado de clientes:");
 		for (ClientDto clientDto : clientes) {
-			AbstractPrinter.printClient(clientDto);
+			new AbstractPrinter( new ClientPrinter( clientDto ) ).print();
 		}
 	}
 

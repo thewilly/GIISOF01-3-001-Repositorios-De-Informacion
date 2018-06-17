@@ -28,13 +28,12 @@ import uo.ri.business.ForemanService;
 import uo.ri.conf.Factory;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the foreman. In this
- * case, the action of the class is to delete a client and so it reads from the
- * console the id,and then the operation is done thanks to the foreman service.
- * 
- * @author uo250878
+ * DeleteClientAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class DeleteClientAction implements Action {
 

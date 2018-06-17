@@ -28,16 +28,15 @@ import uo.ri.business.CashService;
 import uo.ri.business.dto.InvoiceDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.InvoicePrinter;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to settle an invoice by its id, it
- * will be shown first the payment methods of the client associated with the
- * invoice, so all the charges can be made and divided.
- * 
- * @author uo250878
+ * FindInvoiceByNumberAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class FindInvoiceByNumberAction implements Action {
 
@@ -49,7 +48,7 @@ public class FindInvoiceByNumberAction implements Action {
 		Long numFactura = Console.readLong("Número de la factura");
 		CashService cs = Factory.service.forCash();
 		InvoiceDto dto = cs.findInvoiceByNumber(numFactura);
-		AbstractPrinter.printInvoice(dto);
+		new AbstractPrinter( new InvoicePrinter( dto ) ).print();
 	}
 
 }

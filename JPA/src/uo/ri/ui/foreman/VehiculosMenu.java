@@ -26,13 +26,12 @@ import alb.util.menu.BaseMenu;
 import alb.util.menu.NotYetImplementedAction;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. in
- * this case the menu is just for all the vehicles and different actions related
- * to them.
- * 
- * @author uo250878
+ * VehiculosMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class VehiculosMenu extends BaseMenu {
 

@@ -34,13 +34,12 @@ import uo.ri.ui.cash.action.ReparacionesNoFacturadasUnClienteAction;
 import uo.ri.ui.cash.action.SettleInvoiceAction;
 
 /**
- * This class is the one in charge of giving the user options to do in the
- * application. It will redirect to the corresponding class it is selected. In
- * this case the menu is for all the things the cash register can do; it can
- * either lead you to a new menu or directly to an action.
- * 
- * @author uo250878
+ * MainMenu.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class MainMenu extends BaseMenu {
 

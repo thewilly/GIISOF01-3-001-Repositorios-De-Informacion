@@ -30,14 +30,12 @@ import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to add a new bonus to the system, to
- * the client specified in the console, as well as a description of issuance,
- * and the quantity of money it will have.
- * 
- * @author uo250878
+ * AddBonoAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class AddBonoAction implements Action {
 

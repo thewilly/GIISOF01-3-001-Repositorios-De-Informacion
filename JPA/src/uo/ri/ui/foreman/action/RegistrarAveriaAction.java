@@ -26,10 +26,12 @@ import alb.util.menu.Action;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * The Class RegistrarAveriaAction.
+ * RegistrarAveriaAction.java
  *
  * @author Guillermo Facundo Colunga
- * @version 201806081225
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class RegistrarAveriaAction implements Action {
 

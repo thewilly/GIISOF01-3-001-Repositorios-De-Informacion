@@ -35,17 +35,17 @@ import uo.ri.business.dto.InvoiceDto;
 import uo.ri.business.dto.PaymentMeanDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.InvoicePrinter;
+import uo.ri.ui.util.PaymentMethodPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to settle an invoice by its id, it
- * will be shown first the payment methods of the client associated with the
- * invoice, so all the charges can be made and divided.
- * 
- * @author uo250878
+ * SettleInvoiceAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class SettleInvoiceAction implements Action {
 
@@ -123,9 +123,9 @@ public class SettleInvoiceAction implements Action {
 	 */
 	private List<PaymentMeanDto> possiblePaymentMethods(InvoiceDto facturaDto) throws BusinessException {
 		List<PaymentMeanDto> paymethods = cs.findPaymentMeansForInvoice(facturaDto.id);
-		AbstractPrinter.printInvoice(cs.findInvoiceByNumber(facturaDto.number));
+		new AbstractPrinter( new InvoicePrinter( cs.findInvoiceByNumber(facturaDto.number) ) ).print();
 		Console.println("\nPosibles metodos de pago:");
-		AbstractPrinter.printPaymentMeans(paymethods);
+		new AbstractPrinter( new PaymentMethodPrinter( paymethods ) ).print();
 		return paymethods;
 	}
 

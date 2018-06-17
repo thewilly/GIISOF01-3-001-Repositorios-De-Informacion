@@ -35,14 +35,12 @@ import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to add a new credit card to a client
- * defined by its id. The information it gets is also de type of card, the
- * number and the validity date, which has to be in the format specified.
- * 
- * @author uo250878
+ * AddTarjetaAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class AddTarjetaAction implements Action {
 

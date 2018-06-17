@@ -30,17 +30,16 @@ import uo.ri.business.AdminService;
 import uo.ri.business.dto.MechanicDto;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.MechanicPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is listing all the mechanics registered
- * in the system; and the printer class is called to print the data of all of
- * those in the console.
- * 
- * @author uo250878
+ * ListMechanicsAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class ListMechanicsAction implements Action {
 
@@ -55,7 +54,7 @@ public class ListMechanicsAction implements Action {
 
 		Console.println("\nListado de mecánicos");
 		for (MechanicDto m : mechanics) {
-			AbstractPrinter.printMechanic(m);
+			new AbstractPrinter( new MechanicPrinter( m ) ).print();
 		}
 
 	}

@@ -29,15 +29,12 @@ import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the cash register.
- * In this case, the action of the class is to delete a way of payment by the id
- * of it. It will just delete a way of payment that has not had any charge into
- * it. And the cash type can of course not be deleted either.(If any of those
- * cases are given, an exception will raise.
- * 
- * @author uo250878
+ * DeleteMedioPagoAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class DeleteMedioPagoAction implements Action {
 

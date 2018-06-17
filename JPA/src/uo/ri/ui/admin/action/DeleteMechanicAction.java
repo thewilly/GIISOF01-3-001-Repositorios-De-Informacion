@@ -29,14 +29,12 @@ import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to delete a mechanic and so it reads
- * from the console and calls to the logic layer with the help of the services
- * factory. It reads the id of the mechanic to be eliminated.
- * 
- * @author uo250878
+ * DeleteMechanicAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class DeleteMechanicAction implements Action {
 

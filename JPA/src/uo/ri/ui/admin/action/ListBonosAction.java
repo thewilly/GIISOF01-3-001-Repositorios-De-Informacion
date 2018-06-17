@@ -30,16 +30,16 @@ import uo.ri.business.AdminService;
 import uo.ri.business.dto.VoucherSummary;
 import uo.ri.conf.Factory;
 import uo.ri.ui.util.AbstractPrinter;
+import uo.ri.ui.util.BondsSummaryPrinter;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is listing all the bonus the garage has
- * generated, and are registered in the system.
- * 
- * @author uo250878
+ * ListBonosAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class ListBonosAction implements Action {
 
@@ -51,6 +51,6 @@ public class ListBonosAction implements Action {
 		Console.println("Listado de bonos");
 		AdminService admin = Factory.service.forAdmin();
 		List<VoucherSummary> list = admin.getVoucherSummary();
-		AbstractPrinter.printBondsSummary(list);
+		new AbstractPrinter( new BondsSummaryPrinter( list ) );
 	}
 }

@@ -29,14 +29,12 @@ import uo.ri.conf.Factory;
 import uo.ri.util.exception.BusinessException;
 
 /**
- * This class is the one that is called in the menu when an option that does not
- * lead you to another menu takes you. Just for the menu of the administration.
- * In this case, the action of the class is to generate a voucher automatically
- * due to the recommendation of a client of another clients. The recommender
- * will Receive a voucher for each 3 he recommends.
- * 
- * @author uo250878
+ * GenerateVouchersAutomaticAction.java
  *
+ * @author Guillermo Facundo Colunga
+ * @version 201806032143
+ * @since 201806032143
+ * @formatter Oviedo Computing Community
  */
 public class GenerateVouchersAutomaticAction implements Action {
 
