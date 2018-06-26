@@ -34,12 +34,15 @@ import uo.ri.util.exception.BusinessException;
  */
 public class InMemoryCommandExecutor implements CommandExecutor {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.CommandExecutor#execute(uo.ri.business.impl.Command)
-	 */
-	@Override
-	public <T> T execute(Command<T> cmd) throws BusinessException {
-		return cmd.execute();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.impl.CommandExecutor#execute(uo.ri.business.impl.Command)
+     */
+    @Override
+    public <T> T execute(Command<T> cmd) throws BusinessException {
+	return cmd.execute();
+    }
 
 }

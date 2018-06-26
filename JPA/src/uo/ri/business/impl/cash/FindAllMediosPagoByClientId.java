@@ -43,40 +43,46 @@ import uo.ri.util.exception.Check;
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class FindAllMediosPagoByClientId implements Command<List<PaymentMeanDto>> {
+public class FindAllMediosPagoByClientId
+	implements Command<List<PaymentMeanDto>> {
 
-	/** The client id. */
-	private Long clientId;
+    /** The client id. */
+    private Long clientId;
 
-	/**
-	 * Instantiates a new find all medios pago by client id.
-	 *
-	 * @param clientId the client id
-	 */
-	public FindAllMediosPagoByClientId(Long clientId) {
-		this.clientId = clientId;
-	}
+    /**
+     * Instantiates a new find all medios pago by client id.
+     *
+     * @param clientId
+     *            the client id
+     */
+    public FindAllMediosPagoByClientId(Long clientId) {
+	this.clientId = clientId;
+    }
 
-	/**
-	 * This method checks that the client id corresponds to a real client in the
-	 * system.
-	 *
-	 * @param clientId the id of the client
-	 * @throws BusinessException the business exception
-	 */
-	private void assertExistenceClient(Long clientId) throws BusinessException {
-		ClienteRepository cr = Factory.repository.forCliente();
-		Cliente c = cr.findById(clientId);
-		Check.isNotNull(c, "Ese cliente no existe");
-	}
+    /**
+     * This method checks that the client id corresponds to a real client in the
+     * system.
+     *
+     * @param clientId
+     *            the id of the client
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertExistenceClient(Long clientId) throws BusinessException {
+	ClienteRepository cr = Factory.repository.forCliente();
+	Cliente c = cr.findById(clientId);
+	Check.isNotNull(c, "Ese cliente no existe");
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public List<PaymentMeanDto> execute() throws BusinessException {
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		assertExistenceClient(clientId);
-		List<MedioPago> list = mp.findPaymentMeansByClientId(clientId);
-		return DtoAssembler.toPaymentMeanDtoList(list);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public List<PaymentMeanDto> execute() throws BusinessException {
+	MedioPagoRepository mp = Factory.repository.forMedioPago();
+	assertExistenceClient(clientId);
+	List<MedioPago> list = mp.findPaymentMeansByClientId(clientId);
+	return DtoAssembler.toPaymentMeanDtoList(list);
+    }
 }

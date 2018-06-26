@@ -34,39 +34,42 @@ import uo.ri.model.Factura;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryFacturaRepository 
-				extends BaseMemoryRepository<Factura>
-				implements FacturaRepository {
+public class InMemoryFacturaRepository extends BaseMemoryRepository<Factura>
+	implements FacturaRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#findByNumber(java.lang.Long)
-	 */
-	@Override
-	public Factura findByNumber(Long numero) {
-		return entities.values().stream()
-				.filter(f -> f.getNumero().equals( numero ))
-				.findFirst()
-				.orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.FacturaRepository#findByNumber(java.lang.Long)
+     */
+    @Override
+    public Factura findByNumber(Long numero) {
+	return entities.values().stream()
+		.filter(f -> f.getNumero().equals(numero)).findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
-	 */
-	@Override
-	public List<Factura> findUnusedWithBono500() {
-		return entities.values().stream()
-				.filter(f -> f.getImporte() >= 500)
-				.filter(f -> ! f.isBono500Used())
-				.collect( Collectors.toList());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
+     */
+    @Override
+    public List<Factura> findUnusedWithBono500() {
+	return entities.values().stream().filter(f -> f.getImporte() >= 500)
+		.filter(f -> !f.isBono500Used()).collect(Collectors.toList());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
-	 */
-	@Override
-	public Long getNextInvoiceNumber() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
+     */
+    @Override
+    public Long getNextInvoiceNumber() {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
 }

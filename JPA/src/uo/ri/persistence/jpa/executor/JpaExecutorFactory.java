@@ -30,12 +30,14 @@ import uo.ri.business.impl.CommandExecutorFactory;
  */
 public class JpaExecutorFactory implements CommandExecutorFactory {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.CommandExecutorFactory#forExecutor()
-	 */
-	@Override
-	public CommandExecutor forExecutor() {
-		return new JpaCommandExecutor();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.CommandExecutorFactory#forExecutor()
+     */
+    @Override
+    public CommandExecutor forExecutor() {
+	return new JpaCommandExecutor();
+    }
 
 }

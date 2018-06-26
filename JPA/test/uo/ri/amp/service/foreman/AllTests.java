@@ -33,7 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({ AddClientTests.class, DeleteClientTests.class, FindClientByIdTests.class, UpdateClientTests.class })
+@SuiteClasses({ AddClientTests.class, DeleteClientTests.class,
+	FindClientByIdTests.class, UpdateClientTests.class })
 public class AllTests {
 
 }

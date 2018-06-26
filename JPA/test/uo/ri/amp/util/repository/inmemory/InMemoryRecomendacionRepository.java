@@ -31,8 +31,7 @@ import uo.ri.model.Recomendacion;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryRecomendacionRepository 
-		extends BaseMemoryRepository<Recomendacion>
-		implements RecomendacionRepository {
+public class InMemoryRecomendacionRepository extends
+	BaseMemoryRepository<Recomendacion> implements RecomendacionRepository {
 
 }

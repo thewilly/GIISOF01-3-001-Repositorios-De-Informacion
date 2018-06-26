@@ -40,27 +40,30 @@ import uo.ri.util.exception.Check;
  */
 public class UpdateMechanic implements Command<Void> {
 
-	/** The dto. */
-	private MechanicDto dto;
+    /** The dto. */
+    private MechanicDto dto;
 
-	/**
-	 * Instantiates a new update mechanic.
-	 *
-	 * @param dto the dto
-	 */
-	public UpdateMechanic(MechanicDto dto) {
-		this.dto = dto;
-	}
+    /**
+     * Instantiates a new update mechanic.
+     *
+     * @param dto
+     *            the dto
+     */
+    public UpdateMechanic(MechanicDto dto) {
+	this.dto = dto;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		MecanicoRepository repository = Factory.repository.forMechanic();
-		Mecanico mechanic = repository.findById(dto.id);
-		Check.isNotNull(mechanic, "El mecanico no existe");
-		mechanic.setNombre(dto.name);
-		mechanic.setApellidos(dto.surname);
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	MecanicoRepository repository = Factory.repository.forMechanic();
+	Mecanico mechanic = repository.findById(dto.id);
+	Check.isNotNull(mechanic, "El mecanico no existe");
+	mechanic.setNombre(dto.name);
+	mechanic.setApellidos(dto.surname);
+	return null;
+    }
 }

@@ -47,78 +47,83 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class DeletePaymentMeanTests extends BaseServiceTests {
-	
-	/** The c. */
-	private Cliente c;
-	
-	/** The tc. */
-	private TarjetaCredito tc;
-	
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		c = registerNewClientWithCash();
-		tc = registerNewCreditCardForClient( c );
-	}
-	
-	/**
-	 * No se puede borrar si tiene cargos.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testInvalidDeleteForCharges() throws BusinessException {
-		registerNewInvoiceWithChargesToCard( tc );
-		
-		CashService svc = Factory.service.forCash();
-		svc.deletePaymentMean( tc.getId() );
-	}
-	
-	/**
-	 * No se puede borrar si es de tipo metálico.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testInvalidDeleteIfCash() throws BusinessException {
-		Metalico m = findCashByClientId( c.getId() );
-		
-		CashService svc = Factory.service.forCash();
-		svc.deletePaymentMean( m.getId() );
-	}
-	
-	/**
-	 * Si no existe el id salta excepcion.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testInvalidDeleteNoId() throws BusinessException {
-		CashService svc = Factory.service.forCash();
-		svc.deletePaymentMean( -1000L );
-	}
-	
-	/**
-	 * Se puede borrar un medio de pago, que exista, que no sea metálico y que
-	 * no tenga cargos.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testValidDelete() throws BusinessException {
-		TarjetaCredito expected = findCardByNumber( tc.getNumero() );
-		assertTrue( expected != null );
-		
-		CashService svc = Factory.service.forCash();
-		svc.deletePaymentMean( tc.getId() );
 
-		String number = tc.getNumero();
-		expected = findCardByNumber( number); 
-		assertTrue( expected == null );
-	}
+    /** The c. */
+    private Cliente c;
+
+    /** The tc. */
+    private TarjetaCredito tc;
+
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+	c = registerNewClientWithCash();
+	tc = registerNewCreditCardForClient(c);
+    }
+
+    /**
+     * No se puede borrar si tiene cargos.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testInvalidDeleteForCharges() throws BusinessException {
+	registerNewInvoiceWithChargesToCard(tc);
+
+	CashService svc = Factory.service.forCash();
+	svc.deletePaymentMean(tc.getId());
+    }
+
+    /**
+     * No se puede borrar si es de tipo metálico.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testInvalidDeleteIfCash() throws BusinessException {
+	Metalico m = findCashByClientId(c.getId());
+
+	CashService svc = Factory.service.forCash();
+	svc.deletePaymentMean(m.getId());
+    }
+
+    /**
+     * Si no existe el id salta excepcion.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testInvalidDeleteNoId() throws BusinessException {
+	CashService svc = Factory.service.forCash();
+	svc.deletePaymentMean(-1000L);
+    }
+
+    /**
+     * Se puede borrar un medio de pago, que exista, que no sea metálico y que
+     * no tenga cargos.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testValidDelete() throws BusinessException {
+	TarjetaCredito expected = findCardByNumber(tc.getNumero());
+	assertTrue(expected != null);
+
+	CashService svc = Factory.service.forCash();
+	svc.deletePaymentMean(tc.getId());
+
+	String number = tc.getNumero();
+	expected = findCardByNumber(number);
+	assertTrue(expected == null);
+    }
 
 }

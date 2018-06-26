@@ -40,42 +40,49 @@ import uo.ri.util.exception.Check;
  */
 public class RemovePaymentMethodById implements Command<Void> {
 
-	/** The payment method id. */
-	private Long paymentMethodId;
+    /** The payment method id. */
+    private Long paymentMethodId;
 
-	/**
-	 * Instantiates a new removes the payment method by id.
-	 *
-	 * @param paymentMethodId the payment method id
-	 */
-	public RemovePaymentMethodById(Long paymentMethodId) {
-		this.paymentMethodId = paymentMethodId;
-	}
+    /**
+     * Instantiates a new removes the payment method by id.
+     *
+     * @param paymentMethodId
+     *            the payment method id
+     */
+    public RemovePaymentMethodById(Long paymentMethodId) {
+	this.paymentMethodId = paymentMethodId;
+    }
 
-	/**
-	 * This method do all the possible checks that should not be allowed to be
-	 * deleted from the database, due to errors on the petition or conditions of
-	 * the application.
-	 *
-	 * @param medioPago the payment method to be deleted
-	 * @throws BusinessException the business exception
-	 */
-	private void assertCanBeDeleted(MedioPago medioPago) throws BusinessException {
-		Check.isNotNull(medioPago, "Ese medio de pago no existe");
-		Check.isFalse(medioPago.getClass().equals(Metalico.class),
-				"El medio de pago no puede ser eliminado, por ser metálico");
-		Check.isTrue(medioPago.getCargos().isEmpty(), "Ese medio de pago tiene cargos, y no puede ser eliminado");
-	}
+    /**
+     * This method do all the possible checks that should not be allowed to be
+     * deleted from the database, due to errors on the petition or conditions of
+     * the application.
+     *
+     * @param medioPago
+     *            the payment method to be deleted
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertCanBeDeleted(MedioPago medioPago)
+	    throws BusinessException {
+	Check.isNotNull(medioPago, "Ese medio de pago no existe");
+	Check.isFalse(medioPago.getClass().equals(Metalico.class),
+		"El medio de pago no puede ser eliminado, por ser metálico");
+	Check.isTrue(medioPago.getCargos().isEmpty(),
+		"Ese medio de pago tiene cargos, y no puede ser eliminado");
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		MedioPago medioPago = mp.findById(paymentMethodId);
-		assertCanBeDeleted(medioPago);
-		mp.remove(medioPago);
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	MedioPagoRepository mp = Factory.repository.forMedioPago();
+	MedioPago medioPago = mp.findById(paymentMethodId);
+	assertCanBeDeleted(medioPago);
+	mp.remove(medioPago);
+	return null;
+    }
 
 }

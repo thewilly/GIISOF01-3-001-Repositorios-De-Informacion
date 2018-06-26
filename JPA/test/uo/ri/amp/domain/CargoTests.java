@@ -44,86 +44,93 @@ import uo.ri.util.exception.BusinessException;
  */
 public class CargoTests {
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+    }
 
-	/**
-	 * A credit card cannot be charged if its expiration date is over.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected=BusinessException.class)
-	public void tesChargeExpiredCard() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123", "TTT", DateUtil.yesterday());
-		Factura f = new Factura(123L);
+    /**
+     * A credit card cannot be charged if its expiration date is over.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void tesChargeExpiredCard() throws BusinessException {
+	TarjetaCredito t = new TarjetaCredito("123", "TTT",
+		DateUtil.yesterday());
+	Factura f = new Factura(123L);
 
-		new Cargo(f, t, 100.0); // Card validity date expired exception
-	}
+	new Cargo(f, t, 100.0); // Card validity date expired exception
+    }
 
-	/**
-	 * A charge to a voucher increases the accumulated and decreases the
-	 * available.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargoBono() throws BusinessException {
-		Bono b = new Bono("123", "For test", 150.0);
-		Factura f = new Factura(123L);
+    /**
+     * A charge to a voucher increases the accumulated and decreases the
+     * available.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testCargoBono() throws BusinessException {
+	Bono b = new Bono("123", "For test", 150.0);
+	Factura f = new Factura(123L);
 
-		new Cargo(f, b, 100.0);
+	new Cargo(f, b, 100.0);
 
-		assertTrue(b.getAcumulado() == 100.0);
-		assertTrue(b.getDisponible() == 50.0);
-	}
+	assertTrue(b.getAcumulado() == 100.0);
+	assertTrue(b.getDisponible() == 50.0);
+    }
 
-	/**
-	 * A charge to cash increases the accumulated.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargoMetalico() throws BusinessException {
-		Metalico m = new Metalico(new Cliente("123", "n", "a"));
-		Factura f = new Factura(123L);
+    /**
+     * A charge to cash increases the accumulated.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testCargoMetalico() throws BusinessException {
+	Metalico m = new Metalico(new Cliente("123", "n", "a"));
+	Factura f = new Factura(123L);
 
-		new Cargo(f, m, 100.0);
+	new Cargo(f, m, 100.0);
 
-		assertTrue(m.getAcumulado() == 100.0);
-	}
+	assertTrue(m.getAcumulado() == 100.0);
+    }
 
-	/**
-	 * A charge to a card increases the accumulated.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargoTarjeta() throws BusinessException {
-		TarjetaCredito t = new TarjetaCredito("123");
-		Factura f = new Factura(123L);
+    /**
+     * A charge to a card increases the accumulated.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testCargoTarjeta() throws BusinessException {
+	TarjetaCredito t = new TarjetaCredito("123");
+	Factura f = new Factura(123L);
 
-		new Cargo(f, t, 100.0);
+	new Cargo(f, t, 100.0);
 
-		assertTrue(t.getAcumulado() == 100.0);
-	}
+	assertTrue(t.getAcumulado() == 100.0);
+    }
 
-	/**
-	 * A voucher cannot be charged if it has no available money.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected=BusinessException.class)
-	public void testEmptyVoucherCannotBeCharged() throws BusinessException {
-		Bono b = new Bono("123", "For test", 150.0);
-		Factura f = new Factura(123L);
+    /**
+     * A voucher cannot be charged if it has no available money.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testEmptyVoucherCannotBeCharged() throws BusinessException {
+	Bono b = new Bono("123", "For test", 150.0);
+	Factura f = new Factura(123L);
 
-		new Cargo(f, b, 151.0);  // Not enough money exception
-	}
+	new Cargo(f, b, 151.0); // Not enough money exception
+    }
 
 }

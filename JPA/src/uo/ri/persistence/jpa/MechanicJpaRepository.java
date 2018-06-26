@@ -36,45 +36,60 @@ import uo.ri.persistence.jpa.util.Jpa;
  */
 public class MechanicJpaRepository implements MecanicoRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.Repository#add(java.lang.Object)
-	 */
-	@Override
-	public void add(Mecanico t) {
-		Jpa.getManager().persist(t);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.Repository#add(java.lang.Object)
+     */
+    @Override
+    public void add(Mecanico t) {
+	Jpa.getManager().persist(t);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.Repository#findAll()
-	 */
-	@Override
-	public List<Mecanico> findAll() {
-		return Jpa.getManager().createNamedQuery("Mecanico.findAll", Mecanico.class).getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.Repository#findAll()
+     */
+    @Override
+    public List<Mecanico> findAll() {
+	return Jpa.getManager()
+		.createNamedQuery("Mecanico.findAll", Mecanico.class)
+		.getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MecanicoRepository#findByDni(java.lang.String)
-	 */
-	@Override
-	public Mecanico findByDni(String dni) {
-		return Jpa.getManager().createNamedQuery("Mecanico.findByDni", Mecanico.class).setParameter(1, dni)
-				.getResultList().stream().findFirst().orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MecanicoRepository#findByDni(java.lang.String)
+     */
+    @Override
+    public Mecanico findByDni(String dni) {
+	return Jpa.getManager()
+		.createNamedQuery("Mecanico.findByDni", Mecanico.class)
+		.setParameter(1, dni).getResultList().stream().findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.Repository#findById(java.lang.Long)
-	 */
-	@Override
-	public Mecanico findById(Long id) {
-		return Jpa.getManager().find(Mecanico.class, id);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.Repository#findById(java.lang.Long)
+     */
+    @Override
+    public Mecanico findById(Long id) {
+	return Jpa.getManager().find(Mecanico.class, id);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.Repository#remove(java.lang.Object)
-	 */
-	@Override
-	public void remove(Mecanico t) {
-		Jpa.getManager().remove(t);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.Repository#remove(java.lang.Object)
+     */
+    @Override
+    public void remove(Mecanico t) {
+	Jpa.getManager().remove(t);
+    }
 
 }

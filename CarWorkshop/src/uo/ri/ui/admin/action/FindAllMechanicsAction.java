@@ -39,12 +39,12 @@ import uo.ri.ui.util.MechanicsPrinter;
  */
 public class FindAllMechanicsAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
-		Console.println( "\nListado de mecánicos\n" );
-		AdminService adminService = ServicesFactory.getAdminService();
+    @Override
+    public void execute() throws BusinessException {
+	Console.println("\nListado de mecánicos\n");
+	AdminService adminService = ServicesFactory.getAdminService();
 
-		// Getting the list of mechanics and printing them.
-		new MechanicsPrinter( adminService.findAllMechanics() );
-	}
+	// Getting the list of mechanics and printing them.
+	new MechanicsPrinter(adminService.findAllMechanics());
+    }
 }

@@ -37,15 +37,15 @@ import uo.ri.ui.cash.action.CreatePMCardAction;
  */
 public class AddMedioPagoMenu extends BaseMenu {
 
-	public static void main( String[] args ) {
-		new MainMenu().execute();
-	}
+    public static void main(String[] args) {
+	new MainMenu().execute();
+    }
 
-	public AddMedioPagoMenu() {
-		menuOptions = new Object[][] {
-				{ "Caja de Taller > Gestión de medios de pago > Dar de alta un medio de pago a un cliente",
-						null },
-				{ "Añadir tarjeta a un cliente", CreatePMCardAction.class },
-				{ "Añadir bono a un cliente", CreatePMBondAction.class }, };
-	}
+    public AddMedioPagoMenu() {
+	menuOptions = new Object[][] { {
+		"Caja de Taller > Gestión de medios de pago > Dar de alta un medio de pago a un cliente",
+		null },
+		{ "Añadir tarjeta a un cliente", CreatePMCardAction.class },
+		{ "Añadir bono a un cliente", CreatePMBondAction.class }, };
+    }
 }

@@ -41,31 +41,31 @@ import uo.ri.persistence.impl.PaymentMethodsGatewayImpl;
  */
 public class PersistenceFactory {
 
-	/**
-	 * @return a new gateway for the failures.
-	 */
-	public static FailuresGateway getFailuresGateway() {
-		return new FailuresGatewayImpl();
-	}
+    /**
+     * @return a new gateway for the failures.
+     */
+    public static FailuresGateway getFailuresGateway() {
+	return new FailuresGatewayImpl();
+    }
 
-	/**
-	 * @return a new gateway for the invoices.
-	 */
-	public static InvoicesGateway getInvoicesGateway() {
-		return new InvoicesGatewayImpl();
-	}
+    /**
+     * @return a new gateway for the invoices.
+     */
+    public static InvoicesGateway getInvoicesGateway() {
+	return new InvoicesGatewayImpl();
+    }
 
-	/**
-	 * @return a new gateway for the mechanics.
-	 */
-	public static MechanicsGateway getMechanicsGateway() {
-		return new MechaincsGatewayImpl();
-	}
+    /**
+     * @return a new gateway for the mechanics.
+     */
+    public static MechanicsGateway getMechanicsGateway() {
+	return new MechaincsGatewayImpl();
+    }
 
-	/**
-	 * @return a new gateway for the payment methods.
-	 */
-	public static PaymentMethodsGateway getPaymentMethodsGateway() {
-		return new PaymentMethodsGatewayImpl();
-	}
+    /**
+     * @return a new gateway for the payment methods.
+     */
+    public static PaymentMethodsGateway getPaymentMethodsGateway() {
+	return new PaymentMethodsGatewayImpl();
+    }
 }

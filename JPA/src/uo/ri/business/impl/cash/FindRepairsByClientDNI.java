@@ -47,47 +47,51 @@ import uo.ri.util.exception.Check;
  */
 public class FindRepairsByClientDNI implements Command<List<FailureDto>> {
 
-	/** The client DNI. */
-	private String clientDNI;
+    /** The client DNI. */
+    private String clientDNI;
 
-	/**
-	 * Instantiates a new find repairs by client DNI.
-	 *
-	 * @param clientDNI the client DNI
-	 */
-	public FindRepairsByClientDNI(String clientDNI) {
-		this.clientDNI = clientDNI;
-	}
+    /**
+     * Instantiates a new find repairs by client DNI.
+     *
+     * @param clientDNI
+     *            the client DNI
+     */
+    public FindRepairsByClientDNI(String clientDNI) {
+	this.clientDNI = clientDNI;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<FailureDto> execute() throws BusinessException {
-		ClienteRepository cp = Factory.repository.forCliente();
-		Cliente cliente = cp.findByDni(clientDNI);
-		Check.isNotNull(cliente, "El cliente no existe");
-		List<Averia> averias = findAllBreakdownsFrom(cliente);
-		return DtoAssembler.toBreakdownDtoList(averias);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public List<FailureDto> execute() throws BusinessException {
+	ClienteRepository cp = Factory.repository.forCliente();
+	Cliente cliente = cp.findByDni(clientDNI);
+	Check.isNotNull(cliente, "El cliente no existe");
+	List<Averia> averias = findAllBreakdownsFrom(cliente);
+	return DtoAssembler.toBreakdownDtoList(averias);
+    }
 
-	/**
-	 * This method finds all the breakdowns of the client from all of its
-	 * vehicles.
-	 *
-	 * @param cliente the client to look
-	 * @return the list containing all the breakdowns
-	 */
-	private List<Averia> findAllBreakdownsFrom(Cliente cliente) {
-		List<Averia> averias = new ArrayList<>();
-		Set<Vehiculo> vehiculos = cliente.getVehiculos();
-		for (Vehiculo vehiculo : vehiculos) {
-			Set<Averia> aux = vehiculo.getAverias();
-			for (Averia averia : aux) {
-				averias.add(averia);
-			}
-		}
-		return averias;
+    /**
+     * This method finds all the breakdowns of the client from all of its
+     * vehicles.
+     *
+     * @param cliente
+     *            the client to look
+     * @return the list containing all the breakdowns
+     */
+    private List<Averia> findAllBreakdownsFrom(Cliente cliente) {
+	List<Averia> averias = new ArrayList<>();
+	Set<Vehiculo> vehiculos = cliente.getVehiculos();
+	for (Vehiculo vehiculo : vehiculos) {
+	    Set<Averia> aux = vehiculo.getAverias();
+	    for (Averia averia : aux) {
+		averias.add(averia);
+	    }
 	}
+	return averias;
+    }
 
 }

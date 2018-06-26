@@ -34,13 +34,13 @@ import uo.ri.business.repository.RepositoryFactory;
  */
 public class Factory {
 
-	/** The repository. */
-	public static RepositoryFactory repository;
-	
-	/** The service. */
-	public static ServiceFactory service;
-	
-	/** The executor. */
-	public static CommandExecutorFactory executor;
+    /** The repository. */
+    public static RepositoryFactory repository;
+
+    /** The service. */
+    public static ServiceFactory service;
+
+    /** The executor. */
+    public static CommandExecutorFactory executor;
 
 }

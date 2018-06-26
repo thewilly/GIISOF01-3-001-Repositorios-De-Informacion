@@ -34,8 +34,8 @@ import java.util.Map;
  * @formatter Oviedo Computing Community
  */
 public abstract class AbstractPrinter {
-	protected Map<String, Object> map;
-	protected List<Map<String, Object>> listMaps;
-	
-	protected abstract void print();
+    protected Map<String, Object> map;
+    protected List<Map<String, Object>> listMaps;
+
+    protected abstract void print();
 }

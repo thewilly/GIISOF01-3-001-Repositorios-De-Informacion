@@ -43,19 +43,21 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ListMechanicsAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
 
-		AdminService as = Factory.service.forAdmin();
-		List<MechanicDto> mechanics = as.findAllMechanics();
+	AdminService as = Factory.service.forAdmin();
+	List<MechanicDto> mechanics = as.findAllMechanics();
 
-		Console.println("\nListado de mecánicos");
-		for (MechanicDto m : mechanics) {
-			new AbstractPrinter( new MechanicPrinter( m ) ).print();
-		}
-
+	Console.println("\nListado de mecánicos");
+	for (MechanicDto m : mechanics) {
+	    new AbstractPrinter(new MechanicPrinter(m)).print();
 	}
+
+    }
 }

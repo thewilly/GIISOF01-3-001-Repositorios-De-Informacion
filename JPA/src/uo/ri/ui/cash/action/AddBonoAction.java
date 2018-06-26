@@ -39,25 +39,27 @@ import uo.ri.util.exception.BusinessException;
  */
 public class AddBonoAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
 
-		Long id = Console.readLong("Id cliente");
-		String descripcion = Console.readString("Descripción");
-		double disponible = Console.readDouble("Dinero");
+	Long id = Console.readLong("Id cliente");
+	String descripcion = Console.readString("Descripción");
+	double disponible = Console.readDouble("Dinero");
 
-		VoucherDto dto = new VoucherDto();
-		dto.clientId = id;
-		dto.available = disponible;
-		dto.description = descripcion;
+	VoucherDto dto = new VoucherDto();
+	dto.clientId = id;
+	dto.available = disponible;
+	dto.description = descripcion;
 
-		CashService cs = Factory.service.forCash();
-		cs.addVoucherPaymentMean(dto);
+	CashService cs = Factory.service.forCash();
+	cs.addVoucherPaymentMean(dto);
 
-		Console.println("Nuevo bono añadido a " + id);
-	}
+	Console.println("Nuevo bono añadido a " + id);
+    }
 
 }

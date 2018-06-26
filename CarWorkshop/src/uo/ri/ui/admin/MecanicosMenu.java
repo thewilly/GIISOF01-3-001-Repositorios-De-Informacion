@@ -38,13 +38,14 @@ import uo.ri.ui.admin.action.UpdateMechanicAction;
  */
 public class MecanicosMenu extends BaseMenu {
 
-	public MecanicosMenu() {
-		menuOptions = new Object[][] { { "Administrador > Gestión de mecánicos", null },
+    public MecanicosMenu() {
+	menuOptions = new Object[][] {
+		{ "Administrador > Gestión de mecánicos", null },
 
-				{ "Añadir mecánico", CreateMechanicAction.class },
-				{ "Modificar datos de mecánico", UpdateMechanicAction.class },
-				{ "Eliminar mecánico", RemoveMechanicAction.class },
-				{ "Listar mecánicos", FindAllMechanicsAction.class }, };
-	}
+		{ "Añadir mecánico", CreateMechanicAction.class },
+		{ "Modificar datos de mecánico", UpdateMechanicAction.class },
+		{ "Eliminar mecánico", RemoveMechanicAction.class },
+		{ "Listar mecánicos", FindAllMechanicsAction.class }, };
+    }
 
 }

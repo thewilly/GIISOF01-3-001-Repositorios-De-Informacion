@@ -34,14 +34,17 @@ import uo.ri.util.exception.BusinessException;
  */
 public interface CommandExecutor {
 
-	/**
-	 * Executed the given command.
-	 *
-	 * @param <T> the generic type
-	 * @param command to execute.
-	 * @return the result after the command execution.
-	 * @throws BusinessException if any error during method execution.
-	 */
-	<T> T execute( Command<T> command ) throws BusinessException;
+    /**
+     * Executed the given command.
+     *
+     * @param <T>
+     *            the generic type
+     * @param command
+     *            to execute.
+     * @return the result after the command execution.
+     * @throws BusinessException
+     *             if any error during method execution.
+     */
+    <T> T execute(Command<T> command) throws BusinessException;
 
 }

@@ -38,13 +38,16 @@ import uo.ri.ui.foreman.action.ModifyClientAction;
  */
 public class ClientesMenu extends BaseMenu {
 
-	/**
-	 * Instantiates a new clientes menu.
-	 */
-	public ClientesMenu() {
-		menuOptions = new Object[][] { { "Jefe de Taller > Gestión de Clientes", null },
-				{ "Añadir cliente", AddClientAction.class }, { "Modificar datos de cliente", ModifyClientAction.class },
-				{ "Eliminar cliente", DeleteClientAction.class }, { "Listar clientes", ListClientsAction.class }, };
-	}
+    /**
+     * Instantiates a new clientes menu.
+     */
+    public ClientesMenu() {
+	menuOptions = new Object[][] {
+		{ "Jefe de Taller > Gestión de Clientes", null },
+		{ "Añadir cliente", AddClientAction.class },
+		{ "Modificar datos de cliente", ModifyClientAction.class },
+		{ "Eliminar cliente", DeleteClientAction.class },
+		{ "Listar clientes", ListClientsAction.class }, };
+    }
 
 }

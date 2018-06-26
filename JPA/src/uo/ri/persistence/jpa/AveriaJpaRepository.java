@@ -35,34 +35,49 @@ import uo.ri.persistence.jpa.util.Jpa;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class AveriaJpaRepository extends BaseRepository<Averia> implements AveriaRepository {
+public class AveriaJpaRepository extends BaseRepository<Averia>
+	implements AveriaRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findByIds(java.util.List)
-	 */
-	@Override
-	public List<Averia> findByIds(List<Long> idsAveria) {
-		return Jpa.getManager().createNamedQuery("Averia.findByIds", Averia.class).setParameter(1, idsAveria)
-				.getResultList();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.AveriaRepository#findByIds(java.util.List)
+     */
+    @Override
+    public List<Averia> findByIds(List<Long> idsAveria) {
+	return Jpa.getManager()
+		.createNamedQuery("Averia.findByIds", Averia.class)
+		.setParameter(1, idsAveria).getResultList();
 
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findNoFacturadasByDni(java.lang.String)
-	 */
-	@Override
-	public List<Averia> findNoFacturadasByDni(String dni) {
-		return Jpa.getManager().createNamedQuery("Averia.findNoFacturadasByDni", Averia.class).setParameter(1, dni)
-				.getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.AveriaRepository#findNoFacturadasByDni(java.
+     * lang.String)
+     */
+    @Override
+    public List<Averia> findNoFacturadasByDni(String dni) {
+	return Jpa.getManager()
+		.createNamedQuery("Averia.findNoFacturadasByDni", Averia.class)
+		.setParameter(1, dni).getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findWithUnusedBono3ByClienteId(java.lang.Long)
-	 */
-	@Override
-	public List<Averia> findWithUnusedBono3ByClienteId(Long id) {
-		return Jpa.getManager().createNamedQuery("Averia.findWithUnusedBono3ByClienteId", Averia.class)
-				.setParameter(1, id).getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.AveriaRepository#findWithUnusedBono3ByClienteId
+     * (java.lang.Long)
+     */
+    @Override
+    public List<Averia> findWithUnusedBono3ByClienteId(Long id) {
+	return Jpa.getManager()
+		.createNamedQuery("Averia.findWithUnusedBono3ByClienteId",
+			Averia.class)
+		.setParameter(1, id).getResultList();
+    }
 
 }

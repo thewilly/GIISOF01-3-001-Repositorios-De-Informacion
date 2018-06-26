@@ -45,55 +45,74 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ForemanServiceImpl implements ForemanService {
 
-	/** The executor. */
-	private CommandExecutor executor = Factory.executor.forExecutor();
+    /** The executor. */
+    private CommandExecutor executor = Factory.executor.forExecutor();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#addClient(uo.ri.business.dto.ClientDto, java.lang.Long)
-	 */
-	@Override
-	public void addClient(ClientDto client, Long idRecomendator) throws BusinessException {
-		executor.execute(new CreateClient(client, idRecomendator));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.ForemanService#addClient(uo.ri.business.dto.ClientDto,
+     * java.lang.Long)
+     */
+    @Override
+    public void addClient(ClientDto client, Long idRecomendator)
+	    throws BusinessException {
+	executor.execute(new CreateClient(client, idRecomendator));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#deleteClient(java.lang.Long)
-	 */
-	@Override
-	public void deleteClient(Long id) throws BusinessException {
-		executor.execute(new RemoveClient(id));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ForemanService#deleteClient(java.lang.Long)
+     */
+    @Override
+    public void deleteClient(Long id) throws BusinessException {
+	executor.execute(new RemoveClient(id));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#findAllClients()
-	 */
-	@Override
-	public List<ClientDto> findAllClients() throws BusinessException {
-		return executor.execute(new FindAllClients());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ForemanService#findAllClients()
+     */
+    @Override
+    public List<ClientDto> findAllClients() throws BusinessException {
+	return executor.execute(new FindAllClients());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#findClientById(java.lang.Long)
-	 */
-	@Override
-	public ClientDto findClientById(Long id) throws BusinessException {
-		return executor.execute(new FindClientById(id));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ForemanService#findClientById(java.lang.Long)
+     */
+    @Override
+    public ClientDto findClientById(Long id) throws BusinessException {
+	return executor.execute(new FindClientById(id));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#findRecomendedClientsByClienteId(java.lang.Long)
-	 */
-	@Override
-	public List<ClientDto> findRecomendedClientsByClienteId(Long id) throws BusinessException {
-		return executor.execute(new FindRecommendedClientsByClientId(id));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.ForemanService#findRecomendedClientsByClienteId(java.lang.
+     * Long)
+     */
+    @Override
+    public List<ClientDto> findRecomendedClientsByClienteId(Long id)
+	    throws BusinessException {
+	return executor.execute(new FindRecommendedClientsByClientId(id));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ForemanService#updateClient(uo.ri.business.dto.ClientDto)
-	 */
-	@Override
-	public void updateClient(ClientDto dto) throws BusinessException {
-		executor.execute(new UpdateClient(dto));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.ForemanService#updateClient(uo.ri.business.dto.ClientDto)
+     */
+    @Override
+    public void updateClient(ClientDto dto) throws BusinessException {
+	executor.execute(new UpdateClient(dto));
+    }
 
 }

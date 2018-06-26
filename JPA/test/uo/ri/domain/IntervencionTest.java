@@ -37,7 +37,6 @@ import uo.ri.model.Sustitucion;
 import uo.ri.model.TipoVehiculo;
 import uo.ri.model.Vehiculo;
 
-
 /**
  * The Class IntervencionTest.
  *
@@ -45,60 +44,60 @@ import uo.ri.model.Vehiculo;
  * @version 201806081225
  */
 public class IntervencionTest {
-	
-	/** The mecanico. */
-	private Mecanico mecanico;
-	
-	/** The averia. */
-	private Averia averia;
-	
-	/** The intervencion. */
-	private Intervencion intervencion;
-	
-	/** The repuesto. */
-	private Repuesto repuesto;
-	
-	/** The sustitucion. */
-	private Sustitucion sustitucion;
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
 
-	/**
-	 * Sets the up.
-	 */
-	@Before
-	public void setUp() {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "ibiza", "seat");
-		Association.Poseer.link(cliente, vehiculo);
+    /** The mecanico. */
+    private Mecanico mecanico;
 
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
+    /** The averia. */
+    private Averia averia;
 
-		averia = new Averia(vehiculo, "falla la junta la trocla");
-		mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
-	
-		intervencion = new Intervencion(mecanico, averia);
-		intervencion.setMinutos(60);
-		
-		repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
-		sustitucion = new Sustitucion(repuesto, intervencion);
-		sustitucion.setCantidad(2);
-	}
-	
-	/**
-	 * Test importe intervencion.
-	 */
-	@Test
-	public void testImporteIntervencion() {
-		assertTrue( intervencion.getImporte() == 250.0 );
-	}
+    /** The intervencion. */
+    private Intervencion intervencion;
+
+    /** The repuesto. */
+    private Repuesto repuesto;
+
+    /** The sustitucion. */
+    private Sustitucion sustitucion;
+
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
+
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
+
+    /** The cliente. */
+    private Cliente cliente;
+
+    /**
+     * Sets the up.
+     */
+    @Before
+    public void setUp() {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "ibiza", "seat");
+	Association.Poseer.link(cliente, vehiculo);
+
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
+
+	averia = new Averia(vehiculo, "falla la junta la trocla");
+	mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
+
+	intervencion = new Intervencion(mecanico, averia);
+	intervencion.setMinutos(60);
+
+	repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
+	sustitucion = new Sustitucion(repuesto, intervencion);
+	sustitucion.setCantidad(2);
+    }
+
+    /**
+     * Test importe intervencion.
+     */
+    @Test
+    public void testImporteIntervencion() {
+	assertTrue(intervencion.getImporte() == 250.0);
+    }
 
 }

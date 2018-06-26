@@ -42,43 +42,44 @@ import uo.ri.persistence.PaymentMethodsGateway;
  */
 public class FindAllPaymentMethodsByClientId {
 
-	private Long clientId;
+    private Long clientId;
 
-	/**
-	 * @param clientId is the id of the client to filter all the payment
-	 *            methods.
-	 */
-	public FindAllPaymentMethodsByClientId( Long clientId ) {
-		this.clientId = clientId;
+    /**
+     * @param clientId
+     *            is the id of the client to filter all the payment methods.
+     */
+    public FindAllPaymentMethodsByClientId(Long clientId) {
+	this.clientId = clientId;
+    }
+
+    /**
+     * Executes the query.
+     * 
+     * @return a list of maps where each map is a payment method of the given
+     *         client.
+     * @throws BusinessException
+     *             if any error success during the execution of the method.
+     */
+    public List<Map<String, Object>> execute() throws BusinessException {
+	Connection connection = null;
+	try {
+
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // returning the result of performing the query in the gateway.
+	    return paymentMethodsGW.findAllPaymentMethodsByClientId(clientId);
+	} catch (SQLException e) {
+	    throw new RuntimeException();
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * Executes the query.
-	 * 
-	 * @return a list of maps where each map is a payment method of the given
-	 *         client.
-	 * @throws BusinessException if any error success during the execution of
-	 *             the method.
-	 */
-	public List<Map<String, Object>> execute() throws BusinessException {
-		Connection connection = null;
-		try {
-
-			// Getting the connection.
-			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-
-			// returning the result of performing the query in the gateway.
-			return paymentMethodsGW.findAllPaymentMethodsByClientId( clientId );
-		} catch (SQLException e) {
-			throw new RuntimeException();
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 
 }

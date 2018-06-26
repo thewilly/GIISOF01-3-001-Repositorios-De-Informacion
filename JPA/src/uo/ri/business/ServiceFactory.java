@@ -27,32 +27,32 @@ package uo.ri.business;
  */
 public interface ServiceFactory {
 
-	/**
-	 * For admin.
-	 *
-	 * @return the admin service
-	 */
-	AdminService forAdmin();
-	
-	/**
-	 * For cash.
-	 *
-	 * @return the cash service
-	 */
-	CashService forCash();
-	
-	/**
-	 * For foreman.
-	 *
-	 * @return the foreman service
-	 */
-	ForemanService forForeman();
-	
-	/**
-	 * For mechanic.
-	 *
-	 * @return the mechanic service
-	 */
-	MechanicService forMechanic();
+    /**
+     * For admin.
+     *
+     * @return the admin service
+     */
+    AdminService forAdmin();
+
+    /**
+     * For cash.
+     *
+     * @return the cash service
+     */
+    CashService forCash();
+
+    /**
+     * For foreman.
+     *
+     * @return the foreman service
+     */
+    ForemanService forForeman();
+
+    /**
+     * For mechanic.
+     *
+     * @return the mechanic service
+     */
+    MechanicService forMechanic();
 
 }

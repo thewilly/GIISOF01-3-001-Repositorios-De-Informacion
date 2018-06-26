@@ -31,13 +31,13 @@ import java.util.Date;
  * @version 201806081225
  */
 public class CardDto extends PaymentMeanDto {
-	
-	/** The card number. */
-	public String cardNumber;
-	
-	/** The card expiration. */
-	public Date cardExpirationDate;
-	
-	/** The card type. */
-	public String cardType;
+
+    /** The card number. */
+    public String cardNumber;
+
+    /** The card expiration. */
+    public Date cardExpirationDate;
+
+    /** The card type. */
+    public String cardType;
 }

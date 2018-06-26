@@ -31,8 +31,7 @@ import uo.ri.model.Vehiculo;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryVehiculoRepository 
-		extends BaseMemoryRepository<Vehiculo> 
-		implements VehiculoRepository {
+public class InMemoryVehiculoRepository extends BaseMemoryRepository<Vehiculo>
+	implements VehiculoRepository {
 
 }

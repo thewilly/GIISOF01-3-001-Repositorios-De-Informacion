@@ -35,16 +35,19 @@ import alb.util.menu.NotYetImplementedAction;
  */
 public class TiposVehiculoMenu extends BaseMenu {
 
-	/**
-	 * Instantiates a new tipos vehiculo menu.
-	 */
-	public TiposVehiculoMenu() {
-		menuOptions = new Object[][] { { "Administrador > Gestión de tipos de vehiculo", null },
+    /**
+     * Instantiates a new tipos vehiculo menu.
+     */
+    public TiposVehiculoMenu() {
+	menuOptions = new Object[][] {
+		{ "Administrador > Gestión de tipos de vehiculo", null },
 
-				{ "Añadir tipo de vehiculo", NotYetImplementedAction.class },
-				{ "Modificar datos de tipo de vehiculo", NotYetImplementedAction.class },
-				{ "Eliminar tipo de vehiculo", NotYetImplementedAction.class },
-				{ "Listar tipos de vehiculo", NotYetImplementedAction.class }, };
-	}
+		{ "Añadir tipo de vehiculo", NotYetImplementedAction.class },
+		{ "Modificar datos de tipo de vehiculo",
+			NotYetImplementedAction.class },
+		{ "Eliminar tipo de vehiculo", NotYetImplementedAction.class },
+		{ "Listar tipos de vehiculo",
+			NotYetImplementedAction.class }, };
+    }
 
 }

@@ -47,102 +47,107 @@ import uo.ri.util.exception.BusinessException;
  */
 public class AddClientTests extends BaseServiceTests {
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+    }
 
-	/**
-	 * Al cliente añadido se le ha asignado su medio de pago en metálico .
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAddClient() throws BusinessException {
-		ClientDto client = Fixture.newClientDto();
-		Long WITHOUT_RECOMENDATION = null;
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.addClient(client, WITHOUT_RECOMENDATION );
-		
-		Cliente expected = FixtureRepository.findClientByDni( client.dni );
-		assertSameData(client, expected);
+    /**
+     * Al cliente añadido se le ha asignado su medio de pago en metálico .
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAddClient() throws BusinessException {
+	ClientDto client = Fixture.newClientDto();
+	Long WITHOUT_RECOMENDATION = null;
 
-		assertTrue( expected.getMediosPago().size() == 1 );
-		MedioPago mp = getMetalico( expected );
-		assertTrue( mp != null);
-		assertTrue( mp.getAcumulado() == 0.0 );
-		assertTrue( mp.getCargos().size() == 0 );
-		assertTrue( mp.getCliente().equals( expected ));
-	}
+	ForemanService svc = Factory.service.forForeman();
+	svc.addClient(client, WITHOUT_RECOMENDATION);
 
-	/**
-	 * No se puede añadir un cliente con dni de otro ya existente.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAddRepeatedClient() throws BusinessException {
-		Long WITHOUT_RECOMENDATION = null;
-		Cliente c = FixtureRepository.registerNewClient();
-		ClientDto client = Fixture.newClientDto();
-		client.dni = c.getDni(); // <---repeated dni
-		
-		ForemanService svc = Factory.service.forForeman();
-		try {
-			svc.addClient(client, WITHOUT_RECOMENDATION );
-			fail("An exception must be thrown");
-		} catch (BusinessException be) {
-			assertMsg( be, "Ya existe un cliente con ese dni");
-		}
-	}
+	Cliente expected = FixtureRepository.findClientByDni(client.dni);
+	assertSameData(client, expected);
 
-	/**
-	 * Si el cliente recomendador no existe salta excepcion.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAddWithNonExisitngRecomender() throws BusinessException {
-		Long NON_EXISTING_RECOMENDER_ID = -1000L;
-		ClientDto client = Fixture.newClientDto();
-		
-		ForemanService svc = Factory.service.forForeman();
-		try {
-			svc.addClient(client, NON_EXISTING_RECOMENDER_ID );
-			fail("An exception must be thrown");
-		} catch (BusinessException be) {
-			assertMsg( be, "No existe el cliente recomendador");
-		}
+	assertTrue(expected.getMediosPago().size() == 1);
+	MedioPago mp = getMetalico(expected);
+	assertTrue(mp != null);
+	assertTrue(mp.getAcumulado() == 0.0);
+	assertTrue(mp.getCargos().size() == 0);
+	assertTrue(mp.getCliente().equals(expected));
+    }
+
+    /**
+     * No se puede añadir un cliente con dni de otro ya existente.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAddRepeatedClient() throws BusinessException {
+	Long WITHOUT_RECOMENDATION = null;
+	Cliente c = FixtureRepository.registerNewClient();
+	ClientDto client = Fixture.newClientDto();
+	client.dni = c.getDni(); // <---repeated dni
+
+	ForemanService svc = Factory.service.forForeman();
+	try {
+	    svc.addClient(client, WITHOUT_RECOMENDATION);
+	    fail("An exception must be thrown");
+	} catch (BusinessException be) {
+	    assertMsg(be, "Ya existe un cliente con ese dni");
 	}
-	
-	/**
-	 * Al cliente añadido por recomendacion se le registra la recomendación.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAddWithRecomendation() throws BusinessException {
-		Cliente recomender = FixtureRepository.registerNewClient();
-		ClientDto client = Fixture.newClientDto();
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.addClient(client, recomender.getId() );
-		
-		Cliente expected = FixtureRepository.findClientByDni( client.dni );
-		assertSameData(client, expected);
-		
-		Recomendacion r = expected.getRecomendacionRecibida();
-		assertTrue( r != null );
-		assertTrue( r.getRecomendador().equals( recomender ));
-		assertTrue( r.getRecomendado().equals( expected ));
-		
-		assertTrue( recomender.getRecomendacionesHechas().size() == 1);
-		assertTrue( recomender.getRecomendacionesHechas().contains( r ));
+    }
+
+    /**
+     * Si el cliente recomendador no existe salta excepcion.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAddWithNonExisitngRecomender() throws BusinessException {
+	Long NON_EXISTING_RECOMENDER_ID = -1000L;
+	ClientDto client = Fixture.newClientDto();
+
+	ForemanService svc = Factory.service.forForeman();
+	try {
+	    svc.addClient(client, NON_EXISTING_RECOMENDER_ID);
+	    fail("An exception must be thrown");
+	} catch (BusinessException be) {
+	    assertMsg(be, "No existe el cliente recomendador");
 	}
-	
+    }
+
+    /**
+     * Al cliente añadido por recomendacion se le registra la recomendación.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAddWithRecomendation() throws BusinessException {
+	Cliente recomender = FixtureRepository.registerNewClient();
+	ClientDto client = Fixture.newClientDto();
+
+	ForemanService svc = Factory.service.forForeman();
+	svc.addClient(client, recomender.getId());
+
+	Cliente expected = FixtureRepository.findClientByDni(client.dni);
+	assertSameData(client, expected);
+
+	Recomendacion r = expected.getRecomendacionRecibida();
+	assertTrue(r != null);
+	assertTrue(r.getRecomendador().equals(recomender));
+	assertTrue(r.getRecomendado().equals(expected));
+
+	assertTrue(recomender.getRecomendacionesHechas().size() == 1);
+	assertTrue(recomender.getRecomendacionesHechas().contains(r));
+    }
+
 }

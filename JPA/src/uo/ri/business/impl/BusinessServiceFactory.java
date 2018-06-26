@@ -38,35 +38,43 @@ import uo.ri.business.ServiceFactory;
  */
 public class BusinessServiceFactory implements ServiceFactory {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ServiceFactory#forAdmin()
-	 */
-	@Override
-	public AdminService forAdmin() {
-		return new AdminServiceImpl();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ServiceFactory#forAdmin()
+     */
+    @Override
+    public AdminService forAdmin() {
+	return new AdminServiceImpl();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ServiceFactory#forCash()
-	 */
-	@Override
-	public CashService forCash() {
-		return new CashServiceImpl();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ServiceFactory#forCash()
+     */
+    @Override
+    public CashService forCash() {
+	return new CashServiceImpl();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ServiceFactory#forForeman()
-	 */
-	@Override
-	public ForemanService forForeman() {
-		return new ForemanServiceImpl();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ServiceFactory#forForeman()
+     */
+    @Override
+    public ForemanService forForeman() {
+	return new ForemanServiceImpl();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.ServiceFactory#forMechanic()
-	 */
-	@Override
-	public MechanicService forMechanic() {
-		throw new RuntimeException("Not yet implemented");
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.ServiceFactory#forMechanic()
+     */
+    @Override
+    public MechanicService forMechanic() {
+	throw new RuntimeException("Not yet implemented");
+    }
 }

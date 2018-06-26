@@ -45,39 +45,44 @@ import uo.ri.util.exception.Check;
  */
 public class FindAllBondsByClientId implements Command<List<VoucherDto>> {
 
-	/** The client id. */
-	private long clientId;
+    /** The client id. */
+    private long clientId;
 
-	/**
-	 * Instantiates a new find all bonds by client id.
-	 *
-	 * @param clientId the id
-	 */
-	public FindAllBondsByClientId(long clientId) {
-		this.clientId = clientId;
-	}
+    /**
+     * Instantiates a new find all bonds by client id.
+     *
+     * @param clientId
+     *            the id
+     */
+    public FindAllBondsByClientId(long clientId) {
+	this.clientId = clientId;
+    }
 
-	/**
-	 * This method checks if the id passed to the constructor, corresponds to a
-	 * client in the system for then listing all the vouchers.
-	 *
-	 * @param clientId the id of the client
-	 * @throws BusinessException the business exception
-	 */
-	private void assertClientExists(long clientId) throws BusinessException {
-		ClienteRepository repository = Factory.repository.forCliente();
-		Cliente clientInDB = repository.findById(clientId);
-		Check.isNotNull(clientInDB, "Ese cliente no existe en el sistema");
-	}
+    /**
+     * This method checks if the id passed to the constructor, corresponds to a
+     * client in the system for then listing all the vouchers.
+     *
+     * @param clientId
+     *            the id of the client
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertClientExists(long clientId) throws BusinessException {
+	ClienteRepository repository = Factory.repository.forCliente();
+	Cliente clientInDB = repository.findById(clientId);
+	Check.isNotNull(clientInDB, "Ese cliente no existe en el sistema");
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<VoucherDto> execute() throws BusinessException {
-		MedioPagoRepository repository = Factory.repository.forMedioPago();
-		assertClientExists(clientId);
-		List<Bono> vouchers = repository.findVouchersByClientId(clientId);
-		return DtoAssembler.toVoucherDtoList(vouchers);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public List<VoucherDto> execute() throws BusinessException {
+	MedioPagoRepository repository = Factory.repository.forMedioPago();
+	assertClientExists(clientId);
+	List<Bono> vouchers = repository.findVouchersByClientId(clientId);
+	return DtoAssembler.toVoucherDtoList(vouchers);
+    }
 }

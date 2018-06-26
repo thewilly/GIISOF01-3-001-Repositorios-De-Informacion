@@ -32,8 +32,8 @@ package uo.ri.ui.util;
  */
 public interface Printer {
 
-	/**
-	 * Prints the content.
-	 */
-	public void print();
+    /**
+     * Prints the content.
+     */
+    public void print();
 }

@@ -37,18 +37,20 @@ import uo.ri.ui.cash.action.CreateInvoiceForFailuresAction;
  */
 public class MainMenu extends BaseMenu {
 
-	public static void main( String[] args ) {
-		new MainMenu().execute();
-	}
+    public static void main(String[] args) {
+	new MainMenu().execute();
+    }
 
-	public MainMenu() {
-		menuOptions = new Object[][] { { "Caja de Taller", null },
-				{ "Buscar reparaciones no facturadas de un cliente",
-						NotYetImplementedAction.class },
-				{ "Buscar reparación por matrícula", NotYetImplementedAction.class },
-				{ "Facturar reparaciones", CreateInvoiceForFailuresAction.class },
-				{ "Liquidar factura ", NotYetImplementedAction.class },
-				{ "Gestión de medios de pago", MediosPagoMenu.class }, };
-	}
+    public MainMenu() {
+	menuOptions = new Object[][] { { "Caja de Taller", null },
+		{ "Buscar reparaciones no facturadas de un cliente",
+			NotYetImplementedAction.class },
+		{ "Buscar reparación por matrícula",
+			NotYetImplementedAction.class },
+		{ "Facturar reparaciones",
+			CreateInvoiceForFailuresAction.class },
+		{ "Liquidar factura ", NotYetImplementedAction.class },
+		{ "Gestión de medios de pago", MediosPagoMenu.class }, };
+    }
 
 }

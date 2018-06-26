@@ -40,26 +40,29 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FindClientById implements Command<ClientDto> {
 
-	/** The client id. */
-	private Long clientId;
+    /** The client id. */
+    private Long clientId;
 
-	/**
-	 * Instantiates a new find client by id.
-	 *
-	 * @param clientId the client id
-	 */
-	public FindClientById(Long clientId) {
-		this.clientId = clientId;
-	}
+    /**
+     * Instantiates a new find client by id.
+     *
+     * @param clientId
+     *            the client id
+     */
+    public FindClientById(Long clientId) {
+	this.clientId = clientId;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public ClientDto execute() throws BusinessException {
-		ClienteRepository cp = Factory.repository.forCliente();
-		Cliente cliente = cp.findById(clientId);
-		return (cliente == null) ? null : DtoAssembler.toDto(cliente);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public ClientDto execute() throws BusinessException {
+	ClienteRepository cp = Factory.repository.forCliente();
+	Cliente cliente = cp.findById(clientId);
+	return (cliente == null) ? null : DtoAssembler.toDto(cliente);
+    }
 
 }

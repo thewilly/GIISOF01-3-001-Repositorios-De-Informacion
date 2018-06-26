@@ -33,12 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({ 
-	AveriaTest.class, 
-	FacturaTest.class, 
-	IntervencionTest.class,
-	SustitucionTest.class 
-})
+@SuiteClasses({ AveriaTest.class, FacturaTest.class, IntervencionTest.class,
+	SustitucionTest.class })
 public class AllTests {
 
 }

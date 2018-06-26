@@ -42,17 +42,19 @@ import uo.ri.ui.util.ClientPrinter;
  */
 public class ListClientsAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		ForemanService fp = Factory.service.forForeman();
-		List<ClientDto> clientes = fp.findAllClients();
-		Console.println("Listado de clientes:");
-		for (ClientDto clientDto : clientes) {
-			new AbstractPrinter( new ClientPrinter( clientDto ) ).print();
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	ForemanService fp = Factory.service.forForeman();
+	List<ClientDto> clientes = fp.findAllClients();
+	Console.println("Listado de clientes:");
+	for (ClientDto clientDto : clientes) {
+	    new AbstractPrinter(new ClientPrinter(clientDto)).print();
 	}
+    }
 
 }

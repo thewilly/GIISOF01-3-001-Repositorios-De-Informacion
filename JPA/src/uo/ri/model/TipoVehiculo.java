@@ -43,140 +43,151 @@ import javax.persistence.Table;
 @Table(name = "TTiposVehiculo")
 public class TipoVehiculo {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	/** The nombre. */
-	@Column(unique = true)
-	private String nombre;
-	
-	/** The precio hora. */
-	private double precioHora;
+    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	/** The vehiculos. */
-	@OneToMany(mappedBy = "tipo")
-	private Set<Vehiculo> vehiculos = new HashSet<>();
+    /** The nombre. */
+    @Column(unique = true)
+    private String nombre;
 
-	/**
-	 * Instantiates a new tipo vehiculo.
-	 */
-	TipoVehiculo() {
-	}
+    /** The precio hora. */
+    private double precioHora;
 
-	/**
-	 * Instantiates a new tipo vehiculo.
-	 *
-	 * @param nombre the nombre
-	 */
-	public TipoVehiculo(String nombre) {
-		super();
-		this.nombre = nombre;
-	}
+    /** The vehiculos. */
+    @OneToMany(mappedBy = "tipo")
+    private Set<Vehiculo> vehiculos = new HashSet<>();
 
-	/**
-	 * Instantiates a new tipo vehiculo.
-	 *
-	 * @param nombre the nombre
-	 * @param precioHora the precio hora
-	 */
-	public TipoVehiculo(String nombre, double precioHora) {
-		this(nombre);
-		this.precioHora = precioHora;
-	}
+    /**
+     * Instantiates a new tipo vehiculo.
+     */
+    TipoVehiculo() {
+    }
 
-	/**
-	 * Gets the vehiculos.
-	 *
-	 * @return the sets the
-	 */
-	Set<Vehiculo> _getVehiculos() {
-		return vehiculos;
-	}
+    /**
+     * Instantiates a new tipo vehiculo.
+     *
+     * @param nombre
+     *            the nombre
+     */
+    public TipoVehiculo(String nombre) {
+	super();
+	this.nombre = nombre;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TipoVehiculo other = (TipoVehiculo) obj;
-		if (nombre == null) {
-			if (other.nombre != null)
-				return false;
-		} else if (!nombre.equals(other.nombre))
-			return false;
-		return true;
-	}
+    /**
+     * Instantiates a new tipo vehiculo.
+     *
+     * @param nombre
+     *            the nombre
+     * @param precioHora
+     *            the precio hora
+     */
+    public TipoVehiculo(String nombre, double precioHora) {
+	this(nombre);
+	this.precioHora = precioHora;
+    }
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
+    /**
+     * Gets the vehiculos.
+     *
+     * @return the sets the
+     */
+    Set<Vehiculo> _getVehiculos() {
+	return vehiculos;
+    }
 
-	/**
-	 * Gets the nombre.
-	 *
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	TipoVehiculo other = (TipoVehiculo) obj;
+	if (nombre == null) {
+	    if (other.nombre != null)
+		return false;
+	} else if (!nombre.equals(other.nombre))
+	    return false;
+	return true;
+    }
 
-	/**
-	 * Gets the precio hora.
-	 *
-	 * @return the precio hora
-	 */
-	public double getPrecioHora() {
-		return precioHora;
-	}
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+	return id;
+    }
 
-	/**
-	 * Gets the vehiculos.
-	 *
-	 * @return the vehiculos
-	 */
-	public Set<Vehiculo> getVehiculos() {
-		return new HashSet<>(vehiculos);
-	}
+    /**
+     * Gets the nombre.
+     *
+     * @return the nombre
+     */
+    public String getNombre() {
+	return nombre;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		return result;
-	}
+    /**
+     * Gets the precio hora.
+     *
+     * @return the precio hora
+     */
+    public double getPrecioHora() {
+	return precioHora;
+    }
 
-	/**
-	 * Sets the precio hora.
-	 *
-	 * @param precioHora the new precio hora
-	 */
-	public void setPrecioHora(double precioHora) {
-		this.precioHora = precioHora;
-	}
+    /**
+     * Gets the vehiculos.
+     *
+     * @return the vehiculos
+     */
+    public Set<Vehiculo> getVehiculos() {
+	return new HashSet<>(vehiculos);
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "TipoVehiculo [nombre=" + nombre + ", precioHora=" + precioHora + "]";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+	return result;
+    }
+
+    /**
+     * Sets the precio hora.
+     *
+     * @param precioHora
+     *            the new precio hora
+     */
+    public void setPrecioHora(double precioHora) {
+	this.precioHora = precioHora;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "TipoVehiculo [nombre=" + nombre + ", precioHora=" + precioHora
+		+ "]";
+    }
 
 }

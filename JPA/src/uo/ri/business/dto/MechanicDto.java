@@ -29,17 +29,17 @@ package uo.ri.business.dto;
  * @version 201806081225
  */
 public class MechanicDto {
-	
-	/** The id. */
-	public Long id;
-	
-	/** The dni. */
-	public String dni;
-	
-	/** The name. */
-	public String name;
-	
-	/** The surname. */
-	public String surname;
+
+    /** The id. */
+    public Long id;
+
+    /** The dni. */
+    public String dni;
+
+    /** The name. */
+    public String name;
+
+    /** The surname. */
+    public String surname;
 
 }

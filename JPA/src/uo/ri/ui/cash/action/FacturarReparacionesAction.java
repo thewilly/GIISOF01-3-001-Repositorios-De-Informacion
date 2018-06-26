@@ -44,32 +44,35 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FacturarReparacionesAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		List<Long> idsAveria = new ArrayList<Long>();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	List<Long> idsAveria = new ArrayList<Long>();
 
-		// pedir las averias a incluir en la factura
-		do {
-			Long id = Console.readLong("ID de averia");
-			idsAveria.add(id);
-		} while (masAverias());
+	// pedir las averias a incluir en la factura
+	do {
+	    Long id = Console.readLong("ID de averia");
+	    idsAveria.add(id);
+	} while (masAverias());
 
-		CashService cs = Factory.service.forCash();
-		InvoiceDto factura = cs.createInvoiceFor(idsAveria);
-		
-		new AbstractPrinter( new InvoicePrinter( factura ) ).print();
-	}
+	CashService cs = Factory.service.forCash();
+	InvoiceDto factura = cs.createInvoiceFor(idsAveria);
 
-	/**
-	 * Mas averias.
-	 *
-	 * @return true, if successful
-	 */
-	private boolean masAverias() {
-		return Console.readString("¿Añadir más averias? (s/n) ").equalsIgnoreCase("s");
-	}
+	new AbstractPrinter(new InvoicePrinter(factura)).print();
+    }
+
+    /**
+     * Mas averias.
+     *
+     * @return true, if successful
+     */
+    private boolean masAverias() {
+	return Console.readString("¿Añadir más averias? (s/n) ")
+		.equalsIgnoreCase("s");
+    }
 
 }

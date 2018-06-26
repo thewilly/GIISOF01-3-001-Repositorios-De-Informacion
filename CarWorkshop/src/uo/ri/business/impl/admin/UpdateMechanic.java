@@ -41,51 +41,56 @@ import uo.ri.persistence.MechanicsGateway;
  */
 public class UpdateMechanic {
 
-	private long mechanicId;
-	private String name;
-	private String surname;
+    private long mechanicId;
+    private String name;
+    private String surname;
 
-	/**
-	 * Action to update the mechanic name and surname. The mechanic where the
-	 * update will take place is the one who's id is provided as first
-	 * parameter.
-	 * 
-	 * @param mechanicId is the id of the mechanic to update.
-	 * @param name is the new name for the mechanic.
-	 * @param surname is the new surname for the mechanic.
-	 */
-	public UpdateMechanic( long mechanicId, String name, String surname ) {
-		this.mechanicId = mechanicId;
-		this.name = name;
-		this.surname = surname;
+    /**
+     * Action to update the mechanic name and surname. The mechanic where the
+     * update will take place is the one who's id is provided as first
+     * parameter.
+     * 
+     * @param mechanicId
+     *            is the id of the mechanic to update.
+     * @param name
+     *            is the new name for the mechanic.
+     * @param surname
+     *            is the new surname for the mechanic.
+     */
+    public UpdateMechanic(long mechanicId, String name, String surname) {
+	this.mechanicId = mechanicId;
+	this.name = name;
+	this.surname = surname;
+    }
+
+    /**
+     * For the given mechanic id will update the name and the surname with the
+     * ones provided.
+     * 
+     * @throws BusinessException
+     *             if any error occurs during the mechanic update or during
+     *             persistence.
+     */
+    public void execute() throws BusinessException {
+	Connection connection = null;
+
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    MechanicsGateway mechanicsGW = PersistenceFactory
+		    .getMechanicsGateway();
+	    mechanicsGW.setConnection(connection);
+
+	    // Updating the mechanic.
+	    mechanicsGW.update(mechanicId, name, surname);
+
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * For the given mechanic id will update the name and the surname with the
-	 * ones provided.
-	 * 
-	 * @throws BusinessException if any error occurs during the mechanic update
-	 *             or during persistence.
-	 */
-	public void execute() throws BusinessException {
-		Connection connection = null;
-
-		try {
-			// Getting the connection.
-			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
-			mechanicsGW.setConnection( connection );
-
-			// Updating the mechanic.
-			mechanicsGW.update( mechanicId, name, surname );
-
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 }

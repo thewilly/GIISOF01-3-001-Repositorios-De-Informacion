@@ -33,11 +33,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({
-	uo.ri.amp.service.cash.AllTests.class,
+@SuiteClasses({ uo.ri.amp.service.cash.AllTests.class,
 	uo.ri.amp.service.foreman.AllTests.class,
-	uo.ri.amp.service.admin.AllTests.class
-})
+	uo.ri.amp.service.admin.AllTests.class })
 
 public class AllTests {
 

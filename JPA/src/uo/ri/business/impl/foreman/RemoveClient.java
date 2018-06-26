@@ -46,91 +46,102 @@ import uo.ri.util.exception.Check;
  */
 public class RemoveClient implements Command<Void> {
 
-	/** The client id. */
-	private Long clientId;
-	
-	/** The clients repository. */
-	private ClienteRepository clientsRepository = Factory.repository.forCliente();
-	
-	/** The recommendations repository. */
-	private RecomendacionRepository recommendationsRepository = Factory.repository.forRecomendacion();
+    /** The client id. */
+    private Long clientId;
 
-	/**
-	 * Instantiates a new removes the client.
-	 *
-	 * @param clientId the client id
-	 */
-	public RemoveClient(Long clientId) {
-		this.clientId = clientId;
-	}
+    /** The clients repository. */
+    private ClienteRepository clientsRepository = Factory.repository
+	    .forCliente();
 
-	/**
-	 * This method checks all the conditions that must be fulfilled for deleting
-	 * a client.
-	 *
-	 * @param c the client to be checked
-	 * @throws BusinessException the business exception
-	 */
-	private void assertCanBeDeleted(Cliente c) throws BusinessException {
-		Check.isNotNull(c, "El cliente no existe");
-		Check.isTrue(c.getVehiculos().size() == 0, "El cliente no puede ser eliminado al tener vehículos registrados");
-	}
+    /** The recommendations repository. */
+    private RecomendacionRepository recommendationsRepository = Factory.repository
+	    .forRecomendacion();
 
-	/**
-	 * This method deletes all the payment methods related to the client.
-	 *
-	 * @param cliente the client
-	 */
-	private void deleteCashPayment(Cliente cliente) {
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		Set<MedioPago> mediosPago = cliente.getMediosPago();
-		for (MedioPago medioPago : mediosPago) {
-			Association.Pagar.unlink(cliente, medioPago);
-			mp.remove(medioPago);
-		}
-	}
+    /**
+     * Instantiates a new removes the client.
+     *
+     * @param clientId
+     *            the client id
+     */
+    public RemoveClient(Long clientId) {
+	this.clientId = clientId;
+    }
 
-	/**
-	 * This method deletes the recommendation that a client made to it.
-	 *
-	 * @param cliente the client
-	 */
-	private void deleteRecommendationRecibed(Cliente cliente) {
-		Recomendacion recomendacion = cliente.getRecomendacionRecibida();
-		if (recomendacion != null) {
-			recomendacion.unlink();
-			recommendationsRepository.remove(recomendacion);
-		}
-	}
+    /**
+     * This method checks all the conditions that must be fulfilled for deleting
+     * a client.
+     *
+     * @param c
+     *            the client to be checked
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertCanBeDeleted(Cliente c) throws BusinessException {
+	Check.isNotNull(c, "El cliente no existe");
+	Check.isTrue(c.getVehiculos().size() == 0,
+		"El cliente no puede ser eliminado al tener vehículos registrados");
+    }
 
-	/**
-	 * This method removes from the system the recommendations the client has
-	 * made.
-	 *
-	 * @param cliente the client
-	 */
-	private void deleteRecommendations(Cliente cliente) {
-		Set<Recomendacion> recomendaciones = cliente.getRecomendacionesHechas();
-		if (recomendaciones.size() > 0) {
-			for (Recomendacion re : recomendaciones) {
-				re.unlink();
-				recommendationsRepository.remove(re);
-			}
-		}
+    /**
+     * This method deletes all the payment methods related to the client.
+     *
+     * @param cliente
+     *            the client
+     */
+    private void deleteCashPayment(Cliente cliente) {
+	MedioPagoRepository mp = Factory.repository.forMedioPago();
+	Set<MedioPago> mediosPago = cliente.getMediosPago();
+	for (MedioPago medioPago : mediosPago) {
+	    Association.Pagar.unlink(cliente, medioPago);
+	    mp.remove(medioPago);
 	}
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public Void execute() throws BusinessException {
-		Cliente cliente = clientsRepository.findById(clientId);
-		assertCanBeDeleted(cliente);
-		deleteRecommendations(cliente);
-		deleteRecommendationRecibed(cliente);
-		deleteCashPayment(cliente);
-		clientsRepository.remove(cliente);
-		return null;
+    /**
+     * This method deletes the recommendation that a client made to it.
+     *
+     * @param cliente
+     *            the client
+     */
+    private void deleteRecommendationRecibed(Cliente cliente) {
+	Recomendacion recomendacion = cliente.getRecomendacionRecibida();
+	if (recomendacion != null) {
+	    recomendacion.unlink();
+	    recommendationsRepository.remove(recomendacion);
 	}
+    }
+
+    /**
+     * This method removes from the system the recommendations the client has
+     * made.
+     *
+     * @param cliente
+     *            the client
+     */
+    private void deleteRecommendations(Cliente cliente) {
+	Set<Recomendacion> recomendaciones = cliente.getRecomendacionesHechas();
+	if (recomendaciones.size() > 0) {
+	    for (Recomendacion re : recomendaciones) {
+		re.unlink();
+		recommendationsRepository.remove(re);
+	    }
+	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public Void execute() throws BusinessException {
+	Cliente cliente = clientsRepository.findById(clientId);
+	assertCanBeDeleted(cliente);
+	deleteRecommendations(cliente);
+	deleteRecommendationRecibed(cliente);
+	deleteCashPayment(cliente);
+	clientsRepository.remove(cliente);
+	return null;
+    }
 
 }

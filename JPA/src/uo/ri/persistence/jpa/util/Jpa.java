@@ -44,69 +44,69 @@ import org.xml.sax.SAXException;
  */
 public class Jpa {
 
-	/** The emf. */
-	private static EntityManagerFactory emf = null;
-	
-	/** The em thread. */
-	private static ThreadLocal<EntityManager> emThread = 
-		new ThreadLocal<EntityManager>();
-	
-	/**
-	 * Creates the entity manager.
-	 *
-	 * @return the entity manager
-	 */
-	public static EntityManager createEntityManager() {
-		EntityManager entityManager = getEmf().createEntityManager();
-		emThread.set(entityManager);
-		return entityManager;
+    /** The emf. */
+    private static EntityManagerFactory emf = null;
+
+    /** The em thread. */
+    private static ThreadLocal<EntityManager> emThread = new ThreadLocal<EntityManager>();
+
+    /**
+     * Creates the entity manager.
+     *
+     * @return the entity manager
+     */
+    public static EntityManager createEntityManager() {
+	EntityManager entityManager = getEmf().createEntityManager();
+	emThread.set(entityManager);
+	return entityManager;
+    }
+
+    /**
+     * Gets the emf.
+     *
+     * @return the emf
+     */
+    private static EntityManagerFactory getEmf() {
+	if (emf == null) {
+	    String persistenceUnitName = loadPersistentUnitName();
+	    emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 	}
+	return emf;
+    }
 
-	/**
-	 * Gets the emf.
-	 *
-	 * @return the emf
-	 */
-	private static EntityManagerFactory getEmf() {
-		if (emf == null){
-			String persistenceUnitName = loadPersistentUnitName();
-			emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-		}
-		return emf;
+    /**
+     * Gets the manager.
+     *
+     * @return the manager
+     */
+    public static EntityManager getManager() {
+	return emThread.get();
+    }
+
+    /**
+     * Load persistent unit name.
+     *
+     * @return the string
+     */
+    private static String loadPersistentUnitName() {
+	try {
+	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	    DocumentBuilder db = dbf.newDocumentBuilder();
+	    Document doc = db.parse(
+		    Jpa.class.getResourceAsStream("/META-INF/persistence.xml"));
+
+	    doc.getDocumentElement().normalize();
+	    NodeList nl = doc.getElementsByTagName("persistence-unit");
+
+	    return ((Element) nl.item(0)).getAttribute("name");
+
+	} catch (ParserConfigurationException e1) {
+	    throw new RuntimeException(e1);
+	} catch (SAXException e1) {
+	    throw new RuntimeException(e1);
+	} catch (IOException e1) {
+	    throw new RuntimeException(e1);
 	}
-
-	/**
-	 * Gets the manager.
-	 *
-	 * @return the manager
-	 */
-	public static EntityManager getManager() {
-		return emThread.get();
-	}
-
-	/**
-	 * Load persistent unit name.
-	 *
-	 * @return the string
-	 */
-	private static String loadPersistentUnitName() {
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(Jpa.class.getResourceAsStream("/META-INF/persistence.xml"));
-
-			doc.getDocumentElement().normalize();
-			NodeList nl = doc.getElementsByTagName("persistence-unit");
-			
-			return ((Element)nl.item(0)).getAttribute("name");
-
-		} catch (ParserConfigurationException e1) {
-			throw new RuntimeException(e1);
-		} catch (SAXException e1) {
-			throw new RuntimeException(e1);
-		} catch (IOException e1) {
-			throw new RuntimeException(e1);
-		}
-	}
+    }
 
 }

@@ -46,72 +46,87 @@ import uo.ri.util.exception.Check;
  */
 public class CreateMPTarjeta implements Command<Void> {
 
-	/** The card. */
-	private CardDto card;
-	
-	/** The payment methods repository. */
-	private MedioPagoRepository paymentMethodsRepository = Factory.repository.forMedioPago();
-	
-	/** The clients repository. */
-	private ClienteRepository clientsRepository = Factory.repository.forCliente();
+    /** The card. */
+    private CardDto card;
 
-	/**
-	 * Instantiates a new creates the MP tarjeta.
-	 *
-	 * @param card the card
-	 */
-	public CreateMPTarjeta(CardDto card) {
-		this.card = card;
-	}
+    /** The payment methods repository. */
+    private MedioPagoRepository paymentMethodsRepository = Factory.repository
+	    .forMedioPago();
 
-	/**
-	 * This method checks that the client id corresponds to a real client in the
-	 * system.
-	 *
-	 * @param clientId the id of the client
-	 * @throws BusinessException the business exception
-	 */
-	private void assertExistenceClient(Long clientId) throws BusinessException {
-		Cliente c = clientsRepository.findById(clientId);
-		Check.isNotNull(c, "Ese cliente no existe");
-	}
+    /** The clients repository. */
+    private ClienteRepository clientsRepository = Factory.repository
+	    .forCliente();
 
-	/**
-	 * This method checks that the date the new credit card will have, is not
-	 * expired.
-	 *
-	 * @param cardExpiration the expiration of the credit card
-	 * @throws BusinessException the business exception
-	 */
-	private void assertNotExpiredDate(Date cardExpiration) throws BusinessException {
-		Date today = new Date();
-		Check.isTrue(today.before(cardExpiration), "La tarjeta tiene una fecha caducada");
-	}
+    /**
+     * Instantiates a new creates the MP tarjeta.
+     *
+     * @param card
+     *            the card
+     */
+    public CreateMPTarjeta(CardDto card) {
+	this.card = card;
+    }
 
-	/**
-	 * This method checks that the credit card number is not repeated in the
-	 * system.
-	 *
-	 * @param number the credit card number
-	 * @throws BusinessException the business exception
-	 */
-	private void assertNotRepeatedCardNumber(String number) throws BusinessException {
-		TarjetaCredito t = paymentMethodsRepository.findCreditCardByNumber(number);
-		Check.isNull(t, "Ese número de tarjeta ya existe");
-	}
+    /**
+     * This method checks that the client id corresponds to a real client in the
+     * system.
+     *
+     * @param clientId
+     *            the id of the client
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertExistenceClient(Long clientId) throws BusinessException {
+	Cliente c = clientsRepository.findById(clientId);
+	Check.isNotNull(c, "Ese cliente no existe");
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		TarjetaCredito t = DtoAssembler.toEntity(card);
-		Cliente c = clientsRepository.findById(card.clientId);
-		assertExistenceClient(card.clientId);
-		assertNotRepeatedCardNumber(card.cardNumber);
-		assertNotExpiredDate(card.cardExpirationDate);
-		Association.Pagar.link(c, t);
-		paymentMethodsRepository.add(t);
-		return null;
-	}
+    /**
+     * This method checks that the date the new credit card will have, is not
+     * expired.
+     *
+     * @param cardExpiration
+     *            the expiration of the credit card
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertNotExpiredDate(Date cardExpiration)
+	    throws BusinessException {
+	Date today = new Date();
+	Check.isTrue(today.before(cardExpiration),
+		"La tarjeta tiene una fecha caducada");
+    }
+
+    /**
+     * This method checks that the credit card number is not repeated in the
+     * system.
+     *
+     * @param number
+     *            the credit card number
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertNotRepeatedCardNumber(String number)
+	    throws BusinessException {
+	TarjetaCredito t = paymentMethodsRepository
+		.findCreditCardByNumber(number);
+	Check.isNull(t, "Ese número de tarjeta ya existe");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	TarjetaCredito t = DtoAssembler.toEntity(card);
+	Cliente c = clientsRepository.findById(card.clientId);
+	assertExistenceClient(card.clientId);
+	assertNotRepeatedCardNumber(card.cardNumber);
+	assertNotExpiredDate(card.cardExpirationDate);
+	Association.Pagar.link(c, t);
+	paymentMethodsRepository.add(t);
+	return null;
+    }
 
 }

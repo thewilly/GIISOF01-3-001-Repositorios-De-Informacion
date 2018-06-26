@@ -45,62 +45,68 @@ import uo.ri.util.exception.BusinessException;
  */
 public abstract class BaseServiceTests {
 
-	/**
-	 * Does the dependency injection for all Business layer tests.
-	 */
-	public BaseServiceTests() {
-		Factory.service = new BusinessServiceFactory();
-		Factory.executor = new InMemoryCommandExecutorFactory();
-		Factory.repository = new InMemoryRepositoryFactory();
-	}
+    /**
+     * Does the dependency injection for all Business layer tests.
+     */
+    public BaseServiceTests() {
+	Factory.service = new BusinessServiceFactory();
+	Factory.executor = new InMemoryCommandExecutorFactory();
+	Factory.repository = new InMemoryRepositoryFactory();
+    }
 
-	/**
-	 * Asserts whether the exception message is the expected.
-	 *
-	 * @param be the be
-	 * @param msg the msg
-	 */
-	protected void assertMsg(BusinessException be, String msg) {
-		assertTrue(be.getMessage().equals(msg));
-	}
+    /**
+     * Asserts whether the exception message is the expected.
+     *
+     * @param be
+     *            the be
+     * @param msg
+     *            the msg
+     */
+    protected void assertMsg(BusinessException be, String msg) {
+	assertTrue(be.getMessage().equals(msg));
+    }
 
-	/**
-	 * Assert same data.
-	 *
-	 * @param dto the dto
-	 * @param entity the entity
-	 */
-	protected void assertSameData(ClientDto dto, Cliente entity) {
-		assertTrue(entity.getAddress().getStreet().equals(dto.addressStreet));
-		assertTrue(entity.getAddress().getCity().equals(dto.addressCity));
-		assertTrue(entity.getAddress().getZipcode().equals(dto.addressZipcode));
-		assertTrue(entity.getEmail().equals(dto.email));
-		assertTrue(entity.getPhone().equals(dto.phone));
-		assertTrue(entity.getNombre().equals(dto.name));
-		assertTrue(entity.getApellidos().equals(dto.surname));
-	}
+    /**
+     * Assert same data.
+     *
+     * @param dto
+     *            the dto
+     * @param entity
+     *            the entity
+     */
+    protected void assertSameData(ClientDto dto, Cliente entity) {
+	assertTrue(entity.getAddress().getStreet().equals(dto.addressStreet));
+	assertTrue(entity.getAddress().getCity().equals(dto.addressCity));
+	assertTrue(entity.getAddress().getZipcode().equals(dto.addressZipcode));
+	assertTrue(entity.getEmail().equals(dto.email));
+	assertTrue(entity.getPhone().equals(dto.phone));
+	assertTrue(entity.getNombre().equals(dto.name));
+	assertTrue(entity.getApellidos().equals(dto.surname));
+    }
 
-	/**
-	 * Gets the first voucher.
-	 *
-	 * @param c the c
-	 * @return the first voucher
-	 */
-	protected Bono getFirstVoucher(Cliente c) {
-		List<Bono> bns = findVouchersByClientId(c.getId());
-		assertTrue(bns.size() == 1);
-		Bono expected = bns.get(0);
-		return expected;
-	}
+    /**
+     * Gets the first voucher.
+     *
+     * @param c
+     *            the c
+     * @return the first voucher
+     */
+    protected Bono getFirstVoucher(Cliente c) {
+	List<Bono> bns = findVouchersByClientId(c.getId());
+	assertTrue(bns.size() == 1);
+	Bono expected = bns.get(0);
+	return expected;
+    }
 
-	/**
-	 * Gets the metalico.
-	 *
-	 * @param c the c
-	 * @return the metalico
-	 */
-	protected MedioPago getMetalico(Cliente c) {
-		return c.getMediosPago().stream().findFirst().orElse(null);
-	}
+    /**
+     * Gets the metalico.
+     *
+     * @param c
+     *            the c
+     * @return the metalico
+     */
+    protected MedioPago getMetalico(Cliente c) {
+	return c.getMediosPago().stream().findFirst().orElse(null);
+    }
 
 }

@@ -31,19 +31,21 @@ import javax.persistence.Persistence;
  */
 public class LoadEntityManagerFactory {
 
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("carworkshop");
+    /**
+     * The main method.
+     *
+     * @param args
+     *            the arguments
+     */
+    public static void main(String[] args) {
+	EntityManagerFactory emf = Persistence
+		.createEntityManagerFactory("carworkshop");
 
-		emf.createEntityManager().close();
-		emf.close();
+	emf.createEntityManager().close();
+	emf.close();
 
-		System.out.println("--> Si no hay excepciones todo va bien");
-		System.out.println("\n\t (O no hay ninguna clase mapeada)");
-	}
+	System.out.println("--> Si no hay excepciones todo va bien");
+	System.out.println("\n\t (O no hay ninguna clase mapeada)");
+    }
 
 }

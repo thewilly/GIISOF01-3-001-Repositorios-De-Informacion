@@ -39,34 +39,38 @@ import uo.ri.persistence.jpa.executor.JpaExecutorFactory;
  */
 public class MainMenu extends BaseMenu {
 
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		new MainMenu().config().execute();
-	}
+    /**
+     * The main method.
+     *
+     * @param args
+     *            the arguments
+     */
+    public static void main(String[] args) {
+	new MainMenu().config().execute();
+    }
 
-	/**
-	 * Instantiates a new main menu.
-	 */
-	public MainMenu() {
-		menuOptions = new Object[][] { { "Jefe de Taller", null }, { "Recepción en taller", RecepcionMenu.class },
-				{ "Gestión de clientes", ClientesMenu.class }, { "Gestión de vehículos", VehiculosMenu.class },
-				{ "Revisar historial de un cliente", NotYetImplementedAction.class }, };
-	}
+    /**
+     * Instantiates a new main menu.
+     */
+    public MainMenu() {
+	menuOptions = new Object[][] { { "Jefe de Taller", null },
+		{ "Recepción en taller", RecepcionMenu.class },
+		{ "Gestión de clientes", ClientesMenu.class },
+		{ "Gestión de vehículos", VehiculosMenu.class },
+		{ "Revisar historial de un cliente",
+			NotYetImplementedAction.class }, };
+    }
 
-	/**
-	 * Config.
-	 *
-	 * @return the main menu
-	 */
-	private MainMenu config() {
-		Factory.service = new BusinessServiceFactory();
-		Factory.repository = new JpaRepositoryFactory();
-		Factory.executor = new JpaExecutorFactory();
-		return this;
-	}
+    /**
+     * Config.
+     *
+     * @return the main menu
+     */
+    private MainMenu config() {
+	Factory.service = new BusinessServiceFactory();
+	Factory.repository = new JpaRepositoryFactory();
+	Factory.executor = new JpaExecutorFactory();
+	return this;
+    }
 
 }

@@ -48,77 +48,84 @@ import uo.ri.util.exception.Check;
  */
 public class CreateMPBond implements Command<Void> {
 
-	/** The voucher. */
-	private VoucherDto voucher;
+    /** The voucher. */
+    private VoucherDto voucher;
 
-	/** The mppayment methods repository. */
-	private MedioPagoRepository paymentMethodsRepository = Factory.repository.forMedioPago();
+    /** The mppayment methods repository. */
+    private MedioPagoRepository paymentMethodsRepository = Factory.repository
+	    .forMedioPago();
 
-	/** The clients repository. */
-	private ClienteRepository clientsRepository = Factory.repository.forCliente();
+    /** The clients repository. */
+    private ClienteRepository clientsRepository = Factory.repository
+	    .forCliente();
 
-	/**
-	 * Instantiates a new creates the MP bond.
-	 *
-	 * @param voucher the voucher
-	 */
-	public CreateMPBond( VoucherDto voucher ) {
-		this.voucher = voucher;
-	}
+    /**
+     * Instantiates a new creates the MP bond.
+     *
+     * @param voucher
+     *            the voucher
+     */
+    public CreateMPBond(VoucherDto voucher) {
+	this.voucher = voucher;
+    }
 
-	/**
-	 * This method checks that the client id corresponds to a real client in the
-	 * system.
-	 *
-	 * @param clientId the id of the client
-	 * @throws BusinessException the business exception
-	 */
-	private void assertExistenceClient( Long clientId ) throws BusinessException {
-		Cliente c = clientsRepository.findById( clientId );
-		Check.isNotNull( c, "Ese cliente no existe" );
-	}
+    /**
+     * This method checks that the client id corresponds to a real client in the
+     * system.
+     *
+     * @param clientId
+     *            the id of the client
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertExistenceClient(Long clientId) throws BusinessException {
+	Cliente c = clientsRepository.findById(clientId);
+	Check.isNotNull(c, "Ese cliente no existe");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		Cliente cliente = clientsRepository.findById( voucher.clientId );
-		voucher.code = generateBondCode();
-		Bono b = DtoAssembler.toEntity( voucher );
-		assertExistenceClient( voucher.clientId );
-		Association.Pagar.link( cliente, b );
-		paymentMethodsRepository.add( b );
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	Cliente cliente = clientsRepository.findById(voucher.clientId);
+	voucher.code = generateBondCode();
+	Bono b = DtoAssembler.toEntity(voucher);
+	assertExistenceClient(voucher.clientId);
+	Association.Pagar.link(cliente, b);
+	paymentMethodsRepository.add(b);
+	return null;
+    }
 
-	/**
-	 * This method generates a new voucher code that does not exists in the
-	 * system.
-	 *
-	 * @return the new code to be added
-	 */
-	private String generateBondCode() {
-		String code = "";
-		Bono bond = null;
-		do {
-			try {
-				byte[] hashArray = MessageDigest.getInstance( "MD5" )
-						.digest( Random.string( 30 ).getBytes() );
-				StringBuffer buffer = new StringBuffer();
-				for (int i = 0; i < hashArray.length; i++) {
-					buffer.append( Integer.toString( ( hashArray[i] & 0xff ) + 0x100, 16 )
-							.substring( 1 ) );
-				}
-				code = "B-" + buffer.toString();
+    /**
+     * This method generates a new voucher code that does not exists in the
+     * system.
+     *
+     * @return the new code to be added
+     */
+    private String generateBondCode() {
+	String code = "";
+	Bono bond = null;
+	do {
+	    try {
+		byte[] hashArray = MessageDigest.getInstance("MD5")
+			.digest(Random.string(30).getBytes());
+		StringBuffer buffer = new StringBuffer();
+		for (int i = 0; i < hashArray.length; i++) {
+		    buffer.append(
+			    Integer.toString((hashArray[i] & 0xff) + 0x100, 16)
+				    .substring(1));
+		}
+		code = "B-" + buffer.toString();
 
-			} catch (NoSuchAlgorithmException e) {
-				// Fall back method in case of error with the algorithm
-				code = "B-" + Random.string( 5 ) + "-" + Random.integer( 0, 9999 );
-			}
-			bond = paymentMethodsRepository.findVoucherByCode( code );
-		} while (bond != null);
-		return code;
-	}
+	    } catch (NoSuchAlgorithmException e) {
+		// Fall back method in case of error with the algorithm
+		code = "B-" + Random.string(5) + "-" + Random.integer(0, 9999);
+	    }
+	    bond = paymentMethodsRepository.findVoucherByCode(code);
+	} while (bond != null);
+	return code;
+    }
 
 }

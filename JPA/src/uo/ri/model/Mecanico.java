@@ -43,185 +43,198 @@ import javax.persistence.Table;
 @Table(name = "TMecanicos")
 public class Mecanico {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	/** The dni. */
-	@Column(unique = true)
-	private String dni;
-	
-	/** The apellidos. */
-	private String apellidos;
-	
-	/** The nombre. */
-	private String nombre;
+    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	/** The asignadas. */
-	@OneToMany(mappedBy = "mecanico")
-	private Set<Averia> asignadas = new HashSet<>();
-	
-	/** The intervenciones. */
-	@OneToMany(mappedBy = "mecanico")
-	private Set<Intervencion> intervenciones = new HashSet<>();
+    /** The dni. */
+    @Column(unique = true)
+    private String dni;
 
-	/**
-	 * Instantiates a new mecanico.
-	 */
-	Mecanico() {
-	}
+    /** The apellidos. */
+    private String apellidos;
 
-	/**
-	 * Instantiates a new mecanico.
-	 *
-	 * @param dni the dni
-	 */
-	public Mecanico(String dni) {
-		super();
-		this.dni = dni;
-	}
+    /** The nombre. */
+    private String nombre;
 
-	/**
-	 * Instantiates a new mecanico.
-	 *
-	 * @param dni the dni
-	 * @param nombre the nombre
-	 * @param apellidos the apellidos
-	 */
-	public Mecanico(String dni, String nombre, String apellidos) {
-		this(dni);
-		this.nombre = nombre;
-		this.apellidos = apellidos;
-	}
+    /** The asignadas. */
+    @OneToMany(mappedBy = "mecanico")
+    private Set<Averia> asignadas = new HashSet<>();
 
-	/**
-	 * Gets the asignadas.
-	 *
-	 * @return the sets the
-	 */
-	Set<Averia> _getAsignadas() {
-		return asignadas;
-	}
+    /** The intervenciones. */
+    @OneToMany(mappedBy = "mecanico")
+    private Set<Intervencion> intervenciones = new HashSet<>();
 
-	/**
-	 * Gets the intervenciones.
-	 *
-	 * @return the sets the
-	 */
-	Set<Intervencion> _getIntervenciones() {
-		return intervenciones;
-	}
+    /**
+     * Instantiates a new mecanico.
+     */
+    Mecanico() {
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Mecanico other = (Mecanico) obj;
-		if (dni == null) {
-			if (other.dni != null)
-				return false;
-		} else if (!dni.equals(other.dni))
-			return false;
-		return true;
-	}
+    /**
+     * Instantiates a new mecanico.
+     *
+     * @param dni
+     *            the dni
+     */
+    public Mecanico(String dni) {
+	super();
+	this.dni = dni;
+    }
 
-	/**
-	 * Gets the apellidos.
-	 *
-	 * @return the apellidos
-	 */
-	public String getApellidos() {
-		return apellidos;
-	}
+    /**
+     * Instantiates a new mecanico.
+     *
+     * @param dni
+     *            the dni
+     * @param nombre
+     *            the nombre
+     * @param apellidos
+     *            the apellidos
+     */
+    public Mecanico(String dni, String nombre, String apellidos) {
+	this(dni);
+	this.nombre = nombre;
+	this.apellidos = apellidos;
+    }
 
-	/**
-	 * Gets the asignadas.
-	 *
-	 * @return the asignadas
-	 */
-	public Set<Averia> getAsignadas() {
-		return new HashSet<>(asignadas);
-	}
+    /**
+     * Gets the asignadas.
+     *
+     * @return the sets the
+     */
+    Set<Averia> _getAsignadas() {
+	return asignadas;
+    }
 
-	/**
-	 * Gets the dni.
-	 *
-	 * @return the dni
-	 */
-	public String getDni() {
-		return dni;
-	}
+    /**
+     * Gets the intervenciones.
+     *
+     * @return the sets the
+     */
+    Set<Intervencion> _getIntervenciones() {
+	return intervenciones;
+    }
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Mecanico other = (Mecanico) obj;
+	if (dni == null) {
+	    if (other.dni != null)
+		return false;
+	} else if (!dni.equals(other.dni))
+	    return false;
+	return true;
+    }
 
-	/**
-	 * Gets the intervenciones.
-	 *
-	 * @return the intervenciones
-	 */
-	public Set<Intervencion> getIntervenciones() {
-		return new HashSet<>(intervenciones);
-	}
+    /**
+     * Gets the apellidos.
+     *
+     * @return the apellidos
+     */
+    public String getApellidos() {
+	return apellidos;
+    }
 
-	/**
-	 * Gets the nombre.
-	 *
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
+    /**
+     * Gets the asignadas.
+     *
+     * @return the asignadas
+     */
+    public Set<Averia> getAsignadas() {
+	return new HashSet<>(asignadas);
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((dni == null) ? 0 : dni.hashCode());
-		return result;
-	}
+    /**
+     * Gets the dni.
+     *
+     * @return the dni
+     */
+    public String getDni() {
+	return dni;
+    }
 
-	/**
-	 * Sets the apellidos.
-	 *
-	 * @param apellidos the new apellidos
-	 */
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+	return id;
+    }
 
-	/**
-	 * Sets the nombre.
-	 *
-	 * @param nombre the new nombre
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    /**
+     * Gets the intervenciones.
+     *
+     * @return the intervenciones
+     */
+    public Set<Intervencion> getIntervenciones() {
+	return new HashSet<>(intervenciones);
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Mecanico [dni=" + dni + ", apellidos=" + apellidos + ", nombre=" + nombre + "]";
-	}
+    /**
+     * Gets the nombre.
+     *
+     * @return the nombre
+     */
+    public String getNombre() {
+	return nombre;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((dni == null) ? 0 : dni.hashCode());
+	return result;
+    }
+
+    /**
+     * Sets the apellidos.
+     *
+     * @param apellidos
+     *            the new apellidos
+     */
+    public void setApellidos(String apellidos) {
+	this.apellidos = apellidos;
+    }
+
+    /**
+     * Sets the nombre.
+     *
+     * @param nombre
+     *            the new nombre
+     */
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "Mecanico [dni=" + dni + ", apellidos=" + apellidos + ", nombre="
+		+ nombre + "]";
+    }
 
 }

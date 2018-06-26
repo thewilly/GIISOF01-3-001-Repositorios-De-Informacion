@@ -36,97 +36,112 @@ import uo.ri.model.TarjetaCredito;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryMediosPagoRepository 
-		extends BaseMemoryRepository<MedioPago> 
-		implements MedioPagoRepository {
+public class InMemoryMediosPagoRepository
+	extends BaseMemoryRepository<MedioPago> implements MedioPagoRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findAggregateVoucherDataByClientId(java.lang.Long)
-	 */
-	@Override
-	public Object[] findAggregateVoucherDataByClientId(Long id) {
-		List<Bono> bs = findVouchersByClientId(id);
-		
-		double available = bs.stream()
-				.map(b -> b.getDisponible())
-				.collect(Collectors.summingDouble( a -> a));
-		
-		double consumed = bs.stream()
-				.map(b -> b.getAcumulado())
-				.collect(Collectors.summingDouble( a -> a));
-		
-		Object[] res = new Object[]{
-			bs.size(),
-			available,
-			consumed
-		};
-		return res;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.MedioPagoRepository#
+     * findAggregateVoucherDataByClientId(java.lang.Long)
+     */
+    @Override
+    public Object[] findAggregateVoucherDataByClientId(Long id) {
+	List<Bono> bs = findVouchersByClientId(id);
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findByClientId(Long id) {
-		return entities.values().stream()
-				.filter(m -> m.getCliente().getId().equals( id ))
-				.collect( Collectors.toList() );
-	}
+	double available = bs.stream().map(b -> b.getDisponible())
+		.collect(Collectors.summingDouble(a -> a));
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findCreditCardByNumber(java.lang.String)
-	 */
-	@Override
-	public TarjetaCredito findCreditCardByNumber(String pan) {
-		return entities.values().stream()
-				.filter( m -> m instanceof TarjetaCredito)
-				.map( m -> (TarjetaCredito) m)
-				.filter(tc -> tc.getNumero().equals( pan ))
-				.findFirst()
-				.orElse( null );
-	}
+	double consumed = bs.stream().map(b -> b.getAcumulado())
+		.collect(Collectors.summingDouble(a -> a));
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByClientId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	Object[] res = new Object[] { bs.size(), available, consumed };
+	return res;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.
+     * Long)
+     */
+    @Override
+    public List<MedioPago> findByClientId(Long id) {
+	return entities.values().stream()
+		.filter(m -> m.getCliente().getId().equals(id))
+		.collect(Collectors.toList());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang.String)
-	 */
-	@Override
-	public Bono findVoucherByCode(String code) {
-		return entities.values().stream()
-				.filter( m -> m instanceof Bono)
-				.map( m -> (Bono) m)
-				.filter(b -> b.getCodigo().equals( code ))
-				.findFirst()
-				.orElse( null );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findCreditCardByNumber(java
+     * .lang.String)
+     */
+    @Override
+    public TarjetaCredito findCreditCardByNumber(String pan) {
+	return entities.values().stream()
+		.filter(m -> m instanceof TarjetaCredito)
+		.map(m -> (TarjetaCredito) m)
+		.filter(tc -> tc.getNumero().equals(pan)).findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findVouchersByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<Bono> findVouchersByClientId(Long id) {
-		return entities.values().stream()
-				.filter( m -> m instanceof Bono)
-				.map( m -> (Bono) m)
-				.filter(b -> b.getCliente().getId().equals( id ))
-				.collect( Collectors.toList() );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(
+     * java.lang.Long)
+     */
+    @Override
+    public List<MedioPago> findPaymentMeansByClientId(Long id) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId
+     * (java.lang.Long)
+     */
+    @Override
+    public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang
+     * .String)
+     */
+    @Override
+    public Bono findVoucherByCode(String code) {
+	return entities.values().stream().filter(m -> m instanceof Bono)
+		.map(m -> (Bono) m).filter(b -> b.getCodigo().equals(code))
+		.findFirst().orElse(null);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findVouchersByClientId(java
+     * .lang.Long)
+     */
+    @Override
+    public List<Bono> findVouchersByClientId(Long id) {
+	return entities.values().stream().filter(m -> m instanceof Bono)
+		.map(m -> (Bono) m)
+		.filter(b -> b.getCliente().getId().equals(id))
+		.collect(Collectors.toList());
+    }
 
 }

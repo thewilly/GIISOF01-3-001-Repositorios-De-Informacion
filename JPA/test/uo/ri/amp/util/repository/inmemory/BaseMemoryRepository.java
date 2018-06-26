@@ -35,87 +35,96 @@ import alb.util.reflection.ReflectionUtil;
  *
  * @author Guillermo Facundo Colunga
  * @version 201806081225
- * @param <T> the generic type
+ * @param <T>
+ *            the generic type
  */
 public abstract class BaseMemoryRepository<T> {
-	
-	/** The counter. */
-	long counter = 0L;
-	
-	/** The entities. */
-	protected Map<Long, T> entities = new HashMap<>();
 
-	/**
-	 * Adds the.
-	 *
-	 * @param t the t
-	 */
-	public void add(T t) {
-		Long l = nextId();
-		putAttr(t, "id", l);
-		entities.put(l, t);
-	}
+    /** The counter. */
+    long counter = 0L;
 
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 */
-	public List<T> findAll() {
-		return new ArrayList<>( entities.values() );
-	}
+    /** The entities. */
+    protected Map<Long, T> entities = new HashMap<>();
 
-	/**
-	 * Find by id.
-	 *
-	 * @param id the id
-	 * @return the t
-	 */
-	public T findById(Long id) {
-		return entities.get( id );
-	}
+    /**
+     * Adds the.
+     *
+     * @param t
+     *            the t
+     */
+    public void add(T t) {
+	Long l = nextId();
+	putAttr(t, "id", l);
+	entities.put(l, t);
+    }
 
-	/**
-	 * Gets the attr.
-	 *
-	 * @param owner the owner
-	 * @param fieldName the field name
-	 * @return the attr
-	 */
-	private Long getAttr(T owner, String fieldName) {
-		Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
-		return (Long) ReflectionUtil.getFieldValue(owner, field);
-	}
+    /**
+     * Find all.
+     *
+     * @return the list
+     */
+    public List<T> findAll() {
+	return new ArrayList<>(entities.values());
+    }
 
-	/**
-	 * Next id.
-	 *
-	 * @return the long
-	 */
-	private Long nextId() {
-		return ++counter;
-	}
+    /**
+     * Find by id.
+     *
+     * @param id
+     *            the id
+     * @return the t
+     */
+    public T findById(Long id) {
+	return entities.get(id);
+    }
 
-	/**
-	 * Put attr.
-	 *
-	 * @param owner the owner
-	 * @param fieldName the field name
-	 * @param value the value
-	 */
-	private void putAttr(T owner, String fieldName, Long value) {
-		Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
-		ReflectionUtil.applyValueToField(owner, field, value);
-	}
+    /**
+     * Gets the attr.
+     *
+     * @param owner
+     *            the owner
+     * @param fieldName
+     *            the field name
+     * @return the attr
+     */
+    private Long getAttr(T owner, String fieldName) {
+	Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
+	return (Long) ReflectionUtil.getFieldValue(owner, field);
+    }
 
-	/**
-	 * Removes the.
-	 *
-	 * @param t the t
-	 */
-	public void remove(T t) {
-		Long id = getAttr(t, "id");
-		entities.remove( id );
-	}
+    /**
+     * Next id.
+     *
+     * @return the long
+     */
+    private Long nextId() {
+	return ++counter;
+    }
+
+    /**
+     * Put attr.
+     *
+     * @param owner
+     *            the owner
+     * @param fieldName
+     *            the field name
+     * @param value
+     *            the value
+     */
+    private void putAttr(T owner, String fieldName, Long value) {
+	Field field = ReflectionUtil.getField(owner.getClass(), fieldName);
+	ReflectionUtil.applyValueToField(owner, field, value);
+    }
+
+    /**
+     * Removes the.
+     *
+     * @param t
+     *            the t
+     */
+    public void remove(T t) {
+	Long id = getAttr(t, "id");
+	entities.remove(id);
+    }
 
 }

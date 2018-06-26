@@ -39,15 +39,17 @@ import uo.ri.ui.util.BondsPerClientPrinter;
  */
 public class FindAllBondsByClientIdAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		// Getting the client id from the user interaction.
-		Long clientId = Console.readLong( "Id" );
-		Console.println( "\nListado de bonos de cliente con id: " + clientId + "\n" );
-		AdminService adminService = ServicesFactory.getAdminService();
+	// Getting the client id from the user interaction.
+	Long clientId = Console.readLong("Id");
+	Console.println(
+		"\nListado de bonos de cliente con id: " + clientId + "\n");
+	AdminService adminService = ServicesFactory.getAdminService();
 
-		// Getting all the bonds for the given client id and printing them.
-		new BondsPerClientPrinter( adminService.findAllBondsByCliendId( clientId ) );
-	}
+	// Getting all the bonds for the given client id and printing them.
+	new BondsPerClientPrinter(
+		adminService.findAllBondsByCliendId(clientId));
+    }
 }

@@ -38,20 +38,21 @@ import uo.ri.conf.ServicesFactory;
  */
 public class CreatePMCardAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		Long clientId = Console.readLong( "Id cliente" );
-		String cardKind = Console.readString( "Tipo" );
-		String cardNumber = Console.readString( "Número" );
-		String expirationDate = Console.readString( "Fecha validez (yyyy-mm-dd)" );
+	Long clientId = Console.readLong("Id cliente");
+	String cardKind = Console.readString("Tipo");
+	String cardNumber = Console.readString("Número");
+	String expirationDate = Console
+		.readString("Fecha validez (yyyy-mm-dd)");
 
-		CashService cash = ServicesFactory.getCashService();
-		
-		// Creating the card.
-		cash.createPMCard( clientId, cardKind, cardNumber, expirationDate );
-		
-		Console.println( "Nuevo tarjeta añadida a " + clientId );
-	}
+	CashService cash = ServicesFactory.getCashService();
+
+	// Creating the card.
+	cash.createPMCard(clientId, cardKind, cardNumber, expirationDate);
+
+	Console.println("Nuevo tarjeta añadida a " + clientId);
+    }
 
 }

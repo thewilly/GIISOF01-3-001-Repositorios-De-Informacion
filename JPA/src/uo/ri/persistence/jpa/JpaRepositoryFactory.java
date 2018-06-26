@@ -38,76 +38,94 @@ import uo.ri.business.repository.VehiculoRepository;
  */
 public class JpaRepositoryFactory implements RepositoryFactory {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forAveria()
-	 */
-	@Override
-	public AveriaRepository forAveria() {
-		return new AveriaJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forAveria()
+     */
+    @Override
+    public AveriaRepository forAveria() {
+	return new AveriaJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
-	 */
-	@Override
-	public CargoRepository forCargo() {
-		return new CargoJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forCargo()
+     */
+    @Override
+    public CargoRepository forCargo() {
+	return new CargoJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCliente()
-	 */
-	@Override
-	public ClienteRepository forCliente() {
-		return new ClienteJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forCliente()
+     */
+    @Override
+    public ClienteRepository forCliente() {
+	return new ClienteJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
-	 */
-	@Override
-	public FacturaRepository forFactura() {
-		return new FacturaJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forFactura()
+     */
+    @Override
+    public FacturaRepository forFactura() {
+	return new FacturaJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
-	 */
-	@Override
-	public MecanicoRepository forMechanic() {
-		return new MechanicJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
+     */
+    @Override
+    public MecanicoRepository forMechanic() {
+	return new MechanicJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
-	 */
-	@Override
-	public MedioPagoRepository forMedioPago() {
-		return new MedioPagoJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+     */
+    @Override
+    public MedioPagoRepository forMedioPago() {
+	return new MedioPagoJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRecomendacion()
-	 */
-	@Override
-	public RecomendacionRepository forRecomendacion() {
-		return new RecomendacionJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forRecomendacion()
+     */
+    @Override
+    public RecomendacionRepository forRecomendacion() {
+	return new RecomendacionJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
-	 */
-	@Override
-	public RepuestoRepository forRepuesto() {
-		return new RepuestoJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
+     */
+    @Override
+    public RepuestoRepository forRepuesto() {
+	return new RepuestoJpaRepository();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forVehiculo()
-	 */
-	@Override
-	public VehiculoRepository forVehiculo() {
-		return new VehiculoJpaRepository();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forVehiculo()
+     */
+    @Override
+    public VehiculoRepository forVehiculo() {
+	return new VehiculoJpaRepository();
+    }
 
 }

@@ -48,88 +48,90 @@ import uo.ri.persistence.InvoicesGateway;
  */
 public class CreateInvoiceForFailures {
 
-	private List<Long> failuresIds;
+    private List<Long> failuresIds;
 
-	/**
-	 * Initializes the create invoice for the given list of id's.
-	 * 
-	 * @param failuresIds is the list that contains all the id's of the failures
-	 *            to be billed in the invoice.
-	 */
-	public CreateInvoiceForFailures( List<Long> failuresIds ) {
-		this.failuresIds = failuresIds;
+    /**
+     * Initializes the create invoice for the given list of id's.
+     * 
+     * @param failuresIds
+     *            is the list that contains all the id's of the failures to be
+     *            billed in the invoice.
+     */
+    public CreateInvoiceForFailures(List<Long> failuresIds) {
+	this.failuresIds = failuresIds;
+    }
+
+    /**
+     * 
+     * @return
+     * @throws BusinessException
+     */
+    public Map<String, Object> execute() throws BusinessException {
+	Connection connection = null;
+
+	// Invoice map will represent the invoice data.
+	Map<String, Object> invoice = new HashMap<>();
+
+	// Creating the gateways.
+	FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
+	InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
+
+	try {
+
+	    // Getting the connection and setting the auto commit to false to
+	    // ensure atomicity.
+	    connection = getConnection();
+	    connection.setAutoCommit(false);
+
+	    // Setting the connection.
+	    failuresGW.setConnection(connection);
+	    invoicesGW.setConnection(connection);
+
+	    // Checking that all the failures are finished.
+	    failuresGW.checkAllFailuresAreFinished(failuresIds);
+
+	    // Getting the invoice number from the gateway.
+	    long invoiceNumber = invoicesGW.getLastInvoiceNumber();
+
+	    // Getting the current date and setting it as the date of the
+	    // invoice generation.
+	    Date invoiceDate = DateUtil.today();
+
+	    // Computing the invoice context.
+	    double failuresCosts = failuresGW.getCostForFailures(failuresIds);
+	    double taxes = invoicesGW.getTaxes(failuresCosts, invoiceDate);
+	    double totalAmount = failuresCosts * (1 + taxes / 100);
+	    totalAmount = Round.twoCents(totalAmount);
+	    invoice.put("numFactura", invoiceNumber);
+	    invoice.put("fechaFactura", invoiceDate);
+	    invoice.put("iva", taxes);
+	    invoice.put("importe", totalAmount);
+
+	    // Saving the invoice.
+	    long invoiceId = invoicesGW.save(invoice);
+
+	    // Linking the invoice and the failures.
+	    failuresGW.linkInvoiceWithFailures(invoiceId, failuresIds);
+
+	    // Changing the status of the failures in the invoice to FACTURADA.
+	    failuresGW.setFailureStatus(failuresIds, "FACTURADA");
+
+	    // Finally we commit the changes in the database and return the
+	    // generated invoice as a map.
+	    connection.commit();
+	    return invoice;
+	} catch (SQLException e) {
+	    try {
+		// If any error we perform a roll back.
+		connection.rollback();
+	    } catch (SQLException ex) {
+	    }
+	    ;
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws BusinessException
-	 */
-	public Map<String, Object> execute() throws BusinessException {
-		Connection connection = null;
-		
-		// Invoice map will represent the invoice data.
-		Map<String, Object> invoice = new HashMap<>();
-		
-		// Creating the gateways.
-		FailuresGateway failuresGW = PersistenceFactory.getFailuresGateway();
-		InvoicesGateway invoicesGW = PersistenceFactory.getInvoicesGateway();
-
-		try {
-
-			// Getting the connection and setting the auto commit to false to
-			// ensure atomicity.
-			connection = getConnection();
-			connection.setAutoCommit( false );
-
-			// Setting the connection.
-			failuresGW.setConnection( connection );
-			invoicesGW.setConnection( connection );
-
-			// Checking that all the failures are finished.
-			failuresGW.checkAllFailuresAreFinished( failuresIds );
-
-			// Getting the invoice number from the gateway.
-			long invoiceNumber = invoicesGW.getLastInvoiceNumber();
-
-			// Getting the current date and setting it as the date of the
-			// invoice generation.
-			Date invoiceDate = DateUtil.today();
-
-			// Computing the invoice context.
-			double failuresCosts = failuresGW.getCostForFailures( failuresIds );
-			double taxes = invoicesGW.getTaxes( failuresCosts, invoiceDate );
-			double totalAmount = failuresCosts * ( 1 + taxes / 100 );
-			totalAmount = Round.twoCents( totalAmount );
-			invoice.put( "numFactura", invoiceNumber );
-			invoice.put( "fechaFactura", invoiceDate );
-			invoice.put( "iva", taxes );
-			invoice.put( "importe", totalAmount );
-
-			// Saving the invoice.
-			long invoiceId = invoicesGW.save( invoice );
-
-			// Linking the invoice and the failures.
-			failuresGW.linkInvoiceWithFailures( invoiceId, failuresIds );
-
-			// Changing the status of the failures in the invoice to FACTURADA.
-			failuresGW.setFailureStatus( failuresIds, "FACTURADA" );
-
-			// Finally we commit the changes in the database and return the
-			// generated invoice as a map.
-			connection.commit();
-			return invoice;
-		} catch (SQLException e) {
-			try {
-				// If any error we perform a roll back.
-				connection.rollback();
-			} catch (SQLException ex) {
-			} ;
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-
-	}
+    }
 }

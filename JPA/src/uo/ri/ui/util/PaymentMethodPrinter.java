@@ -37,42 +37,47 @@ import uo.ri.business.dto.PaymentMeanDto;
  * @formatter Oviedo Computing Community
  */
 public class PaymentMethodPrinter implements Printer {
-	
-	/** The payment methods. */
-	private List<PaymentMeanDto> paymentMethods;
-	
-	/**
-	 * Instantiates a new payment method printer.
-	 *
-	 * @param paymentMethod the payment method
-	 */
-	public PaymentMethodPrinter(PaymentMeanDto paymentMethod) {
-		paymentMethods = new ArrayList<PaymentMeanDto>();
-		paymentMethods.add( paymentMethod );
-	}
-	
-	/**
-	 * Instantiates a new payment method printer.
-	 *
-	 * @param paymentMethods the payment methods
-	 */
-	public PaymentMethodPrinter(List<PaymentMeanDto> paymentMethods) {
-		this.paymentMethods = paymentMethods;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		Console.println();
-		Console.println( "Medios de pago disponibles" );
+    /** The payment methods. */
+    private List<PaymentMeanDto> paymentMethods;
 
-		Console.printf( "\t%s \t%-8.8s \t%s \n", "ID", "Tipo", "Acumulado" );
-		for (PaymentMeanDto paymentMethod : paymentMethods) {
-			Console.printf( "\t%s \t%-8.12s \t%s \n", paymentMethod.id,
-					paymentMethod.getClass().getSimpleName(), paymentMethod.accumulated );
-		}
+    /**
+     * Instantiates a new payment method printer.
+     *
+     * @param paymentMethod
+     *            the payment method
+     */
+    public PaymentMethodPrinter(PaymentMeanDto paymentMethod) {
+	paymentMethods = new ArrayList<PaymentMeanDto>();
+	paymentMethods.add(paymentMethod);
+    }
+
+    /**
+     * Instantiates a new payment method printer.
+     *
+     * @param paymentMethods
+     *            the payment methods
+     */
+    public PaymentMethodPrinter(List<PaymentMeanDto> paymentMethods) {
+	this.paymentMethods = paymentMethods;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	Console.println();
+	Console.println("Medios de pago disponibles");
+
+	Console.printf("\t%s \t%-8.8s \t%s \n", "ID", "Tipo", "Acumulado");
+	for (PaymentMeanDto paymentMethod : paymentMethods) {
+	    Console.printf("\t%s \t%-8.12s \t%s \n", paymentMethod.id,
+		    paymentMethod.getClass().getSimpleName(),
+		    paymentMethod.accumulated);
 	}
+    }
 
 }

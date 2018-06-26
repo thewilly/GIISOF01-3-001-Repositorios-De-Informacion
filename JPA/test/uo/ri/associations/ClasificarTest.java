@@ -34,7 +34,6 @@ import uo.ri.model.TipoVehiculo;
 import uo.ri.model.Vehiculo;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class ClasificarTest.
  *
@@ -42,63 +41,67 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class ClasificarTest {
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
-	}
-	
-	/**
-	 * Test clasificar linked.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testClasificarLinked() throws BusinessException {
-		assertTrue( tipoVehiculo.getVehiculos().contains( vehiculo ));
-		assertTrue( vehiculo.getTipo() == tipoVehiculo );
-	}
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
 
-	/**
-	 * Test clasificar unlink.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testClasificarUnlink() throws BusinessException {
-		Association.Clasificar.unlink(tipoVehiculo, vehiculo);
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
 
-		assertTrue( ! tipoVehiculo.getVehiculos().contains( vehiculo ));
-		assertTrue( vehiculo.getTipo() == null );
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
+    }
 
-	/**
-	 * Test safe return.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturn() throws BusinessException {
-		Set<Vehiculo> vehiculos = tipoVehiculo.getVehiculos();
-		vehiculos.remove( vehiculo );
+    /**
+     * Test clasificar linked.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testClasificarLinked() throws BusinessException {
+	assertTrue(tipoVehiculo.getVehiculos().contains(vehiculo));
+	assertTrue(vehiculo.getTipo() == tipoVehiculo);
+    }
 
-		assertTrue( vehiculos.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			tipoVehiculo.getVehiculos().size() == 1
-		);
-	}
+    /**
+     * Test clasificar unlink.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testClasificarUnlink() throws BusinessException {
+	Association.Clasificar.unlink(tipoVehiculo, vehiculo);
+
+	assertTrue(!tipoVehiculo.getVehiculos().contains(vehiculo));
+	assertTrue(vehiculo.getTipo() == null);
+    }
+
+    /**
+     * Test safe return.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturn() throws BusinessException {
+	Set<Vehiculo> vehiculos = tipoVehiculo.getVehiculos();
+	vehiculos.remove(vehiculo);
+
+	assertTrue(vehiculos.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		tipoVehiculo.getVehiculos().size() == 1);
+    }
 
 }

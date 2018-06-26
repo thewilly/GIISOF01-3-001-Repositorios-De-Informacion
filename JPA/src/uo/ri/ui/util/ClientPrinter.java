@@ -34,27 +34,31 @@ import uo.ri.business.dto.ClientDto;
  * @formatter Oviedo Computing Community
  */
 public class ClientPrinter implements Printer {
-	
-	/** The client. */
-	private ClientDto client;
-	
-	/**
-	 * Instantiates a new client printer.
-	 *
-	 * @param client the client
-	 */
-	public ClientPrinter(ClientDto client) {
-		this.client = client;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	public void print() {
-		if (client != null) {
-			Console.printf( "\t%s %s %s %s %s %s %s %s\n", client.name, client.surname, client.dni,
-					client.email, client.phone,
-					client.addressStreet, client.addressCity, client.addressZipcode );
-		}
+    /** The client. */
+    private ClientDto client;
+
+    /**
+     * Instantiates a new client printer.
+     *
+     * @param client
+     *            the client
+     */
+    public ClientPrinter(ClientDto client) {
+	this.client = client;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    public void print() {
+	if (client != null) {
+	    Console.printf("\t%s %s %s %s %s %s %s %s\n", client.name,
+		    client.surname, client.dni, client.email, client.phone,
+		    client.addressStreet, client.addressCity,
+		    client.addressZipcode);
 	}
+    }
 }

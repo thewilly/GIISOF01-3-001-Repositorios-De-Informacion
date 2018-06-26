@@ -35,31 +35,44 @@ import uo.ri.persistence.jpa.util.Jpa;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class FacturaJpaRepository extends BaseRepository<Factura> implements FacturaRepository {
+public class FacturaJpaRepository extends BaseRepository<Factura>
+	implements FacturaRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#findByNumber(java.lang.Long)
-	 */
-	@Override
-	public Factura findByNumber(Long numero) {
-		return Jpa.getManager().createNamedQuery("Factura.findByNumber", Factura.class).setParameter(1, numero)
-				.getResultList().stream().findFirst().orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.FacturaRepository#findByNumber(java.lang.Long)
+     */
+    @Override
+    public Factura findByNumber(Long numero) {
+	return Jpa.getManager()
+		.createNamedQuery("Factura.findByNumber", Factura.class)
+		.setParameter(1, numero).getResultList().stream().findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
-	 */
-	@Override
-	public List<Factura> findUnusedWithBono500() {
-		return Jpa.getManager().createNamedQuery("Factura.findUnusedWithBono500", Factura.class).getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.FacturaRepository#findUnusedWithBono500()
+     */
+    @Override
+    public List<Factura> findUnusedWithBono500() {
+	return Jpa.getManager().createNamedQuery(
+		"Factura.findUnusedWithBono500", Factura.class).getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
-	 */
-	@Override
-	public Long getNextInvoiceNumber() {
-		return Jpa.getManager().createNamedQuery("Factura.getNextInvoiceNumber", Long.class).getSingleResult();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.FacturaRepository#getNextInvoiceNumber()
+     */
+    @Override
+    public Long getNextInvoiceNumber() {
+	return Jpa.getManager()
+		.createNamedQuery("Factura.getNextInvoiceNumber", Long.class)
+		.getSingleResult();
+    }
 
 }

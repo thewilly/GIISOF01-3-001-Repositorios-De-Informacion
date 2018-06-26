@@ -35,16 +35,18 @@ import alb.util.menu.NotYetImplementedAction;
  */
 public class VehiculosMenu extends BaseMenu {
 
-	/**
-	 * Instantiates a new vehiculos menu.
-	 */
-	public VehiculosMenu() {
-		menuOptions = new Object[][] { { "Jefe de Taller > Gestión de Vehículos", null },
+    /**
+     * Instantiates a new vehiculos menu.
+     */
+    public VehiculosMenu() {
+	menuOptions = new Object[][] {
+		{ "Jefe de Taller > Gestión de Vehículos", null },
 
-				{ "Añadir vehículo", NotYetImplementedAction.class },
-				{ "Modificar datos de vehículo", NotYetImplementedAction.class },
-				{ "Eliminar vehículo", NotYetImplementedAction.class },
-				{ "Listar vehículo", NotYetImplementedAction.class }, };
-	}
+		{ "Añadir vehículo", NotYetImplementedAction.class },
+		{ "Modificar datos de vehículo",
+			NotYetImplementedAction.class },
+		{ "Eliminar vehículo", NotYetImplementedAction.class },
+		{ "Listar vehículo", NotYetImplementedAction.class }, };
+    }
 
 }

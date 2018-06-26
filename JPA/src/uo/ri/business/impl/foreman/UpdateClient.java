@@ -41,34 +41,38 @@ import uo.ri.util.exception.Check;
  */
 public class UpdateClient implements Command<Void> {
 
-	/** The client dto. */
-	private ClientDto clientDto;
-	
-	/** The clients repository. */
-	private ClienteRepository clientsRepository = Factory.repository.forCliente();
+    /** The client dto. */
+    private ClientDto clientDto;
 
-	/**
-	 * Instantiates a new update client.
-	 *
-	 * @param dto the dto
-	 */
-	public UpdateClient(ClientDto dto) {
-		this.clientDto = dto;
-	}
+    /** The clients repository. */
+    private ClienteRepository clientsRepository = Factory.repository
+	    .forCliente();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public Void execute() throws BusinessException {
-		Cliente clientInDB = clientsRepository.findById(clientDto.id);
-		Check.isNotNull(clientInDB, "El cliente no existe");
-		Cliente updatedClient = DtoAssembler.toEntity(clientDto);
-		clientInDB.setNombre(updatedClient.getNombre());
-		clientInDB.setApellidos(updatedClient.getApellidos());
-		clientInDB.setEmail(updatedClient.getEmail());
-		clientInDB.setPhone(updatedClient.getPhone());
-		clientInDB.setAddress(updatedClient.getAddress());
-		return null;
-	}
+    /**
+     * Instantiates a new update client.
+     *
+     * @param dto
+     *            the dto
+     */
+    public UpdateClient(ClientDto dto) {
+	this.clientDto = dto;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public Void execute() throws BusinessException {
+	Cliente clientInDB = clientsRepository.findById(clientDto.id);
+	Check.isNotNull(clientInDB, "El cliente no existe");
+	Cliente updatedClient = DtoAssembler.toEntity(clientDto);
+	clientInDB.setNombre(updatedClient.getNombre());
+	clientInDB.setApellidos(updatedClient.getApellidos());
+	clientInDB.setEmail(updatedClient.getEmail());
+	clientInDB.setPhone(updatedClient.getPhone());
+	clientInDB.setAddress(updatedClient.getAddress());
+	return null;
+    }
 }

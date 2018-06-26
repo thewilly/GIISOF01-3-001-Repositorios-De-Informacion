@@ -41,40 +41,44 @@ import uo.ri.util.exception.Check;
  */
 public class CreateMechanic implements Command<Void> {
 
-	/** The dto. */
-	private MechanicDto dto;
-	
-	/** The repository. */
-	private MecanicoRepository repository = Factory.repository.forMechanic();
+    /** The dto. */
+    private MechanicDto dto;
 
-	/**
-	 * Instantiates a new creates the mechanic.
-	 *
-	 * @param mechanic the mecanico
-	 */
-	public CreateMechanic( MechanicDto mechanic ) {
-		this.dto = mechanic;
-	}
+    /** The repository. */
+    private MecanicoRepository repository = Factory.repository.forMechanic();
 
-	/**
-	 * This method checks that the dni of the new mechanic doesn't already
-	 * exists in the system.
-	 *
-	 * @param dni the dni of the new mechanic to be added
-	 * @throws BusinessException if any error during the execution of the
-	 *             method.
-	 */
-	private void assertNotRepeatedDni( String dni ) throws BusinessException {
-		Check.isNull( repository.findByDni( dni ), "Ese dni ya existe" );
-	}
+    /**
+     * Instantiates a new creates the mechanic.
+     *
+     * @param mechanic
+     *            the mecanico
+     */
+    public CreateMechanic(MechanicDto mechanic) {
+	this.dto = mechanic;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		Mecanico mechanic = DtoAssembler.toEntity( dto );
-		assertNotRepeatedDni( dto.dni );
-		repository.add( mechanic );
-		return null;
-	}
+    /**
+     * This method checks that the dni of the new mechanic doesn't already
+     * exists in the system.
+     *
+     * @param dni
+     *            the dni of the new mechanic to be added
+     * @throws BusinessException
+     *             if any error during the execution of the method.
+     */
+    private void assertNotRepeatedDni(String dni) throws BusinessException {
+	Check.isNull(repository.findByDni(dni), "Ese dni ya existe");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	Mecanico mechanic = DtoAssembler.toEntity(dto);
+	assertNotRepeatedDni(dto.dni);
+	repository.add(mechanic);
+	return null;
+    }
 }

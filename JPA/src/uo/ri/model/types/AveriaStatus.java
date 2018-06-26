@@ -29,16 +29,16 @@ package uo.ri.model.types;
  * @version 201806081225
  */
 public enum AveriaStatus {
-	
-	/** The abierta. */
-	ABIERTA,
-	
-	/** The asignada. */
-	ASIGNADA,
-	
-	/** The terminada. */
-	TERMINADA,
-	
-	/** The facturada. */
-	FACTURADA
+
+    /** The abierta. */
+    ABIERTA,
+
+    /** The asignada. */
+    ASIGNADA,
+
+    /** The terminada. */
+    TERMINADA,
+
+    /** The facturada. */
+    FACTURADA
 }

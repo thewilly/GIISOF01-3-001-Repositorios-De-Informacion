@@ -39,20 +39,22 @@ import uo.ri.util.exception.BusinessException;
  */
 public class AddMechanicAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		MechanicDto m = new MechanicDto();
-		m.dni = Console.readString("Dni");
-		m.name = Console.readString("Nombre");
-		m.surname = Console.readString("Apellidos");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	MechanicDto m = new MechanicDto();
+	m.dni = Console.readString("Dni");
+	m.name = Console.readString("Nombre");
+	m.surname = Console.readString("Apellidos");
 
-		AdminService as = Factory.service.forAdmin();
-		as.addMechanic(m);
+	AdminService as = Factory.service.forAdmin();
+	as.addMechanic(m);
 
-		Console.println("Nuevo mecánico añadido");
-	}
+	Console.println("Nuevo mecánico añadido");
+    }
 
 }

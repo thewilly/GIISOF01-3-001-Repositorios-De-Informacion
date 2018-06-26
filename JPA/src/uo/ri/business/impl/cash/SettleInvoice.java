@@ -51,125 +51,141 @@ import uo.ri.util.exception.Check;
  */
 public class SettleInvoice implements Command<InvoiceDto> {
 
-	/** The id. */
-	private Long id;
-	
-	/** The cargos. */
-	private Map<Long, Double> cargos;
+    /** The id. */
+    private Long id;
 
-	/**
-	 * Instantiates a new settle invoice.
-	 *
-	 * @param id the id
-	 * @param cargos the cargos
-	 */
-	public SettleInvoice(Long id, Map<Long, Double> cargos) {
-		this.id = id;
-		this.cargos = cargos;
+    /** The cargos. */
+    private Map<Long, Double> cargos;
+
+    /**
+     * Instantiates a new settle invoice.
+     *
+     * @param id
+     *            the id
+     * @param cargos
+     *            the cargos
+     */
+    public SettleInvoice(Long id, Map<Long, Double> cargos) {
+	this.id = id;
+	this.cargos = cargos;
+    }
+
+    /**
+     * This method checks if the invoice is correct to be used, by checking it
+     * exists and that it's not already invoiced.
+     *
+     * @param factura
+     *            the invoice to be checked
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertCheckCorrectInvoice(Factura factura)
+	    throws BusinessException {
+	Check.isNotNull(factura, "La factura no existe");
+	Check.isFalse(factura.getStatus() == FacturaStatus.ABONADA,
+		"Ya está abonada");
+    }
+
+    /**
+     * This method creates the charges the invoice will have.
+     *
+     * @param factura
+     *            the invoice
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void chargesCreation(Factura factura) throws BusinessException {
+	Check.isFalse(cargos.isEmpty(), "No hay cargos");
+	MedioPagoRepository mp = Factory.repository.forMedioPago();
+	Iterator<Entry<Long, Double>> it = cargos.entrySet().iterator();
+	while (it.hasNext()) {
+	    Map.Entry<Long, Double> pair = (Map.Entry<Long, Double>) it.next();
+	    MedioPago medioPago = mp.findById(pair.getKey());
+	    CargoRepository cargoRep = Factory.repository.forCargo();
+	    Cargo c = new Cargo(factura, medioPago, pair.getValue());
+	    cargoRep.add(c);
+	}
+	it.remove();
+    }
+
+    /**
+     * This method checks that all the charges sum up the total amount that must
+     * be payed in the invoice.
+     *
+     * @param cargos
+     *            the charges
+     * @param f
+     *            the invoice
+     * @return true if they sum up that quantity, false otherwise
+     * @throws BusinessException
+     *             the business exception
+     */
+    private boolean correctAmount(Set<Cargo> cargos, Factura f)
+	    throws BusinessException {
+	double amount = 0.0;
+	for (Cargo cargo : cargos) {
+	    amount += cargo.getImporte();
 	}
 
-	/**
-	 * This method checks if the invoice is correct to be used, by checking it
-	 * exists and that it's not already invoiced.
-	 *
-	 * @param factura the invoice to be checked
-	 * @throws BusinessException the business exception
-	 */
-	private void assertCheckCorrectInvoice(Factura factura) throws BusinessException {
-		Check.isNotNull(factura, "La factura no existe");
-		Check.isFalse(factura.getStatus() == FacturaStatus.ABONADA, "Ya está abonada");
+	if (f.getImporte() == amount) {
+	    for (Cargo cargo : cargos) {
+		cargo.getMedioPago().pagar(cargo.getImporte());
+	    }
+	    f.settle();
+	    return true;
 	}
+	return false;
+    }
 
-	/**
-	 * This method creates the charges the invoice will have.
-	 *
-	 * @param factura the invoice
-	 * @throws BusinessException the business exception
-	 */
-	private void chargesCreation(Factura factura) throws BusinessException {
-		Check.isFalse(cargos.isEmpty(), "No hay cargos");
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		Iterator<Entry<Long, Double>> it = cargos.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<Long, Double> pair = (Map.Entry<Long, Double>) it.next();
-			MedioPago medioPago = mp.findById(pair.getKey());
-			CargoRepository cargoRep = Factory.repository.forCargo();
-			Cargo c = new Cargo(factura, medioPago, pair.getValue());
-			cargoRep.add(c);
-		}
-		it.remove();
+    /**
+     * This method gives the dto that will be returned, all the data from the
+     * invoice.
+     *
+     * @param fac
+     *            the invoice
+     * @return thw invoice dto with all the information
+     */
+    private InvoiceDto DtoCreation(Factura fac) {
+	InvoiceDto dto = new InvoiceDto();
+	dto.id = fac.getId();
+	dto.date = fac.getFecha();
+	dto.number = fac.getNumero();
+	dto.status = fac.getStatus().toString();
+	dto.taxes = fac.getIva();
+	dto.total = fac.getImporte();
+	return dto;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public InvoiceDto execute() throws BusinessException {
+	FacturaRepository fp = Factory.repository.forFactura();
+	Factura factura = fp.findById(id);
+	assertCheckCorrectInvoice(factura);
+	chargesCreation(factura);
+	Set<Cargo> cargos = factura.getCargos();
+	if (correctAmount(cargos, factura)) {
+	    return DtoCreation(factura);
+	} else {
+	    removeCharges(cargos);
+	    throw new BusinessException("Los cargos no igualan el importe");
 	}
+    }
 
-	/**
-	 * This method checks that all the charges sum up the total amount that must
-	 * be payed in the invoice.
-	 *
-	 * @param cargos the charges
-	 * @param f the invoice
-	 * @return true if they sum up that quantity, false otherwise
-	 * @throws BusinessException the business exception
-	 */
-	private boolean correctAmount(Set<Cargo> cargos, Factura f) throws BusinessException {
-		double amount = 0.0;
-		for (Cargo cargo : cargos) {
-			amount += cargo.getImporte();
-		}
-
-		if (f.getImporte() == amount) {
-			for (Cargo cargo : cargos) {
-				cargo.getMedioPago().pagar(cargo.getImporte());
-			}
-			f.settle();
-			return true;
-		}
-		return false;
+    /**
+     * This method unlinks all the charges that had been created due to the
+     * amount was not correct.
+     *
+     * @param cargos
+     *            the charges created
+     */
+    private void removeCharges(Set<Cargo> cargos) {
+	for (Cargo cargo : cargos) {
+	    Association.Cargar.unlink(cargo);
 	}
-
-	/**
-	 * This method gives the dto that will be returned, all the data from the
-	 * invoice.
-	 *
-	 * @param fac the invoice
-	 * @return thw invoice dto with all the information
-	 */
-	private InvoiceDto DtoCreation(Factura fac) {
-		InvoiceDto dto = new InvoiceDto();
-		dto.id = fac.getId();
-		dto.date = fac.getFecha();
-		dto.number = fac.getNumero();
-		dto.status = fac.getStatus().toString();
-		dto.taxes = fac.getIva();
-		dto.total = fac.getImporte();
-		return dto;
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public InvoiceDto execute() throws BusinessException {
-		FacturaRepository fp = Factory.repository.forFactura();
-		Factura factura = fp.findById(id);
-		assertCheckCorrectInvoice(factura);
-		chargesCreation(factura);
-		Set<Cargo> cargos = factura.getCargos();
-		if (correctAmount(cargos, factura)) {
-			return DtoCreation(factura);
-		} else {
-			removeCharges(cargos);
-			throw new BusinessException("Los cargos no igualan el importe");
-		}
-	}
-
-	/**
-	 * This method unlinks all the charges that had been created due to the
-	 * amount was not correct.
-	 *
-	 * @param cargos the charges created
-	 */
-	private void removeCharges(Set<Cargo> cargos) {
-		for (Cargo cargo : cargos) {
-			Association.Cargar.unlink(cargo);
-		}
-	}
+    }
 }

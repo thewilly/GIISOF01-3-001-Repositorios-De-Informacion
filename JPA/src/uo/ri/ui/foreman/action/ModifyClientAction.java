@@ -38,26 +38,28 @@ import uo.ri.conf.Factory;
  */
 public class ModifyClientAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		ClientDto dto = new ClientDto();
-		dto.id = Console.readLong("Id cliente");
-		dto.name = Console.readString("Nombre");
-		dto.surname = Console.readString("Apellidos");
-		dto.dni = Console.readString("DNI");
-		dto.email = Console.readString("E-Mail");
-		dto.phone = Console.readString("Teléfono");
-		dto.addressStreet = Console.readString("Calle");
-		dto.addressCity = Console.readString("Ciudad");
-		dto.addressZipcode = Console.readString("Código postal");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	ClientDto dto = new ClientDto();
+	dto.id = Console.readLong("Id cliente");
+	dto.name = Console.readString("Nombre");
+	dto.surname = Console.readString("Apellidos");
+	dto.dni = Console.readString("DNI");
+	dto.email = Console.readString("E-Mail");
+	dto.phone = Console.readString("Teléfono");
+	dto.addressStreet = Console.readString("Calle");
+	dto.addressCity = Console.readString("Ciudad");
+	dto.addressZipcode = Console.readString("Código postal");
 
-		ForemanService foreman = Factory.service.forForeman();
-		foreman.updateClient(dto);
-		Console.println("Datos actualizados correctamente");
+	ForemanService foreman = Factory.service.forForeman();
+	foreman.updateClient(dto);
+	Console.println("Datos actualizados correctamente");
 
-	}
+    }
 
 }

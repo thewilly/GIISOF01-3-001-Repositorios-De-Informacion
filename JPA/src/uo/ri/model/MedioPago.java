@@ -48,134 +48,144 @@ import uo.ri.util.exception.BusinessException;
 @Table(name = "TMediosPago")
 public abstract class MedioPago {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	/** The acumulado. */
-	protected double acumulado = 0.0;
+    /** The acumulado. */
+    protected double acumulado = 0.0;
 
-	/** The cliente. */
-	@ManyToOne
-	private Cliente cliente;
-	
-	/** The cargos. */
-	@OneToMany(mappedBy = "medioPago")
-	private Set<Cargo> cargos = new HashSet<>();
+    /** The cliente. */
+    @ManyToOne
+    private Cliente cliente;
 
-	/**
-	 * Gets the cargos.
-	 *
-	 * @return the sets the
-	 */
-	Set<Cargo> _getCargos() {
-		return cargos;
-	}
+    /** The cargos. */
+    @OneToMany(mappedBy = "medioPago")
+    private Set<Cargo> cargos = new HashSet<>();
 
-	/**
-	 * Sets the cliente.
-	 *
-	 * @param cliente the cliente
-	 */
-	void _setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    /**
+     * Gets the cargos.
+     *
+     * @return the sets the
+     */
+    Set<Cargo> _getCargos() {
+	return cargos;
+    }
 
-	/**
-	 * Decrementar acumulado.
-	 *
-	 * @param importe the importe
-	 */
-	void decrementarAcumulado(Double importe) {
-		acumulado -= importe;
-	}
+    /**
+     * Sets the cliente.
+     *
+     * @param cliente
+     *            the cliente
+     */
+    void _setCliente(Cliente cliente) {
+	this.cliente = cliente;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		MedioPago other = (MedioPago) obj;
-		if (cliente == null) {
-			if (other.cliente != null)
-				return false;
-		} else if (!cliente.equals(other.cliente))
-			return false;
-		return true;
-	}
+    /**
+     * Decrementar acumulado.
+     *
+     * @param importe
+     *            the importe
+     */
+    void decrementarAcumulado(Double importe) {
+	acumulado -= importe;
+    }
 
-	/**
-	 * Gets the acumulado.
-	 *
-	 * @return the acumulado
-	 */
-	public double getAcumulado() {
-		return acumulado;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	MedioPago other = (MedioPago) obj;
+	if (cliente == null) {
+	    if (other.cliente != null)
+		return false;
+	} else if (!cliente.equals(other.cliente))
+	    return false;
+	return true;
+    }
 
-	/**
-	 * Gets the cargos.
-	 *
-	 * @return the cargos
-	 */
-	public Set<Cargo> getCargos() {
-		return new HashSet<>(cargos);
-	}
+    /**
+     * Gets the acumulado.
+     *
+     * @return the acumulado
+     */
+    public double getAcumulado() {
+	return acumulado;
+    }
 
-	/**
-	 * Gets the cliente.
-	 *
-	 * @return the cliente
-	 */
-	public Cliente getCliente() {
-		return cliente;
-	}
+    /**
+     * Gets the cargos.
+     *
+     * @return the cargos
+     */
+    public Set<Cargo> getCargos() {
+	return new HashSet<>(cargos);
+    }
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
+    /**
+     * Gets the cliente.
+     *
+     * @return the cliente
+     */
+    public Cliente getCliente() {
+	return cliente;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
-		return result;
-	}
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+	return id;
+    }
 
-	/**
-	 * Incrementar acumulado.
-	 *
-	 * @param importe the importe
-	 * @throws BusinessException the business exception
-	 */
-	void incrementarAcumulado(Double importe) throws BusinessException {
-		pagar(importe);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+	return result;
+    }
 
-	/**
-	 * This method increases the acumulado attribute with the amount parameter.
-	 * It is redefined in all the children with the specific implementation
-	 * depending in each one.
-	 *
-	 * @param amount the amount to be payed with the payment method
-	 * @throws BusinessException the business exception
-	 */
-	public abstract void pagar(double amount) throws BusinessException;
+    /**
+     * Incrementar acumulado.
+     *
+     * @param importe
+     *            the importe
+     * @throws BusinessException
+     *             the business exception
+     */
+    void incrementarAcumulado(Double importe) throws BusinessException {
+	pagar(importe);
+    }
+
+    /**
+     * This method increases the acumulado attribute with the amount parameter.
+     * It is redefined in all the children with the specific implementation
+     * depending in each one.
+     *
+     * @param amount
+     *            the amount to be payed with the payment method
+     * @throws BusinessException
+     *             the business exception
+     */
+    public abstract void pagar(double amount) throws BusinessException;
 
 }

@@ -34,26 +34,29 @@ import uo.ri.business.dto.MechanicDto;
  * @formatter Oviedo Computing Community
  */
 public class MechanicPrinter implements Printer {
-	
-	/** The mechanic. */
-	private MechanicDto mechanic;
-	
-	/**
-	 * Instantiates a new mechanic printer.
-	 *
-	 * @param mechanic the mechanic
-	 */
-	public MechanicPrinter(MechanicDto mechanic) {
-		this.mechanic = mechanic;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		Console.printf( "\t%d %-10.10s %-25.25s %-25.25s\n", mechanic.id, mechanic.dni,
-				mechanic.name, mechanic.surname );
-	}
+    /** The mechanic. */
+    private MechanicDto mechanic;
+
+    /**
+     * Instantiates a new mechanic printer.
+     *
+     * @param mechanic
+     *            the mechanic
+     */
+    public MechanicPrinter(MechanicDto mechanic) {
+	this.mechanic = mechanic;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	Console.printf("\t%d %-10.10s %-25.25s %-25.25s\n", mechanic.id,
+		mechanic.dni, mechanic.name, mechanic.surname);
+    }
 
 }

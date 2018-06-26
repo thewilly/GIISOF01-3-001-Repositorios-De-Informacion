@@ -29,42 +29,46 @@ package uo.ri.util.exception;
  * @version 201806081225
  */
 public class BusinessException extends Exception {
-	
-	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID = 4001710687990554589L;
 
-	/**
-	 * Instantiates a new business exception.
-	 */
-	public BusinessException() {
-	}
+    /** The Constant serialVersionUID. */
+    private static final long serialVersionUID = 4001710687990554589L;
 
-	/**
-	 * Instantiates a new business exception.
-	 *
-	 * @param message the message
-	 */
-	public BusinessException(String message) {
-		super(message);
-	}
+    /**
+     * Instantiates a new business exception.
+     */
+    public BusinessException() {
+    }
 
-	/**
-	 * Instantiates a new business exception.
-	 *
-	 * @param message the message
-	 * @param cause the cause
-	 */
-	public BusinessException(String message, Throwable cause) {
-		super(message, cause);
-	}
+    /**
+     * Instantiates a new business exception.
+     *
+     * @param message
+     *            the message
+     */
+    public BusinessException(String message) {
+	super(message);
+    }
 
-	/**
-	 * Instantiates a new business exception.
-	 *
-	 * @param cause the cause
-	 */
-	public BusinessException(Throwable cause) {
-		super(cause);
-	}
+    /**
+     * Instantiates a new business exception.
+     *
+     * @param message
+     *            the message
+     * @param cause
+     *            the cause
+     */
+    public BusinessException(String message, Throwable cause) {
+	super(message, cause);
+    }
+
+    /**
+     * Instantiates a new business exception.
+     *
+     * @param cause
+     *            the cause
+     */
+    public BusinessException(Throwable cause) {
+	super(cause);
+    }
 
 }

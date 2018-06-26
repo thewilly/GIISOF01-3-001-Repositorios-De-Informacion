@@ -43,37 +43,44 @@ import uo.ri.common.BusinessException;
  */
 public class CashServiceImpl implements CashService {
 
-	@Override
-	public Map<String, Object> createInvoiceForFailures( List<Long> failuresIds ) throws BusinessException {
-		CreateInvoiceForFailures createInvoiceForFailures = new CreateInvoiceForFailures( failuresIds );
-		return createInvoiceForFailures.execute();
-	}
+    @Override
+    public Map<String, Object> createInvoiceForFailures(List<Long> failuresIds)
+	    throws BusinessException {
+	CreateInvoiceForFailures createInvoiceForFailures = new CreateInvoiceForFailures(
+		failuresIds);
+	return createInvoiceForFailures.execute();
+    }
 
-	@Override
-	public void createPMBond( Long paymentMethodId, String bondDescription, double availableAmount )
-			throws BusinessException {
-		CreatePMBond createPMBond = new CreatePMBond( paymentMethodId, bondDescription, availableAmount );
-		createPMBond.execute();
-	}
+    @Override
+    public void createPMBond(Long paymentMethodId, String bondDescription,
+	    double availableAmount) throws BusinessException {
+	CreatePMBond createPMBond = new CreatePMBond(paymentMethodId,
+		bondDescription, availableAmount);
+	createPMBond.execute();
+    }
 
-	@Override
-	public void createPMCard( Long paymentMethodId, String cardKind, String cardNumber, String expirationDate )
-			throws BusinessException {
-		CreatePMCard createPMCard = new CreatePMCard( paymentMethodId, cardKind, cardNumber, expirationDate );
-		createPMCard.execute();
-	}
+    @Override
+    public void createPMCard(Long paymentMethodId, String cardKind,
+	    String cardNumber, String expirationDate) throws BusinessException {
+	CreatePMCard createPMCard = new CreatePMCard(paymentMethodId, cardKind,
+		cardNumber, expirationDate);
+	createPMCard.execute();
+    }
 
-	@Override
-	public List<Map<String, Object>> findAllPaymentMethodsByClientId( Long clientId )
-			throws BusinessException {
-		FindAllPaymentMethodsByClientId findAllPaymentMethodsByClient = new FindAllPaymentMethodsByClientId( clientId );
-		return findAllPaymentMethodsByClient.execute();
-	}
+    @Override
+    public List<Map<String, Object>> findAllPaymentMethodsByClientId(
+	    Long clientId) throws BusinessException {
+	FindAllPaymentMethodsByClientId findAllPaymentMethodsByClient = new FindAllPaymentMethodsByClientId(
+		clientId);
+	return findAllPaymentMethodsByClient.execute();
+    }
 
-	@Override
-	public void removePaymentMethodById( Long paymentMethodId ) throws BusinessException {
-		RemovePaymentMehtodById removePaymentMethodById = new RemovePaymentMehtodById( paymentMethodId );
-		removePaymentMethodById.execute();
-	}
+    @Override
+    public void removePaymentMethodById(Long paymentMethodId)
+	    throws BusinessException {
+	RemovePaymentMehtodById removePaymentMethodById = new RemovePaymentMehtodById(
+		paymentMethodId);
+	removePaymentMethodById.execute();
+    }
 
 }

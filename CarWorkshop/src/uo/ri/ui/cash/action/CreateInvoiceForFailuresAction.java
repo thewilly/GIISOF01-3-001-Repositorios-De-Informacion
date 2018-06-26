@@ -42,27 +42,28 @@ import uo.ri.ui.util.InvoicePrinter;
  */
 public class CreateInvoiceForFailuresAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
-		List<Long> failuresIds = new ArrayList<Long>();
+    @Override
+    public void execute() throws BusinessException {
+	List<Long> failuresIds = new ArrayList<Long>();
 
-		// While there're more failures we continue asking for new id's.
-		do {
-			Long failureId = Console.readLong( "ID de averia" );
-			failuresIds.add( failureId );
-		} while (areMoreFailures());
+	// While there're more failures we continue asking for new id's.
+	do {
+	    Long failureId = Console.readLong("ID de averia");
+	    failuresIds.add(failureId);
+	} while (areMoreFailures());
 
-		CashService cashService = ServicesFactory.getCashService();
+	CashService cashService = ServicesFactory.getCashService();
 
-		// Creating the invoice for the failures and printing the invoice.
-		new InvoicePrinter( cashService.createInvoiceForFailures( failuresIds ) );
-	}
+	// Creating the invoice for the failures and printing the invoice.
+	new InvoicePrinter(cashService.createInvoiceForFailures(failuresIds));
+    }
 
-	/**
-	 * @return true if the're more failures.
-	 */
-	private boolean areMoreFailures() {
-		return Console.readString( "¿Añadir más averias? (s/n) " ).equalsIgnoreCase( "s" );
-	}
+    /**
+     * @return true if the're more failures.
+     */
+    private boolean areMoreFailures() {
+	return Console.readString("¿Añadir más averias? (s/n) ")
+		.equalsIgnoreCase("s");
+    }
 
 }

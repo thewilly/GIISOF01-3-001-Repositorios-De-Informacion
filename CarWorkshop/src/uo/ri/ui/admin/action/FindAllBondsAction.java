@@ -39,12 +39,12 @@ import uo.ri.ui.util.BondsPrinter;
  */
 public class FindAllBondsAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
-		Console.println( "\nListado de bonos\n" );
-		AdminService adminService = ServicesFactory.getAdminService();
+    @Override
+    public void execute() throws BusinessException {
+	Console.println("\nListado de bonos\n");
+	AdminService adminService = ServicesFactory.getAdminService();
 
-		// Getting the bonds and printing them.
-		new BondsPrinter( adminService.findAllBonds() );
-	}
+	// Getting the bonds and printing them.
+	new BondsPrinter(adminService.findAllBonds());
+    }
 }

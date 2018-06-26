@@ -32,12 +32,13 @@ import uo.ri.model.Mecanico;
  */
 public interface MecanicoRepository extends Repository<Mecanico> {
 
-	/**
-	 * Find by dni.
-	 *
-	 * @param dni the dni
-	 * @return the mecanico
-	 */
-	Mecanico findByDni(String dni);
+    /**
+     * Find by dni.
+     *
+     * @param dni
+     *            the dni
+     * @return the mecanico
+     */
+    Mecanico findByDni(String dni);
 
 }

@@ -43,49 +43,50 @@ import uo.ri.persistence.PaymentMethodsGateway;
  */
 public class FindAllBondsByClientId {
 
-	private long clientId;
+    private long clientId;
 
-	/**
-	 * Allocates the object and initializes it with the id of the client to find
-	 * its bonds.
-	 * 
-	 * @param clientId is the id of the client for which we want to find the
-	 *            bonds.
-	 */
-	public FindAllBondsByClientId( long clientId ) {
-		this.clientId = clientId;
-	}
+    /**
+     * Allocates the object and initializes it with the id of the client to find
+     * its bonds.
+     * 
+     * @param clientId
+     *            is the id of the client for which we want to find the bonds.
+     */
+    public FindAllBondsByClientId(long clientId) {
+	this.clientId = clientId;
+    }
 
-	/**
-	 * Will find all bonds in the system for the given clientId and will return
-	 * them.
-	 * 
-	 * @return a list of maps where each map represents a bond.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public List<Map<String, Object>> execute() throws BusinessException {
-		
-		Connection connection = null;
-		
-		try {
-			
-			// Getting the connection.
-			connection = getConnection();
-			
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-			
-			// Returning the found bonds for the given client id.
-			return paymentMethodsGW.findAllBondsByClientId( clientId );
-			
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
+    /**
+     * Will find all bonds in the system for the given clientId and will return
+     * them.
+     * 
+     * @return a list of maps where each map represents a bond.
+     * @throws BusinessException
+     *             if any error occurs during the execution of the method.
+     */
+    public List<Map<String, Object>> execute() throws BusinessException {
+
+	Connection connection = null;
+
+	try {
+
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Returning the found bonds for the given client id.
+	    return paymentMethodsGW.findAllBondsByClientId(clientId);
+
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
+    }
 
 }

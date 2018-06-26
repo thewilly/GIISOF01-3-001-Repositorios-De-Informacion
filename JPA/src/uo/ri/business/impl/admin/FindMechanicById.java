@@ -40,25 +40,28 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FindMechanicById implements Command<MechanicDto> {
 
-	/** The mechanic id. */
-	private Long mechanicId;
+    /** The mechanic id. */
+    private Long mechanicId;
 
-	/**
-	 * Instantiates a new find mechanic by id.
-	 *
-	 * @param id the id
-	 */
-	public FindMechanicById(Long id) {
-		this.mechanicId = id;
-	}
+    /**
+     * Instantiates a new find mechanic by id.
+     *
+     * @param id
+     *            the id
+     */
+    public FindMechanicById(Long id) {
+	this.mechanicId = id;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public MechanicDto execute() throws BusinessException {
-		MecanicoRepository repository = Factory.repository.forMechanic();
-		Mecanico mechanic = repository.findById(mechanicId);
-		return (mechanic == null) ? null : DtoAssembler.toDto(mechanic);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public MechanicDto execute() throws BusinessException {
+	MecanicoRepository repository = Factory.repository.forMechanic();
+	Mecanico mechanic = repository.findById(mechanicId);
+	return (mechanic == null) ? null : DtoAssembler.toDto(mechanic);
+    }
 
 }

@@ -49,84 +49,95 @@ import uo.ri.util.exception.BusinessException;
  */
 public class SettleInvoiceAction implements Action {
 
-	/** The cs. */
-	private CashService cs = Factory.service.forCash();
+    /** The cs. */
+    private CashService cs = Factory.service.forCash();
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		Long numeroFactura = Console.readLong("Número de factura");
-		InvoiceDto facturaDto = cs.findInvoiceByNumber(numeroFactura);
-		List<PaymentMeanDto> paymethods = possiblePaymentMethods(facturaDto);
-		Map<Long, Double> cargos = getAllThePaymentDivision(paymethods);
-		cs.settleInvoice(facturaDto.id, cargos);
-		Console.println("Factura pagada");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	Long numeroFactura = Console.readLong("Número de factura");
+	InvoiceDto facturaDto = cs.findInvoiceByNumber(numeroFactura);
+	List<PaymentMeanDto> paymethods = possiblePaymentMethods(facturaDto);
+	Map<Long, Double> cargos = getAllThePaymentDivision(paymethods);
+	cs.settleInvoice(facturaDto.id, cargos);
+	Console.println("Factura pagada");
+    }
+
+    /**
+     * This method takes all the possible payment methods id's of the client and
+     * adds then into a set.
+     * 
+     * @param paymethods
+     *            the possible payment methods of the client
+     * @return a set containing all the ids of the possible payment methods
+     */
+    private Set<Long> getAllPossiblePaymentMethodIds(
+	    List<PaymentMeanDto> paymethods) {
+	Set<Long> idsPaymentMethods = new HashSet<>();
+	for (PaymentMeanDto dto : paymethods) {
+	    idsPaymentMethods.add(dto.id);
 	}
+	return idsPaymentMethods;
+    }
 
-	/**
-	 * This method takes all the possible payment methods id's of the client and
-	 * adds then into a set.
-	 * 
-	 * @param paymethods
-	 *            the possible payment methods of the client
-	 * @return a set containing all the ids of the possible payment methods
-	 */
-	private Set<Long> getAllPossiblePaymentMethodIds(List<PaymentMeanDto> paymethods) {
-		Set<Long> idsPaymentMethods = new HashSet<>();
-		for (PaymentMeanDto dto : paymethods) {
-			idsPaymentMethods.add(dto.id);
+    /**
+     * This method asks the user for all the charges division, and checks it is
+     * inside the ids of all payment methods the client has.
+     * 
+     * @param paymethods
+     *            all the possible payment methods the client has
+     * @return a map containing the id of the payment method and the quantity
+     *         for that
+     */
+    private Map<Long, Double> getAllThePaymentDivision(
+	    List<PaymentMeanDto> paymethods) {
+	Set<Long> idsPaymentMethods = getAllPossiblePaymentMethodIds(
+		paymethods);
+	Map<Long, Double> cargos = new HashMap<>();
+	Console.println("\nSi no quiere añadir más ids de pago, pulse enter");
+	boolean done = false;
+	while (!done) {
+	    Long ans = Console.readLong("Id metodo de pago");
+	    if (ans == null) {
+		done = true;
+	    } else {
+		if (idsPaymentMethods.contains(ans)) {
+		    Double cantidad = Console.readDouble("Cantidad");
+		    if (cantidad != null) {
+			if (cantidad > 0.0)
+			    cargos.put(ans, cantidad);
+		    }
 		}
-		return idsPaymentMethods;
+	    }
 	}
+	return cargos;
+    }
 
-	/**
-	 * This method asks the user for all the charges division, and checks it is
-	 * inside the ids of all payment methods the client has.
-	 * 
-	 * @param paymethods
-	 *            all the possible payment methods the client has
-	 * @return a map containing the id of the payment method and the quantity
-	 *         for that
-	 */
-	private Map<Long, Double> getAllThePaymentDivision(List<PaymentMeanDto> paymethods) {
-		Set<Long> idsPaymentMethods = getAllPossiblePaymentMethodIds(paymethods);
-		Map<Long, Double> cargos = new HashMap<>();
-		Console.println("\nSi no quiere añadir más ids de pago, pulse enter");
-		boolean done = false;
-		while (!done) {
-			Long ans = Console.readLong("Id metodo de pago");
-			if (ans == null) {
-				done = true;
-			} else {
-				if (idsPaymentMethods.contains(ans)) {
-					Double cantidad = Console.readDouble("Cantidad");
-					if (cantidad != null) {
-						if (cantidad > 0.0)
-							cargos.put(ans, cantidad);
-					}
-				}
-			}
-		}
-		return cargos;
-	}
-
-	/**
-	 * This method uses the cash service, to obtain the possible payment
-	 * methods, and shows them into the console.
-	 *
-	 * @param facturaDto the dto containing all the information of the invoice
-	 * @return a list of all the possible payments of the client associated with
-	 *         the invoice
-	 * @throws BusinessException the business exception
-	 */
-	private List<PaymentMeanDto> possiblePaymentMethods(InvoiceDto facturaDto) throws BusinessException {
-		List<PaymentMeanDto> paymethods = cs.findPaymentMeansForInvoice(facturaDto.id);
-		new AbstractPrinter( new InvoicePrinter( cs.findInvoiceByNumber(facturaDto.number) ) ).print();
-		Console.println("\nPosibles metodos de pago:");
-		new AbstractPrinter( new PaymentMethodPrinter( paymethods ) ).print();
-		return paymethods;
-	}
+    /**
+     * This method uses the cash service, to obtain the possible payment
+     * methods, and shows them into the console.
+     *
+     * @param facturaDto
+     *            the dto containing all the information of the invoice
+     * @return a list of all the possible payments of the client associated with
+     *         the invoice
+     * @throws BusinessException
+     *             the business exception
+     */
+    private List<PaymentMeanDto> possiblePaymentMethods(InvoiceDto facturaDto)
+	    throws BusinessException {
+	List<PaymentMeanDto> paymethods = cs
+		.findPaymentMeansForInvoice(facturaDto.id);
+	new AbstractPrinter(
+		new InvoicePrinter(cs.findInvoiceByNumber(facturaDto.number)))
+			.print();
+	Console.println("\nPosibles metodos de pago:");
+	new AbstractPrinter(new PaymentMethodPrinter(paymethods)).print();
+	return paymethods;
+    }
 
 }

@@ -32,6 +32,7 @@ import uo.ri.persistence.jpa.util.BaseRepository;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class CargoJpaRepository extends BaseRepository<Cargo> implements CargoRepository {
+public class CargoJpaRepository extends BaseRepository<Cargo>
+	implements CargoRepository {
 
 }

@@ -40,15 +40,17 @@ import uo.ri.ui.util.InvoicePrinter;
  */
 public class FindInvoiceByNumberAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		Long numFactura = Console.readLong("Número de la factura");
-		CashService cs = Factory.service.forCash();
-		InvoiceDto dto = cs.findInvoiceByNumber(numFactura);
-		new AbstractPrinter( new InvoicePrinter( dto ) ).print();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	Long numFactura = Console.readLong("Número de la factura");
+	CashService cs = Factory.service.forCash();
+	InvoiceDto dto = cs.findInvoiceByNumber(numFactura);
+	new AbstractPrinter(new InvoicePrinter(dto)).print();
+    }
 
 }

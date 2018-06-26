@@ -44,30 +44,33 @@ import uo.ri.util.exception.BusinessException;
  */
 public class CreateInvoiceForFailures implements Command<InvoiceDto> {
 
-	/** The failures ids. */
-	private List<Long> failuresIds;
+    /** The failures ids. */
+    private List<Long> failuresIds;
 
-	/**
-	 * Instantiates a new creates the invoice for failures.
-	 *
-	 * @param failuresIds the failures ids
-	 */
-	public CreateInvoiceForFailures(List<Long> failuresIds) {
-		this.failuresIds = failuresIds;
-	}
+    /**
+     * Instantiates a new creates the invoice for failures.
+     *
+     * @param failuresIds
+     *            the failures ids
+     */
+    public CreateInvoiceForFailures(List<Long> failuresIds) {
+	this.failuresIds = failuresIds;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public InvoiceDto execute() throws BusinessException {
-		FacturaRepository InvoiceRepository = Factory.repository.forFactura();
-		AveriaRepository FailuresRepository = Factory.repository.forAveria();
-		Long invoiceNumber = InvoiceRepository.getNextInvoiceNumber();
-		List<Averia> failures = FailuresRepository.findByIds(failuresIds);
-		Factura invoice = new Factura(invoiceNumber, failures);
-		InvoiceRepository.add(invoice);
-		return DtoAssembler.toDto(invoice);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public InvoiceDto execute() throws BusinessException {
+	FacturaRepository InvoiceRepository = Factory.repository.forFactura();
+	AveriaRepository FailuresRepository = Factory.repository.forAveria();
+	Long invoiceNumber = InvoiceRepository.getNextInvoiceNumber();
+	List<Averia> failures = FailuresRepository.findByIds(failuresIds);
+	Factura invoice = new Factura(invoiceNumber, failures);
+	InvoiceRepository.add(invoice);
+	return DtoAssembler.toDto(invoice);
+    }
 
 }

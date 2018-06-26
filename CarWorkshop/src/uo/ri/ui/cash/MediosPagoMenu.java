@@ -37,15 +37,19 @@ import uo.ri.ui.cash.action.FindAllPaymentMethodsByClienIdAction;
  */
 public class MediosPagoMenu extends BaseMenu {
 
-	public static void main( String[] args ) {
-		new MainMenu().execute();
-	}
+    public static void main(String[] args) {
+	new MainMenu().execute();
+    }
 
-	public MediosPagoMenu() {
-		menuOptions = new Object[][] { { "Caja de Taller > Gestión de medios de pago ", null },
-				{ "Dar de alta un medio de pago a un cliente", AddMedioPagoMenu.class },
-				{ "Dar de baja un medio de pago", RemovePaymentMethodAction.class },
-				{ "Listar medios de pago de un cliente", FindAllPaymentMethodsByClienIdAction.class }, };
-	}
+    public MediosPagoMenu() {
+	menuOptions = new Object[][] {
+		{ "Caja de Taller > Gestión de medios de pago ", null },
+		{ "Dar de alta un medio de pago a un cliente",
+			AddMedioPagoMenu.class },
+		{ "Dar de baja un medio de pago",
+			RemovePaymentMethodAction.class },
+		{ "Listar medios de pago de un cliente",
+			FindAllPaymentMethodsByClienIdAction.class }, };
+    }
 
 }

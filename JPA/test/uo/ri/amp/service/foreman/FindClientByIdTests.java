@@ -43,43 +43,45 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FindClientByIdTests extends BaseServiceTests {
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+    }
 
-	/**
-	 * Se devuelve el Dto correcto para el cliente que existe.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFindExisting() throws BusinessException {
-		Cliente c = FixtureRepository.registerNewClient();
-		
-		ForemanService svc = Factory.service.forForeman();
-		ClientDto dto = svc.findClientById( c.getId() );
-		assertSameData(dto, c);
-	}
-	
-	/**
-	 * Si el cliente no existe se devuelve null, y no salta excepción.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFindNonExisting() throws BusinessException {
-		Long NON_EXISTING_ID = -12345L;
-		
-		ForemanService svc = Factory.service.forForeman();
-		ClientDto dto = svc.findClientById( NON_EXISTING_ID );
-		
-		assertTrue( dto == null );
-	}
-	
+    /**
+     * Se devuelve el Dto correcto para el cliente que existe.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testFindExisting() throws BusinessException {
+	Cliente c = FixtureRepository.registerNewClient();
+
+	ForemanService svc = Factory.service.forForeman();
+	ClientDto dto = svc.findClientById(c.getId());
+	assertSameData(dto, c);
+    }
+
+    /**
+     * Si el cliente no existe se devuelve null, y no salta excepción.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testFindNonExisting() throws BusinessException {
+	Long NON_EXISTING_ID = -12345L;
+
+	ForemanService svc = Factory.service.forForeman();
+	ClientDto dto = svc.findClientById(NON_EXISTING_ID);
+
+	assertTrue(dto == null);
+    }
 
 }

@@ -35,55 +35,69 @@ import uo.ri.util.exception.BusinessException;
  */
 public interface ForemanService {
 
-	/**
-	 * Adds the client.
-	 *
-	 * @param client the client
-	 * @param idRecomendador the id recomendador
-	 * @throws BusinessException the business exception
-	 */
-	void addClient(ClientDto client, Long idRecomendador) throws BusinessException;
+    /**
+     * Adds the client.
+     *
+     * @param client
+     *            the client
+     * @param idRecomendador
+     *            the id recomendador
+     * @throws BusinessException
+     *             the business exception
+     */
+    void addClient(ClientDto client, Long idRecomendador)
+	    throws BusinessException;
 
-	/**
-	 * Delete client.
-	 *
-	 * @param id the id
-	 * @throws BusinessException the business exception
-	 */
-	void deleteClient(Long id) throws BusinessException;
+    /**
+     * Delete client.
+     *
+     * @param id
+     *            the id
+     * @throws BusinessException
+     *             the business exception
+     */
+    void deleteClient(Long id) throws BusinessException;
 
-	/**
-	 * Find all clients.
-	 *
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<ClientDto> findAllClients() throws BusinessException;
+    /**
+     * Find all clients.
+     *
+     * @return the list
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<ClientDto> findAllClients() throws BusinessException;
 
-	/**
-	 * Find client by id.
-	 *
-	 * @param id the id
-	 * @return the client dto
-	 * @throws BusinessException the business exception
-	 */
-	ClientDto findClientById(Long id) throws BusinessException;
+    /**
+     * Find client by id.
+     *
+     * @param id
+     *            the id
+     * @return the client dto
+     * @throws BusinessException
+     *             the business exception
+     */
+    ClientDto findClientById(Long id) throws BusinessException;
 
-	/**
-	 * Find recomended clients by cliente id.
-	 *
-	 * @param id of the recommender client
-	 * @return the list of recommended clients, might be empty if there is none
-	 * @throws BusinessException the business exception
-	 */
-	List<ClientDto> findRecomendedClientsByClienteId(Long id) throws BusinessException;
+    /**
+     * Find recomended clients by cliente id.
+     *
+     * @param id
+     *            of the recommender client
+     * @return the list of recommended clients, might be empty if there is none
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<ClientDto> findRecomendedClientsByClienteId(Long id)
+	    throws BusinessException;
 
-	/**
-	 * Update client.
-	 *
-	 * @param dto the dto
-	 * @throws BusinessException the business exception
-	 */
-	void updateClient(ClientDto dto) throws BusinessException;
+    /**
+     * Update client.
+     *
+     * @param dto
+     *            the dto
+     * @throws BusinessException
+     *             the business exception
+     */
+    void updateClient(ClientDto dto) throws BusinessException;
 
 }

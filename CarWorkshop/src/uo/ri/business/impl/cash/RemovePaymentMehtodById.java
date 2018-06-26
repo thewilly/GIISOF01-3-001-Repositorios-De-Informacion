@@ -41,45 +41,47 @@ import uo.ri.persistence.PaymentMethodsGateway;
  */
 public class RemovePaymentMehtodById {
 
-	private Long paymentMethodId;
+    private Long paymentMethodId;
 
-	/**
-	 * Initializes the action of removing a payment method by its unique DB
-	 * identifier.
-	 * 
-	 * @param paymentMethodId is the unique DB identifier of the payment method.
-	 */
-	public RemovePaymentMehtodById( Long paymentMethodId ) {
-		this.paymentMethodId = paymentMethodId;
+    /**
+     * Initializes the action of removing a payment method by its unique DB
+     * identifier.
+     * 
+     * @param paymentMethodId
+     *            is the unique DB identifier of the payment method.
+     */
+    public RemovePaymentMehtodById(Long paymentMethodId) {
+	this.paymentMethodId = paymentMethodId;
+    }
+
+    /**
+     * Executes the action of removing the payment method by the information
+     * given in the constructor.
+     * 
+     * @throws BusinessException
+     *             if any error occurs during the execution of the method.
+     */
+    public void execute() throws BusinessException {
+	Connection connection = null;
+
+	try {
+
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Calling the remove from the gateway.
+	    paymentMethodsGW.removePaymentMethodById(paymentMethodId);
+	} catch (SQLException e) {
+	    throw new RuntimeException();
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * Executes the action of removing the payment method by the information
-	 * given in the constructor.
-	 * 
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public void execute() throws BusinessException {
-		Connection connection = null;
-
-		try {
-
-			// Getting the connection.
-			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-
-			// Calling the remove from the gateway.
-			paymentMethodsGW.removePaymentMethodById( paymentMethodId );
-		} catch (SQLException e) {
-			throw new RuntimeException();
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 
 }

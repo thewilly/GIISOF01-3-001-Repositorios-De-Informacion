@@ -35,13 +35,15 @@ import uo.ri.util.exception.BusinessException;
  */
 public class RegistrarAveriaAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		// TODO Auto-generated method stub
-		
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	// TODO Auto-generated method stub
+
+    }
 
 }

@@ -39,40 +39,42 @@ import uo.ri.util.exception.BusinessException;
  */
 public class MetalicoTests {
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+    }
 
-	/**
-	 * 
-	 * A new cash object has no accumulated.
-	 */
-	@Test
-	public void testConstructor() {
-		Cliente c = new Cliente("123", "nombre", "apellidos");
-		Metalico m = new Metalico( c );
+    /**
+     * 
+     * A new cash object has no accumulated.
+     */
+    @Test
+    public void testConstructor() {
+	Cliente c = new Cliente("123", "nombre", "apellidos");
+	Metalico m = new Metalico(c);
 
-		assertTrue( m.getCliente().equals( c ) );
-		assertTrue( m.getAcumulado() == 0.0 );
-	}
+	assertTrue(m.getCliente().equals(c));
+	assertTrue(m.getAcumulado() == 0.0);
+    }
 
-	/**
-	 * After paying with cash its accumulated increases.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagoMetalico() throws BusinessException {
-		Cliente c = new Cliente("123", "nombre", "apellidos");
-		Metalico m = new Metalico( c );
-		m.pagar( 10 );
-		
-		assertTrue( m.getAcumulado() == 10.0 );
-	}
+    /**
+     * After paying with cash its accumulated increases.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagoMetalico() throws BusinessException {
+	Cliente c = new Cliente("123", "nombre", "apellidos");
+	Metalico m = new Metalico(c);
+	m.pagar(10);
+
+	assertTrue(m.getAcumulado() == 10.0);
+    }
 
 }

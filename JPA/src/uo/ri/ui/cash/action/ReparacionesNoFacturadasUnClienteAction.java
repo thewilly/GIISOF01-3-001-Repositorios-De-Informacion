@@ -43,27 +43,29 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ReparacionesNoFacturadasUnClienteAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		CashService cs = Factory.service.forCash();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	CashService cs = Factory.service.forCash();
 
-		String dni = Console.readString("DNI de cliente");
+	String dni = Console.readString("DNI de cliente");
 
-		Console.println("\nReparaciones no facturadas del cliente\n");
+	Console.println("\nReparaciones no facturadas del cliente\n");
 
-		List<FailureDto> reps = cs.findRepairsByClient(dni);
+	List<FailureDto> reps = cs.findRepairsByClient(dni);
 
-		if (reps.size() == 0) {
-			Console.printf("No tiene reparaciones pendientes\n");
-			return;
-		}
-
-		for (FailureDto rep : reps) {
-			new AbstractPrinter( new FailurePrinter( rep ) );
-		}
+	if (reps.size() == 0) {
+	    Console.printf("No tiene reparaciones pendientes\n");
+	    return;
 	}
+
+	for (FailureDto rep : reps) {
+	    new AbstractPrinter(new FailurePrinter(rep));
+	}
+    }
 
 }

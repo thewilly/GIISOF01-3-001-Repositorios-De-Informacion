@@ -29,31 +29,31 @@ package uo.ri.business.dto;
  * @version 201806081225
  */
 public class ClientDto {
-	
-	/** The id. */
-	public Long id;
-	
-	/** The dni. */
-	public String dni;
-	
-	/** The name. */
-	public String name;
-	
-	/** The surname. */
-	public String surname;
-	
-	/** The address street. */
-	public String addressStreet;
-	
-	/** The address city. */
-	public String addressCity;
-	
-	/** The address zipcode. */
-	public String addressZipcode;
-	
-	/** The phone. */
-	public String phone;
-	
-	/** The email. */
-	public String email;
+
+    /** The id. */
+    public Long id;
+
+    /** The dni. */
+    public String dni;
+
+    /** The name. */
+    public String name;
+
+    /** The surname. */
+    public String surname;
+
+    /** The address street. */
+    public String addressStreet;
+
+    /** The address city. */
+    public String addressCity;
+
+    /** The address zipcode. */
+    public String addressZipcode;
+
+    /** The phone. */
+    public String phone;
+
+    /** The email. */
+    public String email;
 }

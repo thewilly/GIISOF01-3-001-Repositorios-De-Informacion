@@ -47,70 +47,77 @@ import uo.ri.persistence.PaymentMethodsGateway;
  */
 public class CreatePMCard {
 
-	private Long cardId;
-	private String cardKind, cardNumber, cardExpirationDate;
+    private Long cardId;
+    private String cardKind, cardNumber, cardExpirationDate;
 
-	/**
-	 * Creates a card payment method.
-	 * 
-	 * @param cardId is the id of the card.
-	 * @param cardKind is the kind of the card.
-	 * @param cardNumber is the card number.
-	 * @param cardExpirationDate is the date until which the card is valid.
-	 */
-	public CreatePMCard( Long cardId, String cardKind, String cardNumber, String cardExpirationDate ) {
-		this.cardId = cardId;
-		this.cardKind = cardKind;
-		this.cardNumber = cardNumber;
-		this.cardExpirationDate = cardExpirationDate;
+    /**
+     * Creates a card payment method.
+     * 
+     * @param cardId
+     *            is the id of the card.
+     * @param cardKind
+     *            is the kind of the card.
+     * @param cardNumber
+     *            is the card number.
+     * @param cardExpirationDate
+     *            is the date until which the card is valid.
+     */
+    public CreatePMCard(Long cardId, String cardKind, String cardNumber,
+	    String cardExpirationDate) {
+	this.cardId = cardId;
+	this.cardKind = cardKind;
+	this.cardNumber = cardNumber;
+	this.cardExpirationDate = cardExpirationDate;
+    }
+
+    /**
+     * Creates the card with the data provided.
+     * 
+     * @throws BusinessException
+     *             if an error success during the execution of the method.
+     */
+    public void execute() throws BusinessException {
+
+	Connection connection = null;
+
+	try {
+
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Parsing the date from the entered one.
+	    String OLD_FORMAT = "yyyy-MM-dd";
+	    DateFormat formatter = new SimpleDateFormat(OLD_FORMAT);
+	    Date d = null;
+	    try {
+		d = formatter.parse(cardExpirationDate);
+	    } catch (ParseException e) {
+		throw new BusinessException(e);
+	    }
+	    if (d.before(DateUtil.today())) {
+		throw new BusinessException(
+			"Tarjeta no válida: la fecha de caducidad ha pasado.");
+	    }
+
+	    // Setting the date to the DB format.
+	    String NEW_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	    ((SimpleDateFormat) formatter).applyPattern(NEW_FORMAT);
+	    cardExpirationDate = formatter.format(d);
+	    Timestamp ts = Timestamp.valueOf(cardExpirationDate);
+
+	    // Creating the card in the gateway.
+	    paymentMethodsGW.createPMCard(cardId, cardKind, cardNumber, ts);
+	} catch (SQLException e) {
+	    throw new RuntimeException();
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * Creates the card with the data provided.
-	 * 
-	 * @throws BusinessException if an error success during the execution of the
-	 *             method.
-	 */
-	public void execute() throws BusinessException {
-		
-		Connection connection = null;
-		
-		try {
-		
-			// Getting the connection.
-			connection = getConnection();
-			
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-
-			// Parsing the date from the entered one.
-			String OLD_FORMAT = "yyyy-MM-dd";
-			DateFormat formatter = new SimpleDateFormat( OLD_FORMAT );
-			Date d = null;
-			try {
-				d = formatter.parse( cardExpirationDate );
-			} catch (ParseException e) {
-				throw new BusinessException( e );
-			}
-			if (d.before( DateUtil.today() )) {
-				throw new BusinessException( "Tarjeta no válida: la fecha de caducidad ha pasado." );
-			}
-			
-			// Setting the date to the DB format.
-			String NEW_FORMAT = "yyyy-MM-dd HH:mm:ss";
-			( (SimpleDateFormat) formatter ).applyPattern( NEW_FORMAT );
-			cardExpirationDate = formatter.format( d );
-			Timestamp ts = Timestamp.valueOf( cardExpirationDate );
-
-			// Creating the card in the gateway.
-			paymentMethodsGW.createPMCard( cardId, cardKind, cardNumber, ts );
-		} catch (SQLException e) {
-			throw new RuntimeException();
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 
 }

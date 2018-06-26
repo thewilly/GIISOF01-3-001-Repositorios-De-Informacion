@@ -38,68 +38,71 @@ import uo.ri.conf.Factory;
  */
 public class AddClientAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		ClientDto dto = gettingDtoInfo();
-		Long idRecomendador = getIdRecomendador();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	ClientDto dto = gettingDtoInfo();
+	Long idRecomendador = getIdRecomendador();
 
-		ForemanService foreman = Factory.service.forForeman();
-		foreman.addClient(dto, idRecomendador);
-		Console.println("Cliente añadido correctamente");
+	ForemanService foreman = Factory.service.forForeman();
+	foreman.addClient(dto, idRecomendador);
+	Console.println("Cliente añadido correctamente");
+    }
+
+    /**
+     * This method is the one in charge of asking the user if there will be a
+     * recommender, and then returning that value.
+     *
+     * @return the value of the recommender's id, or null if it has none
+     */
+    private Long getIdRecomendador() {
+	String ans = "";
+	do {
+	    Console.println("\n¿Viene recomendado? Escribe SI o NO:");
+	    ans = Console.readString("Respuesta");
+	} while (validAnswer(ans));
+
+	if (ans.equalsIgnoreCase("si")) {
+	    return Console.readLong("Id recomendador");
 	}
+	return null;
+    }
 
-	/**
-	 * This method is the one in charge of asking the user if there will be a
-	 * recommender, and then returning that value.
-	 *
-	 * @return the value of the recommender's id, or null if it has none
-	 */
-	private Long getIdRecomendador() {
-		String ans = "";
-		do {
-			Console.println("\n¿Viene recomendado? Escribe SI o NO:");
-			ans = Console.readString("Respuesta");
-		} while (validAnswer(ans));
+    /**
+     * This method gets all the information of the dto from the console.
+     *
+     * @return the dto
+     */
+    private ClientDto gettingDtoInfo() {
+	ClientDto dto = new ClientDto();
+	dto.name = Console.readString("Nombre");
+	dto.surname = Console.readString("Apellidos");
+	dto.dni = Console.readString("DNI");
+	dto.email = Console.readString("E-Mail");
+	dto.phone = Console.readString("Teléfono");
+	dto.addressStreet = Console.readString("Calle");
+	dto.addressCity = Console.readString("Ciudad");
+	dto.addressZipcode = Console.readString("Código postal");
+	return dto;
+    }
 
-		if (ans.equalsIgnoreCase("si")) {
-			return Console.readLong("Id recomendador");
-		}
-		return null;
+    /**
+     * This method checks if the answer is yes or no, if not, it will be asked
+     * again.
+     *
+     * @param ans
+     *            the answer of th user
+     * @return false if the answer was yes or no, true otherwise
+     */
+    private boolean validAnswer(String ans) {
+	if (ans.equalsIgnoreCase("no") || ans.equalsIgnoreCase("si")) {
+	    return false;
 	}
-
-	/**
-	 * This method gets all the information of the dto from the console.
-	 *
-	 * @return the dto
-	 */
-	private ClientDto gettingDtoInfo() {
-		ClientDto dto = new ClientDto();
-		dto.name = Console.readString("Nombre");
-		dto.surname = Console.readString("Apellidos");
-		dto.dni = Console.readString("DNI");
-		dto.email = Console.readString("E-Mail");
-		dto.phone = Console.readString("Teléfono");
-		dto.addressStreet = Console.readString("Calle");
-		dto.addressCity = Console.readString("Ciudad");
-		dto.addressZipcode = Console.readString("Código postal");
-		return dto;
-	}
-
-	/**
-	 * This method checks if the answer is yes or no, if not, it will be asked
-	 * again.
-	 *
-	 * @param ans the answer of th user
-	 * @return false if the answer was yes or no, true otherwise
-	 */
-	private boolean validAnswer(String ans) {
-		if (ans.equalsIgnoreCase("no") || ans.equalsIgnoreCase("si")) {
-			return false;
-		}
-		return true;
-	}
+	return true;
+    }
 
 }

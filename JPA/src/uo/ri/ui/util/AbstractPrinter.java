@@ -31,26 +31,29 @@ package uo.ri.ui.util;
  * @formatter Oviedo Computing Community
  */
 public class AbstractPrinter implements Printer {
-	
-	/** The type of printer. */
-	Printer typeOfPrinter;
-	
-	/**
-	 * Instantiates a new abstract printer.
-	 *
-	 * @param typeOfPrinter the type of printer
-	 */
-	public AbstractPrinter(Printer typeOfPrinter) {
-		this.typeOfPrinter = typeOfPrinter;
-		print();
-	}
-	
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		this.typeOfPrinter.print();
-	}
+
+    /** The type of printer. */
+    Printer typeOfPrinter;
+
+    /**
+     * Instantiates a new abstract printer.
+     *
+     * @param typeOfPrinter
+     *            the type of printer
+     */
+    public AbstractPrinter(Printer typeOfPrinter) {
+	this.typeOfPrinter = typeOfPrinter;
+	print();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	this.typeOfPrinter.print();
+    }
 
 }

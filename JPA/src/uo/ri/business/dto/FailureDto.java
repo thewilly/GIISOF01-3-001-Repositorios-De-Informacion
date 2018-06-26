@@ -31,29 +31,29 @@ import java.util.Date;
  * @version 201806081225
  */
 public class FailureDto {
-	
-	/** The id. */
-	public long id;
-	
-	/** The vehicle id. */
-	public long vehicleId;
-	
-	/** The description. */
-	public String description;
-	
-	/** The date. */
-	public Date date;
-	
-	/** The invoice id. */
-	public Long invoiceId;
-	
-	/** The used for voucher. */
-	public boolean usedForVoucher;
-	
-	/** The total. */
-	public double total;
-	
-	/** The status. */
-	public String status;
+
+    /** The id. */
+    public long id;
+
+    /** The vehicle id. */
+    public long vehicleId;
+
+    /** The description. */
+    public String description;
+
+    /** The date. */
+    public Date date;
+
+    /** The invoice id. */
+    public Long invoiceId;
+
+    /** The used for voucher. */
+    public boolean usedForVoucher;
+
+    /** The total. */
+    public double total;
+
+    /** The status. */
+    public String status;
 
 }

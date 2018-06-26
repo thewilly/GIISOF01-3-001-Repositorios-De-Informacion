@@ -31,7 +31,6 @@ import uo.ri.model.Cargo;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryCargoRepository 
-		extends BaseMemoryRepository<Cargo> 
-		implements CargoRepository {
+public class InMemoryCargoRepository extends BaseMemoryRepository<Cargo>
+	implements CargoRepository {
 }

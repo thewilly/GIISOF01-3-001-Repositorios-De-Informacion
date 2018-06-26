@@ -33,8 +33,10 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({ GenerateVouchersByInvoiceOver500Tests.class, GenerateVouchersByNumberOfBreakdowns.class,
-		GenerateVouchersByNumberOfRecommendations.class, GenerateVoucherSummaryTests.class })
+@SuiteClasses({ GenerateVouchersByInvoiceOver500Tests.class,
+	GenerateVouchersByNumberOfBreakdowns.class,
+	GenerateVouchersByNumberOfRecommendations.class,
+	GenerateVoucherSummaryTests.class })
 
 public class AllTests {
 

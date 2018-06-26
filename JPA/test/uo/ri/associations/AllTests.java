@@ -33,16 +33,9 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({ 
-	AsignarTest.class, 
-	AveriarTest.class, 
-	ClasificarTest.class,
-	FacturarTest.class, 
-	IntervenirTest.class, 
-	PagarTest.class,
-	PoseerTest.class, 
-	SustituirTest.class 
-})
+@SuiteClasses({ AsignarTest.class, AveriarTest.class, ClasificarTest.class,
+	FacturarTest.class, IntervenirTest.class, PagarTest.class,
+	PoseerTest.class, SustituirTest.class })
 public class AllTests {
 
 }

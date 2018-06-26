@@ -30,75 +30,77 @@ import java.util.List;
  *
  * @author Guillermo Facundo Colunga
  * @version 201806081225
- * @param <T> the generic type
+ * @param <T>
+ *            the generic type
  */
 public class BaseRepository<T> {
-	
-	/**
-	 * As find() and the query "select x from X x" needs the type of the entity
-	 * here there is a reflective way of getting it.
-	 */
-	private Class<T> type;
 
-	/**
-	 * Instantiates a new base repository.
-	 */
-	public BaseRepository() {
-		this.type = hasckTheTypeOfGenericParamenter();
-	 }
+    /**
+     * As find() and the query "select x from X x" needs the type of the entity
+     * here there is a reflective way of getting it.
+     */
+    private Class<T> type;
 
-	/**
-	 * Adds the.
-	 *
-	 * @param t the t
-	 */
-	public void add(T t) {
-		Jpa.getManager().persist( t );
-	}
+    /**
+     * Instantiates a new base repository.
+     */
+    public BaseRepository() {
+	this.type = hasckTheTypeOfGenericParamenter();
+    }
 
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 */
-	public List<T> findAll() {
-		String entity = type.getName();
-		String query = "select o from " + entity + " o";
-		
-		return Jpa.getManager()
-				.createQuery(query, type)
-				.getResultList();
-	}
+    /**
+     * Adds the.
+     *
+     * @param t
+     *            the t
+     */
+    public void add(T t) {
+	Jpa.getManager().persist(t);
+    }
 
-	/**
-	 * Find by id.
-	 *
-	 * @param id the id
-	 * @return the t
-	 */
-	public T findById(Long id) {
-		return Jpa.getManager().find(type, id);
-	}
+    /**
+     * Find all.
+     *
+     * @return the list
+     */
+    public List<T> findAll() {
+	String entity = type.getName();
+	String query = "select o from " + entity + " o";
 
-	/**
-	 * This is a hack to recover the runtime reflective type of <T>.
-	 *
-	 * @return the class
-	 */
-	@SuppressWarnings("unchecked")
-	private Class<T> hasckTheTypeOfGenericParamenter() {
-		ParameterizedType superType = 
-			(ParameterizedType)	getClass().getGenericSuperclass();
-	    return (Class<T>) superType.getActualTypeArguments()[0];
-	}
+	return Jpa.getManager().createQuery(query, type).getResultList();
+    }
 
-	/**
-	 * Removes the.
-	 *
-	 * @param t the t
-	 */
-	public void remove(T t) {
-		Jpa.getManager().remove( t );
-	}
-	
+    /**
+     * Find by id.
+     *
+     * @param id
+     *            the id
+     * @return the t
+     */
+    public T findById(Long id) {
+	return Jpa.getManager().find(type, id);
+    }
+
+    /**
+     * This is a hack to recover the runtime reflective type of <T>.
+     *
+     * @return the class
+     */
+    @SuppressWarnings("unchecked")
+    private Class<T> hasckTheTypeOfGenericParamenter() {
+	ParameterizedType superType = (ParameterizedType) getClass()
+		.getGenericSuperclass();
+	return (Class<T>) superType.getActualTypeArguments()[0];
+    }
+
+    /**
+     * Removes the.
+     *
+     * @param t
+     *            the t
+     */
+    public void remove(T t) {
+	Jpa.getManager().remove(t);
+    }
+
 }

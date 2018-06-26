@@ -43,7 +43,6 @@ import uo.ri.model.Vehiculo;
 import uo.ri.model.types.AveriaStatus;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class FacturarTest.
  *
@@ -51,111 +50,115 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class FacturarTest {
-	
-	/** The mecanico. */
-	private Mecanico mecanico;
-	
-	/** The averia. */
-	private Averia averia;
-	
-	/** The intervencion. */
-	private Intervencion intervencion;
-	
-	/** The repuesto. */
-	private Repuesto repuesto;
-	
-	/** The sustitucion. */
-	private Sustitucion sustitucion;
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
-	
-	/** The factura. */
-	private Factura factura;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		Association.Poseer.link(cliente, vehiculo );
+    /** The mecanico. */
+    private Mecanico mecanico;
 
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
-		
-		averia = new Averia(vehiculo, "falla la junta la trocla");
-		mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
-		
-		averia.assignTo(mecanico); // averia pasa a asignada
-	
-		intervencion = new Intervencion(mecanico, averia);
-		intervencion.setMinutos(60);
-		
-		repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
-		sustitucion = new Sustitucion(repuesto, intervencion);
-		sustitucion.setCantidad(2);
+    /** The averia. */
+    private Averia averia;
 
-		averia.markAsFinished(); // changes status & compute price
-		
-		factura = new Factura(0L, DateUtil.today());
-		factura.addAveria(averia);
-	}
-	
-	/**
-	 * Test facturar linked.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFacturarLinked() throws BusinessException {
-		assertTrue( factura.getAverias().contains( averia ));
-		assertTrue( factura.getImporte() > 0.0 );
+    /** The intervencion. */
+    private Intervencion intervencion;
 
-		assertTrue( averia.getFactura() == factura);
-		assertTrue( averia.getStatus().equals( AveriaStatus.FACTURADA ) );
-	}
+    /** The repuesto. */
+    private Repuesto repuesto;
 
-	/**
-	 * Test facturar unlink.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testFacturarUnlink() throws BusinessException {
-		factura.removeAveria(averia);
-		
-		assertTrue( ! factura.getAverias().contains( averia ));
-		assertTrue( factura.getAverias().size() == 0 );
-		assertTrue( factura.getImporte() == 0.0 );
-		
-		assertTrue( averia.getFactura() == null);
-		assertTrue( averia.getStatus().equals( AveriaStatus.TERMINADA ) );
-	}
-	
-	/**
-	 * Test safe return.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturn() throws BusinessException {
-		Set<Averia> facturadas = factura.getAverias();
-		facturadas.remove( averia );
+    /** The sustitucion. */
+    private Sustitucion sustitucion;
 
-		assertTrue( facturadas.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			factura.getAverias().size() == 1
-		);
-	}
-	
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
+
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
+
+    /** The cliente. */
+    private Cliente cliente;
+
+    /** The factura. */
+    private Factura factura;
+
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	Association.Poseer.link(cliente, vehiculo);
+
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
+
+	averia = new Averia(vehiculo, "falla la junta la trocla");
+	mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
+
+	averia.assignTo(mecanico); // averia pasa a asignada
+
+	intervencion = new Intervencion(mecanico, averia);
+	intervencion.setMinutos(60);
+
+	repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
+	sustitucion = new Sustitucion(repuesto, intervencion);
+	sustitucion.setCantidad(2);
+
+	averia.markAsFinished(); // changes status & compute price
+
+	factura = new Factura(0L, DateUtil.today());
+	factura.addAveria(averia);
+    }
+
+    /**
+     * Test facturar linked.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testFacturarLinked() throws BusinessException {
+	assertTrue(factura.getAverias().contains(averia));
+	assertTrue(factura.getImporte() > 0.0);
+
+	assertTrue(averia.getFactura() == factura);
+	assertTrue(averia.getStatus().equals(AveriaStatus.FACTURADA));
+    }
+
+    /**
+     * Test facturar unlink.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testFacturarUnlink() throws BusinessException {
+	factura.removeAveria(averia);
+
+	assertTrue(!factura.getAverias().contains(averia));
+	assertTrue(factura.getAverias().size() == 0);
+	assertTrue(factura.getImporte() == 0.0);
+
+	assertTrue(averia.getFactura() == null);
+	assertTrue(averia.getStatus().equals(AveriaStatus.TERMINADA));
+    }
+
+    /**
+     * Test safe return.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturn() throws BusinessException {
+	Set<Averia> facturadas = factura.getAverias();
+	facturadas.remove(averia);
+
+	assertTrue(facturadas.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		factura.getAverias().size() == 1);
+    }
+
 }

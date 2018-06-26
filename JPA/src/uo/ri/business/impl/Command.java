@@ -29,17 +29,19 @@ import uo.ri.util.exception.BusinessException;
  *
  * @author Guillermo Facundo Colunga
  * @version 201806032143
- * @param <T> the generic type
+ * @param <T>
+ *            the generic type
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
 public interface Command<T> {
 
-	/**
-	 * Execute the implemented command.
-	 * 
-	 * @return the T infer type.
-	 * @throws BusinessException if errors during execution.
-	 */
-	T execute() throws BusinessException; 
+    /**
+     * Execute the implemented command.
+     * 
+     * @return the T infer type.
+     * @throws BusinessException
+     *             if errors during execution.
+     */
+    T execute() throws BusinessException;
 }

@@ -49,71 +49,90 @@ import uo.ri.util.exception.BusinessException;
  */
 public class AdminServiceImpl implements AdminService {
 
-	/** The executor. */
-	private CommandExecutor executor = Factory.executor.forExecutor();
+    /** The executor. */
+    private CommandExecutor executor = Factory.executor.forExecutor();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#addMechanic(uo.ri.business.dto.MechanicDto)
-	 */
-	@Override
-	public void addMechanic(MechanicDto mecanico) throws BusinessException {
-		executor.execute(new CreateMechanic(mecanico));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.AdminService#addMechanic(uo.ri.business.dto.MechanicDto)
+     */
+    @Override
+    public void addMechanic(MechanicDto mecanico) throws BusinessException {
+	executor.execute(new CreateMechanic(mecanico));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#deleteMechanic(java.lang.Long)
-	 */
-	@Override
-	public void deleteMechanic(Long idMecanico) throws BusinessException {
-		executor.execute(new RemoveMechanic(idMecanico));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#deleteMechanic(java.lang.Long)
+     */
+    @Override
+    public void deleteMechanic(Long idMecanico) throws BusinessException {
+	executor.execute(new RemoveMechanic(idMecanico));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#findAllMechanics()
-	 */
-	@Override
-	public List<MechanicDto> findAllMechanics() throws BusinessException {
-		return executor.execute(new FindAllMechanics());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#findAllMechanics()
+     */
+    @Override
+    public List<MechanicDto> findAllMechanics() throws BusinessException {
+	return executor.execute(new FindAllMechanics());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#findMechanicById(java.lang.Long)
-	 */
-	@Override
-	public MechanicDto findMechanicById(Long id) throws BusinessException {
-		return executor.execute(new FindMechanicById(id));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#findMechanicById(java.lang.Long)
+     */
+    @Override
+    public MechanicDto findMechanicById(Long id) throws BusinessException {
+	return executor.execute(new FindMechanicById(id));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#findVouchersByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<VoucherDto> findVouchersByClientId(Long id) throws BusinessException {
-		return executor.execute(new FindAllBondsByClientId(id));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#findVouchersByClientId(java.lang.Long)
+     */
+    @Override
+    public List<VoucherDto> findVouchersByClientId(Long id)
+	    throws BusinessException {
+	return executor.execute(new FindAllBondsByClientId(id));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#generateVouchers()
-	 */
-	@Override
-	public int generateVouchers() throws BusinessException {
-		return (executor.execute(new GenerateBonds()));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#generateVouchers()
+     */
+    @Override
+    public int generateVouchers() throws BusinessException {
+	return (executor.execute(new GenerateBonds()));
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#getVoucherSummary()
-	 */
-	@Override
-	public List<VoucherSummary> getVoucherSummary() throws BusinessException {
-		return executor.execute(new FindAllBonds());
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#getVoucherSummary()
+     */
+    @Override
+    public List<VoucherSummary> getVoucherSummary() throws BusinessException {
+	return executor.execute(new FindAllBonds());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.AdminService#updateMechanic(uo.ri.business.dto.MechanicDto)
-	 */
-	@Override
-	public void updateMechanic(MechanicDto mecanico) throws BusinessException {
-		executor.execute(new UpdateMechanic(mecanico));
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.AdminService#updateMechanic(uo.ri.business.dto.
+     * MechanicDto)
+     */
+    @Override
+    public void updateMechanic(MechanicDto mecanico) throws BusinessException {
+	executor.execute(new UpdateMechanic(mecanico));
+    }
 
 }

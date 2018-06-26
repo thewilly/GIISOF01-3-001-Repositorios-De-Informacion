@@ -38,7 +38,6 @@ import uo.ri.model.TipoVehiculo;
 import uo.ri.model.Vehiculo;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class IntervenirTest.
  *
@@ -46,129 +45,134 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class IntervenirTest {
-	
-	/** The mecanico. */
-	private Mecanico mecanico;
-	
-	/** The averia. */
-	private Averia averia;
-	
-	/** The intervencion. */
-	private Intervencion intervencion;
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		Association.Poseer.link(cliente, vehiculo );
+    /** The mecanico. */
+    private Mecanico mecanico;
 
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
-		
-		averia = new Averia(vehiculo, "falla la junta la trocla");
+    /** The averia. */
+    private Averia averia;
 
-		mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
-	
-		intervencion = new Intervencion(mecanico, averia);
-		intervencion.setMinutos(60);
-	}
-	
-	/**
-	 * Test arreglar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testArreglarAdd() throws BusinessException {
-		assertTrue( averia.getIntervenciones().contains( intervencion ));
-		assertTrue( intervencion.getAveria() == averia );
-	}
+    /** The intervencion. */
+    private Intervencion intervencion;
 
-	/**
-	 * Test arreglar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testArreglarRemove() throws BusinessException {
-		Association.Intervenir.unlink(intervencion);
-		
-		assertTrue( ! averia.getIntervenciones().contains( intervencion ));
-		assertTrue( averia.getIntervenciones().size() == 0 );
-		assertTrue( intervencion.getAveria() == null );
-	}
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
 
-	/**
-	 * Test safe return mecanico.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturnMecanico() throws BusinessException {
-		Set<Intervencion> intervenciones = mecanico.getIntervenciones();
-		intervenciones.remove( intervencion );
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
 
-		assertTrue( intervenciones.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			mecanico.getIntervenciones().size() == 1
-		);
-	}
+    /** The cliente. */
+    private Cliente cliente;
 
-	/**
-	 * Test safe return repuesto.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturnRepuesto() throws BusinessException {
-		Set<Intervencion> intervenciones = averia.getIntervenciones();
-		intervenciones.remove( intervencion );
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	Association.Poseer.link(cliente, vehiculo);
 
-		assertTrue( intervenciones.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			averia.getIntervenciones().size() == 1
-		);
-	}
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
 
-	/**
-	 * Test trabajar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testTrabajarAdd() throws BusinessException {
-		assertTrue( mecanico.getIntervenciones().contains( intervencion ));
-		assertTrue( intervencion.getMecanico() == mecanico );
-	}
+	averia = new Averia(vehiculo, "falla la junta la trocla");
 
-	/**
-	 * Test trabajar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testTrabajarRemove() throws BusinessException {
-		Association.Intervenir.unlink(intervencion);
-		
-		assertTrue( ! mecanico.getIntervenciones().contains( intervencion ));
-		assertTrue( mecanico.getIntervenciones().size() == 0 );
-		assertTrue( intervencion.getMecanico() == null );
-	}
+	mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
 
+	intervencion = new Intervencion(mecanico, averia);
+	intervencion.setMinutos(60);
+    }
 
+    /**
+     * Test arreglar add.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testArreglarAdd() throws BusinessException {
+	assertTrue(averia.getIntervenciones().contains(intervencion));
+	assertTrue(intervencion.getAveria() == averia);
+    }
+
+    /**
+     * Test arreglar remove.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testArreglarRemove() throws BusinessException {
+	Association.Intervenir.unlink(intervencion);
+
+	assertTrue(!averia.getIntervenciones().contains(intervencion));
+	assertTrue(averia.getIntervenciones().size() == 0);
+	assertTrue(intervencion.getAveria() == null);
+    }
+
+    /**
+     * Test safe return mecanico.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturnMecanico() throws BusinessException {
+	Set<Intervencion> intervenciones = mecanico.getIntervenciones();
+	intervenciones.remove(intervencion);
+
+	assertTrue(intervenciones.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		mecanico.getIntervenciones().size() == 1);
+    }
+
+    /**
+     * Test safe return repuesto.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturnRepuesto() throws BusinessException {
+	Set<Intervencion> intervenciones = averia.getIntervenciones();
+	intervenciones.remove(intervencion);
+
+	assertTrue(intervenciones.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		averia.getIntervenciones().size() == 1);
+    }
+
+    /**
+     * Test trabajar add.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testTrabajarAdd() throws BusinessException {
+	assertTrue(mecanico.getIntervenciones().contains(intervencion));
+	assertTrue(intervencion.getMecanico() == mecanico);
+    }
+
+    /**
+     * Test trabajar remove.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testTrabajarRemove() throws BusinessException {
+	Association.Intervenir.unlink(intervencion);
+
+	assertTrue(!mecanico.getIntervenciones().contains(intervencion));
+	assertTrue(mecanico.getIntervenciones().size() == 0);
+	assertTrue(intervencion.getMecanico() == null);
+    }
 
 }

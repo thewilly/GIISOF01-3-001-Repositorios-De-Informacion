@@ -43,39 +43,42 @@ import uo.ri.ui.cash.action.SettleInvoiceAction;
  */
 public class MainMenu extends BaseMenu {
 
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		new MainMenu().config().execute();
-	}
+    /**
+     * The main method.
+     *
+     * @param args
+     *            the arguments
+     */
+    public static void main(String[] args) {
+	new MainMenu().config().execute();
+    }
 
-	/**
-	 * Instantiates a new main menu.
-	 */
-	public MainMenu() {
-		menuOptions = new Object[][] { { "Caja de Taller", null },
-				{ "Buscar reparaciones no facturadas de un cliente", ReparacionesNoFacturadasUnClienteAction.class },
-				{ "Buscar reparación por matrícula", NotYetImplementedAction.class },
-				{ "Facturar reparaciones", FacturarReparacionesAction.class },
-				{ "Liquidar factura", SettleInvoiceAction.class },
-				{ "Buscar factura", FindInvoiceByNumberAction.class },
-				{ "Gestión de medios de pago", MediosPagoMenu.class }, };
-	}
+    /**
+     * Instantiates a new main menu.
+     */
+    public MainMenu() {
+	menuOptions = new Object[][] { { "Caja de Taller", null },
+		{ "Buscar reparaciones no facturadas de un cliente",
+			ReparacionesNoFacturadasUnClienteAction.class },
+		{ "Buscar reparación por matrícula",
+			NotYetImplementedAction.class },
+		{ "Facturar reparaciones", FacturarReparacionesAction.class },
+		{ "Liquidar factura", SettleInvoiceAction.class },
+		{ "Buscar factura", FindInvoiceByNumberAction.class },
+		{ "Gestión de medios de pago", MediosPagoMenu.class }, };
+    }
 
-	/**
-	 * Configures the main components of the application.
-	 *
-	 * @return this
-	 */
-	private MainMenu config() {
-		Factory.service = new BusinessServiceFactory();
-		Factory.repository = new JpaRepositoryFactory();
-		Factory.executor = new JpaExecutorFactory();
+    /**
+     * Configures the main components of the application.
+     *
+     * @return this
+     */
+    private MainMenu config() {
+	Factory.service = new BusinessServiceFactory();
+	Factory.repository = new JpaRepositoryFactory();
+	Factory.executor = new JpaExecutorFactory();
 
-		return this;
-	}
+	return this;
+    }
 
 }

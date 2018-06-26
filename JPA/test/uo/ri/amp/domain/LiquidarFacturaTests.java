@@ -49,153 +49,166 @@ import uo.ri.util.exception.BusinessException;
  */
 public class LiquidarFacturaTests {
 
-	/** The a. */
-	private Averia a;
-	
-	/** The cash. */
-	private Metalico cash;
-	
-	/** The i. */
-	private Intervencion i;
-	
-	/** The m. */
-	private Mecanico m;
-	
-	/** The v. */
-	private Vehiculo v;
+    /** The a. */
+    private Averia a;
 
-	/**
-	 * Crear averia terminada.
-	 *
-	 * @param m the m
-	 * @param v the v
-	 * @param min the min
-	 * @return the averia
-	 * @throws BusinessException the business exception
-	 */
-	private Averia crearAveriaTerminada(Mecanico m, Vehiculo v, int min) throws BusinessException {
-		a = new Averia(v, "for test");
-		a.assignTo( m );
-		i = new Intervencion(m, a);
-		i.setMinutos( min );
-		a.markAsFinished();
-		return a;
-	}
+    /** The cash. */
+    private Metalico cash;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		Cliente c = new Cliente("123", "n", "a");
-		cash = new Metalico( c );
-		m = new Mecanico("123a");
-		v = new Vehiculo("123-ABC");
-		TipoVehiculo tv = new TipoVehiculo("v", 300 /* €/hour */);
-		Association.Clasificar.link(tv, v);
-		
-		a = crearAveriaTerminada(m, v, 83 /* min */); // gives 500 € ii
-	}
-	
-	/**
-	 * No se puede liquidar una factura sin averías.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testFacturaSinAverias() throws BusinessException {
-		Factura f = new Factura(123L);
-		f.settle();
-	}
-	
-	/**
-	 * Se puede liquidar una factura con importe cero sin cargos.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testImporteCero() throws BusinessException {
-		Averia a = crearAveriaTerminada(m, v, 0 /*mins*/); // 0€ importe
-		Factura f = new Factura(123L, Arrays.asList(a));
-		f.settle();
-		
-		assertTrue( f.isSettled() );
-	}
+    /** The i. */
+    private Intervencion i;
 
-	/**
-	 * No se puede marcar como liquidada una factura que no esté totalmente
-	 * pagada con margen de +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testNoDelTodoPagada() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		double importe = f.getImporte() - 0.011 /*€*/;
-		new Cargo(f, cash, importe);
-		f.settle();
-	}
+    /** The m. */
+    private Mecanico m;
 
-	/**
-	 * Se puede marcar como liquidada una factura completamente pagada dentro
-	 * del margen +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagada() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		new Cargo(f, cash, f.getImporte() );
-		f.settle();
-		
-		assertTrue( f.isSettled() );
-	}
+    /** The v. */
+    private Vehiculo v;
 
-	/**
-	 * Se puede marcar como liquidada una factura completamente pagada dentro
-	 * del margen +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagadaEnMargenNegativo() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		double importe = f.getImporte() - 0.009 /*€*/;
-		new Cargo(f, cash, importe);
-		f.settle();
-		
-		assertTrue( f.isSettled() );
-	}
+    /**
+     * Crear averia terminada.
+     *
+     * @param m
+     *            the m
+     * @param v
+     *            the v
+     * @param min
+     *            the min
+     * @return the averia
+     * @throws BusinessException
+     *             the business exception
+     */
+    private Averia crearAveriaTerminada(Mecanico m, Vehiculo v, int min)
+	    throws BusinessException {
+	a = new Averia(v, "for test");
+	a.assignTo(m);
+	i = new Intervencion(m, a);
+	i.setMinutos(min);
+	a.markAsFinished();
+	return a;
+    }
 
-	/**
-	 * Se puede marcar como liquidada una factura completamente pagada con
-	 * margen de +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagadaEnMargenPositivo() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		double importe = f.getImporte() + 0.009 /*€*/;
-		new Cargo(f, cash, importe);
-		f.settle();
-		
-		assertTrue( f.isSettled() );
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+	Cliente c = new Cliente("123", "n", "a");
+	cash = new Metalico(c);
+	m = new Mecanico("123a");
+	v = new Vehiculo("123-ABC");
+	TipoVehiculo tv = new TipoVehiculo("v", 300 /* €/hour */);
+	Association.Clasificar.link(tv, v);
 
-	/**
-	 * No se puede marcar como liquidada una factura sobrepagada con margen de
-	 * +-0,01 €.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testSobrePagada() throws BusinessException {
-		Factura f = new Factura(123L, Arrays.asList(a));
-		double importe = f.getImporte() + 0.011 /*€*/;
-		new Cargo(f, cash, importe);
-		f.settle();
-	}
+	a = crearAveriaTerminada(m, v, 83 /* min */); // gives 500 € ii
+    }
+
+    /**
+     * No se puede liquidar una factura sin averías.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testFacturaSinAverias() throws BusinessException {
+	Factura f = new Factura(123L);
+	f.settle();
+    }
+
+    /**
+     * Se puede liquidar una factura con importe cero sin cargos.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testImporteCero() throws BusinessException {
+	Averia a = crearAveriaTerminada(m, v, 0 /* mins */); // 0€ importe
+	Factura f = new Factura(123L, Arrays.asList(a));
+	f.settle();
+
+	assertTrue(f.isSettled());
+    }
+
+    /**
+     * No se puede marcar como liquidada una factura que no esté totalmente
+     * pagada con margen de +-0,01 €.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testNoDelTodoPagada() throws BusinessException {
+	Factura f = new Factura(123L, Arrays.asList(a));
+	double importe = f.getImporte() - 0.011 /* € */;
+	new Cargo(f, cash, importe);
+	f.settle();
+    }
+
+    /**
+     * Se puede marcar como liquidada una factura completamente pagada dentro
+     * del margen +-0,01 €.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagada() throws BusinessException {
+	Factura f = new Factura(123L, Arrays.asList(a));
+	new Cargo(f, cash, f.getImporte());
+	f.settle();
+
+	assertTrue(f.isSettled());
+    }
+
+    /**
+     * Se puede marcar como liquidada una factura completamente pagada dentro
+     * del margen +-0,01 €.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagadaEnMargenNegativo() throws BusinessException {
+	Factura f = new Factura(123L, Arrays.asList(a));
+	double importe = f.getImporte() - 0.009 /* € */;
+	new Cargo(f, cash, importe);
+	f.settle();
+
+	assertTrue(f.isSettled());
+    }
+
+    /**
+     * Se puede marcar como liquidada una factura completamente pagada con
+     * margen de +-0,01 €.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagadaEnMargenPositivo() throws BusinessException {
+	Factura f = new Factura(123L, Arrays.asList(a));
+	double importe = f.getImporte() + 0.009 /* € */;
+	new Cargo(f, cash, importe);
+	f.settle();
+
+	assertTrue(f.isSettled());
+    }
+
+    /**
+     * No se puede marcar como liquidada una factura sobrepagada con margen de
+     * +-0,01 €.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testSobrePagada() throws BusinessException {
+	Factura f = new Factura(123L, Arrays.asList(a));
+	double importe = f.getImporte() + 0.011 /* € */;
+	new Cargo(f, cash, importe);
+	f.settle();
+    }
 }

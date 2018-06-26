@@ -35,41 +35,63 @@ import uo.ri.persistence.jpa.util.Jpa;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class ClienteJpaRepository extends BaseRepository<Cliente> implements ClienteRepository {
+public class ClienteJpaRepository extends BaseRepository<Cliente>
+	implements ClienteRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findByDni(java.lang.String)
-	 */
-	@Override
-	public Cliente findByDni(String dni) {
-		return Jpa.getManager().createNamedQuery("Cliente.findByDni", Cliente.class).setParameter(1, dni)
-				.getResultList().stream().findFirst().orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findByDni(java.lang.String)
+     */
+    @Override
+    public Cliente findByDni(String dni) {
+	return Jpa.getManager()
+		.createNamedQuery("Cliente.findByDni", Cliente.class)
+		.setParameter(1, dni).getResultList().stream().findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
-	 */
-	@Override
-	public List<Cliente> findRecomendedBy(Long id) {
-		return Jpa.getManager().createNamedQuery("Cliente.findRecommendedBy", Cliente.class).setParameter(1, id)
-				.getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.
+     * Long)
+     */
+    @Override
+    public List<Cliente> findRecomendedBy(Long id) {
+	return Jpa.getManager()
+		.createNamedQuery("Cliente.findRecommendedBy", Cliente.class)
+		.setParameter(1, id).getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
-	 */
-	@Override
-	public List<Cliente> findWithRecomendations() {
-		return Jpa.getManager().createNamedQuery("Cliente.findWithRecomendations", Cliente.class).getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
+     */
+    @Override
+    public List<Cliente> findWithRecomendations() {
+	return Jpa.getManager()
+		.createNamedQuery("Cliente.findWithRecomendations",
+			Cliente.class)
+		.getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findWithThreeUnusedBreakdowns()
-	 */
-	@Override
-	public List<Cliente> findWithThreeUnusedBreakdowns() {
-		return Jpa.getManager().createNamedQuery("Cliente.findWithThreeUnusedBreakdowns", Cliente.class)
-				.getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findWithThreeUnusedBreakdowns
+     * ()
+     */
+    @Override
+    public List<Cliente> findWithThreeUnusedBreakdowns() {
+	return Jpa.getManager()
+		.createNamedQuery("Cliente.findWithThreeUnusedBreakdowns",
+			Cliente.class)
+		.getResultList();
+    }
 
 }

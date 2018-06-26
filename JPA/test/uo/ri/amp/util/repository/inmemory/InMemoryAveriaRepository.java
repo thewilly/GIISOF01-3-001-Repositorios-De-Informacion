@@ -33,35 +33,44 @@ import uo.ri.model.Averia;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryAveriaRepository 
-	extends BaseMemoryRepository<Averia> 
+public class InMemoryAveriaRepository extends BaseMemoryRepository<Averia>
 	implements AveriaRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findByIds(java.util.List)
-	 */
-	@Override
-	public List<Averia> findByIds(List<Long> idsAveria) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.AveriaRepository#findByIds(java.util.List)
+     */
+    @Override
+    public List<Averia> findByIds(List<Long> idsAveria) {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findNoFacturadasByDni(java.lang.String)
-	 */
-	@Override
-	public List<Averia> findNoFacturadasByDni(String dni) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.AveriaRepository#findNoFacturadasByDni(java.
+     * lang.String)
+     */
+    @Override
+    public List<Averia> findNoFacturadasByDni(String dni) {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.AveriaRepository#findWithUnusedBono3ByClienteId(java.lang.Long)
-	 */
-	@Override
-	public List<Averia> findWithUnusedBono3ByClienteId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.AveriaRepository#findWithUnusedBono3ByClienteId
+     * (java.lang.Long)
+     */
+    @Override
+    public List<Averia> findWithUnusedBono3ByClienteId(Long id) {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
 }

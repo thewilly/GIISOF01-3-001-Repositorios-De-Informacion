@@ -32,11 +32,11 @@ package uo.ri.business.impl;
  */
 public interface CommandExecutorFactory {
 
-	/**
-	 * For executor.
-	 *
-	 * @return a command executor.
-	 */
-	CommandExecutor forExecutor();
+    /**
+     * For executor.
+     *
+     * @return a command executor.
+     */
+    CommandExecutor forExecutor();
 
 }

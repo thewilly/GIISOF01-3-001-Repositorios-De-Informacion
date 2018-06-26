@@ -40,32 +40,33 @@ import uo.ri.persistence.PaymentMethodsGateway;
  * @formatter Oviedo Computing Community
  */
 public class GenerateBondByRecommendation {
-	
-	/**
-	 * Executes the action of generating the bonds by recommendation.
-	 */
-	public void execute() {
-		
-		Connection connection = null;
-		
-		try {
-			// Getting the connection.
-			connection = getConnection();
-			
-			// Getting the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-			
-			// Generating the bonds by recommendation.
-			paymentMethodsGW.generateBondsByRecomendation();
-			
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} catch (BusinessException b) {
-			throw new RuntimeException( b );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
+
+    /**
+     * Executes the action of generating the bonds by recommendation.
+     */
+    public void execute() {
+
+	Connection connection = null;
+
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Getting the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Generating the bonds by recommendation.
+	    paymentMethodsGW.generateBondsByRecomendation();
+
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} catch (BusinessException b) {
+	    throw new RuntimeException(b);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
+    }
 }

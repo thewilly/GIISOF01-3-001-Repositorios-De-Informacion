@@ -34,25 +34,26 @@ import uo.ri.model.Factura;
  */
 public interface FacturaRepository extends Repository<Factura> {
 
-	/**
-	 * Find by number.
-	 *
-	 * @param numero the numero
-	 * @return the factura
-	 */
-	Factura findByNumber(Long numero);
+    /**
+     * Find by number.
+     *
+     * @param numero
+     *            the numero
+     * @return the factura
+     */
+    Factura findByNumber(Long numero);
 
-	/**
-	 * Find unused with bono 500.
-	 *
-	 * @return the list
-	 */
-	List<Factura> findUnusedWithBono500();
+    /**
+     * Find unused with bono 500.
+     *
+     * @return the list
+     */
+    List<Factura> findUnusedWithBono500();
 
-	/**
-	 * Gets the next invoice number.
-	 *
-	 * @return the next invoice number
-	 */
-	Long getNextInvoiceNumber();
+    /**
+     * Gets the next invoice number.
+     *
+     * @return the next invoice number
+     */
+    Long getNextInvoiceNumber();
 }

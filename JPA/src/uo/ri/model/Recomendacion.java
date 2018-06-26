@@ -41,140 +41,150 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "TRecomendaciones", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "RECOMENDADOR_ID, RECOMENDADO_ID") })
+	@UniqueConstraint(columnNames = "RECOMENDADOR_ID, RECOMENDADO_ID") })
 public class Recomendacion {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	/** The recomendador. */
-	private Cliente recomendador;
-	
-	/** The recomendado. */
-	private Cliente recomendado;
-	
-	/** The usada. */
-	private boolean usada;
+    /** The recomendador. */
+    private Cliente recomendador;
 
-	/**
-	 * Instantiates a new recomendacion.
-	 */
-	Recomendacion() {
+    /** The recomendado. */
+    private Cliente recomendado;
+
+    /** The usada. */
+    private boolean usada;
+
+    /**
+     * Instantiates a new recomendacion.
+     */
+    Recomendacion() {
+    }
+
+    /**
+     * Instantiates a new recomendacion.
+     *
+     * @param recomendador
+     *            the recomendador
+     * @param recomendado
+     *            the recomendado
+     */
+    public Recomendacion(Cliente recomendador, Cliente recomendado) {
+	super();
+	this.recomendador = recomendador;
+	this.recomendado = recomendado;
+	this.usada = false;
+	Association.Recomendar.link(this, recomendador, recomendado);
+    }
+
+    /**
+     * Sets the recomendado.
+     *
+     * @param recomendado
+     *            the recomendado
+     */
+    void _setRecomendado(Cliente recomendado) {
+	this.recomendado = recomendado;
+    }
+
+    /**
+     * Sets the recomendador.
+     *
+     * @param recomendador
+     *            the recomendador
+     */
+    void _setRecomendador(Cliente recomendador) {
+	this.recomendador = recomendador;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Recomendacion other = (Recomendacion) obj;
+	if (recomendado == null) {
+	    if (other.recomendado != null)
+		return false;
+	} else if (!recomendado.equals(other.recomendado))
+	    return false;
+	if (recomendador == null) {
+	    if (other.recomendador != null)
+		return false;
+	} else if (!recomendador.equals(other.recomendador))
+	    return false;
+	return true;
+    }
+
+    /**
+     * Gets the recomendado.
+     *
+     * @return the recomendado
+     */
+    public Cliente getRecomendado() {
+	return recomendado;
+    }
+
+    /**
+     * Gets the recomendador.
+     *
+     * @return the recomendador
+     */
+    public Cliente getRecomendador() {
+	return recomendador;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result
+		+ ((recomendado == null) ? 0 : recomendado.hashCode());
+	result = prime * result
+		+ ((recomendador == null) ? 0 : recomendador.hashCode());
+	return result;
+    }
+
+    /**
+     * Checks if is usada.
+     *
+     * @return true, if is usada
+     */
+    public boolean isUsada() {
+	return usada;
+    }
+
+    /**
+     * This method marks the usada attribute as true, if and only if it is not
+     * already true.
+     */
+    public void markAsUsadaBono() {
+	if (!isUsada()) {
+	    this.usada = true;
 	}
+    }
 
-	/**
-	 * Instantiates a new recomendacion.
-	 *
-	 * @param recomendador the recomendador
-	 * @param recomendado the recomendado
-	 */
-	public Recomendacion(Cliente recomendador, Cliente recomendado) {
-		super();
-		this.recomendador = recomendador;
-		this.recomendado = recomendado;
-		this.usada = false;
-		Association.Recomendar.link(this, recomendador, recomendado);
-	}
-
-	/**
-	 * Sets the recomendado.
-	 *
-	 * @param recomendado the recomendado
-	 */
-	void _setRecomendado(Cliente recomendado) {
-		this.recomendado = recomendado;
-	}
-
-	/**
-	 * Sets the recomendador.
-	 *
-	 * @param recomendador the recomendador
-	 */
-	void _setRecomendador(Cliente recomendador) {
-		this.recomendador = recomendador;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Recomendacion other = (Recomendacion) obj;
-		if (recomendado == null) {
-			if (other.recomendado != null)
-				return false;
-		} else if (!recomendado.equals(other.recomendado))
-			return false;
-		if (recomendador == null) {
-			if (other.recomendador != null)
-				return false;
-		} else if (!recomendador.equals(other.recomendador))
-			return false;
-		return true;
-	}
-
-	/**
-	 * Gets the recomendado.
-	 *
-	 * @return the recomendado
-	 */
-	public Cliente getRecomendado() {
-		return recomendado;
-	}
-
-	/**
-	 * Gets the recomendador.
-	 *
-	 * @return the recomendador
-	 */
-	public Cliente getRecomendador() {
-		return recomendador;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((recomendado == null) ? 0 : recomendado.hashCode());
-		result = prime * result + ((recomendador == null) ? 0 : recomendador.hashCode());
-		return result;
-	}
-
-	/**
-	 * Checks if is usada.
-	 *
-	 * @return true, if is usada
-	 */
-	public boolean isUsada() {
-		return usada;
-	}
-
-	/**
-	 * This method marks the usada attribute as true, if and only if it is not
-	 * already true.
-	 */
-	public void markAsUsadaBono() {
-		if (!isUsada()) {
-			this.usada = true;
-		}
-	}
-
-	/**
-	 * This method unlinks the recommendation.
-	 */
-	public void unlink() {
-		Association.Recomendar.unlink(this);
-	}
+    /**
+     * This method unlinks the recommendation.
+     */
+    public void unlink() {
+	Association.Recomendar.unlink(this);
+    }
 
 }

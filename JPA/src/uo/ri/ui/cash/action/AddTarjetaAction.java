@@ -44,35 +44,37 @@ import uo.ri.util.exception.BusinessException;
  */
 public class AddTarjetaAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		Long id = Console.readLong("Id cliente");
-		String tipo = Console.readString("Tipo");
-		String numero = Console.readString("Número");
-		String fecha = Console.readString("Fecha validez (yyyy-mm-dd)");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	Long id = Console.readLong("Id cliente");
+	String tipo = Console.readString("Tipo");
+	String numero = Console.readString("Número");
+	String fecha = Console.readString("Fecha validez (yyyy-mm-dd)");
 
-		String FORMAT = "yyyy-MM-dd";
-		DateFormat formatter = new SimpleDateFormat(FORMAT);
-		Date d = null;
-		try {
-			d = formatter.parse(fecha);
-		} catch (ParseException e) {
-			throw new BusinessException(e);
-		}
-
-		CardDto dto = new CardDto();
-		dto.clientId = id;
-		dto.cardNumber = numero;
-		dto.cardExpirationDate = d;
-		dto.cardType = tipo;
-
-		CashService cs = Factory.service.forCash();
-		cs.addCardPaymentMean(dto);
-
-		Console.println("Nuevo tarjeta añadida a " + id);
+	String FORMAT = "yyyy-MM-dd";
+	DateFormat formatter = new SimpleDateFormat(FORMAT);
+	Date d = null;
+	try {
+	    d = formatter.parse(fecha);
+	} catch (ParseException e) {
+	    throw new BusinessException(e);
 	}
+
+	CardDto dto = new CardDto();
+	dto.clientId = id;
+	dto.cardNumber = numero;
+	dto.cardExpirationDate = d;
+	dto.cardType = tipo;
+
+	CashService cs = Factory.service.forCash();
+	cs.addCardPaymentMean(dto);
+
+	Console.println("Nuevo tarjeta añadida a " + id);
+    }
 
 }

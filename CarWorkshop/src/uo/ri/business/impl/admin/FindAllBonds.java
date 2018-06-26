@@ -45,34 +45,35 @@ import static alb.util.jdbc.Jdbc.getConnection;
  */
 public class FindAllBonds {
 
-	/**
-	 * Will find all bonds in the system and will return them.
-	 * 
-	 * @return a list of maps where each map represents a bond.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public List<Map<String, Object>> execute() {
-		
-		Connection connection = null;
-		
-		try {
-			// Getting the connection.
-			connection = getConnection();
-			
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-			
-			// Returning the find bonds.
-			return paymentMethodsGW.findAllBonds();
-			
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
+    /**
+     * Will find all bonds in the system and will return them.
+     * 
+     * @return a list of maps where each map represents a bond.
+     * @throws BusinessException
+     *             if any error occurs during the execution of the method.
+     */
+    public List<Map<String, Object>> execute() {
+
+	Connection connection = null;
+
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Returning the find bonds.
+	    return paymentMethodsGW.findAllBonds();
+
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
+    }
 
 }

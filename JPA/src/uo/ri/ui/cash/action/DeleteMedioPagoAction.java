@@ -38,15 +38,17 @@ import uo.ri.util.exception.BusinessException;
  */
 public class DeleteMedioPagoAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		Long id = Console.readLong("Id medio de pago");
-		CashService cash = Factory.service.forCash();
-		cash.deletePaymentMean(id);
-		Console.println("Se ha eliminado el medio de pago");
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	Long id = Console.readLong("Id medio de pago");
+	CashService cash = Factory.service.forCash();
+	cash.deletePaymentMean(id);
+	Console.println("Se ha eliminado el medio de pago");
+    }
 
 }

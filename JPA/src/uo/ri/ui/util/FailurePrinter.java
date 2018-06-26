@@ -34,27 +34,30 @@ import uo.ri.business.dto.FailureDto;
  * @formatter Oviedo Computing Community
  */
 public class FailurePrinter implements Printer {
-	
-	/** The failure. */
-	private FailureDto failure;
-	
-	/**
-	 * Instantiates a new failure printer.
-	 *
-	 * @param failure the failure
-	 */
-	public FailurePrinter(FailureDto failure) {
-		this.failure = failure;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		Console.printf( "\t%d \t%-40.40s \t%td/%<tm/%<tY \t%-12.12s \t%.2f\n", failure.id,
-				failure.description, failure.date,
-				failure.status, failure.total );
-	}
+    /** The failure. */
+    private FailureDto failure;
+
+    /**
+     * Instantiates a new failure printer.
+     *
+     * @param failure
+     *            the failure
+     */
+    public FailurePrinter(FailureDto failure) {
+	this.failure = failure;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	Console.printf("\t%d \t%-40.40s \t%td/%<tm/%<tY \t%-12.12s \t%.2f\n",
+		failure.id, failure.description, failure.date, failure.status,
+		failure.total);
+    }
 
 }

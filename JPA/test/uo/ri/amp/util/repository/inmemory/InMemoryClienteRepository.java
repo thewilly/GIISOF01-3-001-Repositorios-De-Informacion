@@ -34,56 +34,63 @@ import uo.ri.model.Cliente;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class InMemoryClienteRepository 
-		extends BaseMemoryRepository<Cliente> 
-		implements ClienteRepository {
+public class InMemoryClienteRepository extends BaseMemoryRepository<Cliente>
+	implements ClienteRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findByDni(java.lang.String)
-	 */
-	@Override
-	public Cliente findByDni(String dni) {
-		return entities.values().stream()
-				.filter( c -> c.getDni().equals( dni ))
-				.findFirst()
-				.orElse( null );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findByDni(java.lang.String)
+     */
+    @Override
+    public Cliente findByDni(String dni) {
+	return entities.values().stream().filter(c -> c.getDni().equals(dni))
+		.findFirst().orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.Long)
-	 */
-	@Override
-	public List<Cliente> findRecomendedBy(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findRecomendedBy(java.lang.
+     * Long)
+     */
+    @Override
+    public List<Cliente> findRecomendedBy(Long id) {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
-	 */
-	@Override
-	public List<Cliente> findWithRecomendations() {
-		return entities.values().stream()
-				.filter( c -> c.getRecomendacionesHechas().size() >= 3)
-				.flatMap( c -> c.getRecomendacionesHechas().stream() )
-				.filter(r -> ! r.isUsada())
-				.map(r -> r.getRecomendador())
-				.distinct()
-				.collect( Collectors.toList() );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.ClienteRepository#findWithRecomendations()
+     */
+    @Override
+    public List<Cliente> findWithRecomendations() {
+	return entities.values().stream()
+		.filter(c -> c.getRecomendacionesHechas().size() >= 3)
+		.flatMap(c -> c.getRecomendacionesHechas().stream())
+		.filter(r -> !r.isUsada()).map(r -> r.getRecomendador())
+		.distinct().collect(Collectors.toList());
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.ClienteRepository#findWithThreeUnusedBreakdowns()
-	 */
-	@Override
-	public List<Cliente> findWithThreeUnusedBreakdowns() {
-		return entities.values().stream()
-				.flatMap(c -> c.getVehiculos().stream())
-				.flatMap(v -> v.getAverias().stream())
-				.filter( a -> a.isInvoiced() && ! a.isUsadaBono3() )
-				.map(a -> a.getVehiculo().getCliente())
-				.distinct()
-				.collect( Collectors.toList() );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.ClienteRepository#findWithThreeUnusedBreakdowns
+     * ()
+     */
+    @Override
+    public List<Cliente> findWithThreeUnusedBreakdowns() {
+	return entities.values().stream()
+		.flatMap(c -> c.getVehiculos().stream())
+		.flatMap(v -> v.getAverias().stream())
+		.filter(a -> a.isInvoiced() && !a.isUsadaBono3())
+		.map(a -> a.getVehiculo().getCliente()).distinct()
+		.collect(Collectors.toList());
+    }
 
 }

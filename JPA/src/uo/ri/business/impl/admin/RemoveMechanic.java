@@ -39,40 +39,48 @@ import uo.ri.util.exception.Check;
  */
 public class RemoveMechanic implements Command<Void> {
 
-	/** The mechanic id. */
-	private Long mechanicId;
+    /** The mechanic id. */
+    private Long mechanicId;
 
-	/**
-	 * Instantiates a new removes the mechanic.
-	 *
-	 * @param mechanicId the mechanic id
-	 */
-	public RemoveMechanic(Long mechanicId) {
-		this.mechanicId = mechanicId;
-	}
+    /**
+     * Instantiates a new removes the mechanic.
+     *
+     * @param mechanicId
+     *            the mechanic id
+     */
+    public RemoveMechanic(Long mechanicId) {
+	this.mechanicId = mechanicId;
+    }
 
-	/**
-	 * This method checks if the mechanic can be deleted, by checking if it
-	 * exists, if it doesn't have any kind of intervention nor any assignment.
-	 *
-	 * @param mechanic the mechanic to be deleted
-	 * @throws BusinessException the business exception
-	 */
-	private void assertCanBeDeleted(Mecanico mechanic) throws BusinessException {
-		Check.isNotNull(mechanic, "El mecánico no existe");
-		Check.isTrue(mechanic.getIntervenciones().size() == 0, "El mecánico tiene interveciones");
-		Check.isTrue(mechanic.getAsignadas().size() == 0, "El mecánico tiene interveciones");
-	}
+    /**
+     * This method checks if the mechanic can be deleted, by checking if it
+     * exists, if it doesn't have any kind of intervention nor any assignment.
+     *
+     * @param mechanic
+     *            the mechanic to be deleted
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertCanBeDeleted(Mecanico mechanic)
+	    throws BusinessException {
+	Check.isNotNull(mechanic, "El mecánico no existe");
+	Check.isTrue(mechanic.getIntervenciones().size() == 0,
+		"El mecánico tiene interveciones");
+	Check.isTrue(mechanic.getAsignadas().size() == 0,
+		"El mecánico tiene interveciones");
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public Void execute() throws BusinessException {
-		MecanicoRepository repository = Factory.repository.forMechanic();
-		Mecanico mechanic = repository.findById(mechanicId);
-		assertCanBeDeleted(mechanic);
-		repository.remove(mechanic);
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public Void execute() throws BusinessException {
+	MecanicoRepository repository = Factory.repository.forMechanic();
+	Mecanico mechanic = repository.findById(mechanicId);
+	assertCanBeDeleted(mechanic);
+	repository.remove(mechanic);
+	return null;
+    }
 
 }

@@ -37,16 +37,18 @@ import uo.ri.conf.Factory;
  */
 public class DeleteClientAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws Exception {
-		Long id = Console.readLong("Id cliente");
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws Exception {
+	Long id = Console.readLong("Id cliente");
 
-		ForemanService fp = Factory.service.forForeman();
-		fp.deleteClient(id);
-		Console.println("Cliente eliminado correctamente");
-	}
+	ForemanService fp = Factory.service.forForeman();
+	fp.deleteClient(id);
+	Console.println("Cliente eliminado correctamente");
+    }
 
 }

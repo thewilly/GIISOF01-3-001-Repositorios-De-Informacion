@@ -36,22 +36,24 @@ import uo.ri.ui.cash.action.AddTarjetaAction;
  */
 public class AddMedioPagoMenu extends BaseMenu {
 
-	/**
-	 * The main method.
-	 *
-	 * @param args the arguments
-	 */
-	public static void main(String[] args) {
-		new MainMenu().execute();
-	}
+    /**
+     * The main method.
+     *
+     * @param args
+     *            the arguments
+     */
+    public static void main(String[] args) {
+	new MainMenu().execute();
+    }
 
-	/**
-	 * Instantiates a new adds the medio pago menu.
-	 */
-	public AddMedioPagoMenu() {
-		menuOptions = new Object[][] {
-				{ "Caja de Taller > Gestión de medios de pago > Dar de alta un medio de pago a un cliente", null },
-				{ "Añadir tarjeta a un cliente", AddTarjetaAction.class },
-				{ "Añadir bono a un cliente", AddBonoAction.class }, };
-	}
+    /**
+     * Instantiates a new adds the medio pago menu.
+     */
+    public AddMedioPagoMenu() {
+	menuOptions = new Object[][] { {
+		"Caja de Taller > Gestión de medios de pago > Dar de alta un medio de pago a un cliente",
+		null },
+		{ "Añadir tarjeta a un cliente", AddTarjetaAction.class },
+		{ "Añadir bono a un cliente", AddBonoAction.class }, };
+    }
 }

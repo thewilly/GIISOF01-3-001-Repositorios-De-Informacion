@@ -45,46 +45,50 @@ import uo.ri.common.BusinessException;
  */
 public class AdminServiceImpl implements AdminService {
 
-	@Override
-	public void createMechanic( String name, String surname ) {
-		CerateMechanic createMechanic = new CerateMechanic( name, surname );
-		createMechanic.execute();
-	}
+    @Override
+    public void createMechanic(String name, String surname) {
+	CerateMechanic createMechanic = new CerateMechanic(name, surname);
+	createMechanic.execute();
+    }
 
-	@Override
-	public List<Map<String, Object>> findAllBonds() {
-		FindAllBonds findAllBonds = new FindAllBonds();
-		return findAllBonds.execute();
-	}
+    @Override
+    public List<Map<String, Object>> findAllBonds() {
+	FindAllBonds findAllBonds = new FindAllBonds();
+	return findAllBonds.execute();
+    }
 
-	@Override
-	public List<Map<String, Object>> findAllBondsByCliendId( long clientId ) throws BusinessException {
-		FindAllBondsByClientId findAllBondsByClientId = new FindAllBondsByClientId( clientId );
-		return findAllBondsByClientId.execute();
-	}
+    @Override
+    public List<Map<String, Object>> findAllBondsByCliendId(long clientId)
+	    throws BusinessException {
+	FindAllBondsByClientId findAllBondsByClientId = new FindAllBondsByClientId(
+		clientId);
+	return findAllBondsByClientId.execute();
+    }
 
-	@Override
-	public List<Map<String, Object>> findAllMechanics() {
-		FindAllMechanics findAllMechanics = new FindAllMechanics();
-		return findAllMechanics.execute();
-	}
+    @Override
+    public List<Map<String, Object>> findAllMechanics() {
+	FindAllMechanics findAllMechanics = new FindAllMechanics();
+	return findAllMechanics.execute();
+    }
 
-	@Override
-	public void generateBonosByRecomendation() {
-		GenerateBondByRecommendation generateBondsByRecommendation = new GenerateBondByRecommendation();
-		generateBondsByRecommendation.execute();
-	}
+    @Override
+    public void generateBonosByRecomendation() {
+	GenerateBondByRecommendation generateBondsByRecommendation = new GenerateBondByRecommendation();
+	generateBondsByRecommendation.execute();
+    }
 
-	@Override
-	public void removeMechanic( long mechanicId ) throws BusinessException {
-		RemoveMechanic removeMechanic = new RemoveMechanic( mechanicId );
-		removeMechanic.execute();
-	}
+    @Override
+    public void removeMechanic(long mechanicId) throws BusinessException {
+	RemoveMechanic removeMechanic = new RemoveMechanic(mechanicId);
+	removeMechanic.execute();
+    }
 
-	@Override
-	public void updateMechanic( long mechanicId, String name, String surname ) throws BusinessException {
-		UpdateMechanic updateMechanic = new UpdateMechanic( mechanicId, name, surname );
-		updateMechanic.execute();
-	}
+    @Override
+    public void updateMechanic(long mechanicId, String name, String surname)
+	    throws BusinessException {
+	UpdateMechanic updateMechanic = new UpdateMechanic(mechanicId, name,
+		surname);
+	updateMechanic.execute();
+    }
 
 }

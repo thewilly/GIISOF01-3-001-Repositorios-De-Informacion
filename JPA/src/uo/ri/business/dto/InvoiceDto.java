@@ -31,23 +31,23 @@ import java.util.Date;
  * @version 201806081225
  */
 public class InvoiceDto {
-	
-	/** The id. */
-	public Long id;
-	
-	/** The total. */
-	public double total;	
-	
-	/** The taxes. */
-	public double taxes;
-	
-	/** The number. */
-	public long number;
-	
-	/** The date. */
-	public Date date;
-	
-	/** The status. */
-	public String status;
+
+    /** The id. */
+    public Long id;
+
+    /** The total. */
+    public double total;
+
+    /** The taxes. */
+    public double taxes;
+
+    /** The number. */
+    public long number;
+
+    /** The date. */
+    public Date date;
+
+    /** The status. */
+    public String status;
 
 }

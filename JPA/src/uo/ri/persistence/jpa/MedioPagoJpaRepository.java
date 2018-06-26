@@ -37,75 +37,116 @@ import uo.ri.persistence.jpa.util.Jpa;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class MedioPagoJpaRepository extends BaseRepository<MedioPago> implements MedioPagoRepository {
+public class MedioPagoJpaRepository extends BaseRepository<MedioPago>
+	implements MedioPagoRepository {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findAggregateVoucherDataByClientId(java.lang.Long)
-	 */
-	@Override
-	public Object[] findAggregateVoucherDataByClientId(Long id) {
-		Object[] array = new Object[3];
-		array[0] = findVouchersByClientId(id).size();
-		array[1] = Jpa.getManager().createNamedQuery("Bono.findAvailableVouchersByClientId", Double.class)
-				.setParameter(1, id).getSingleResult();
-		array[2] = Jpa.getManager().createNamedQuery("Bono.findSpentVouchersByClientId", Double.class)
-				.setParameter(1, id).getSingleResult();
-		return array;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.MedioPagoRepository#
+     * findAggregateVoucherDataByClientId(java.lang.Long)
+     */
+    @Override
+    public Object[] findAggregateVoucherDataByClientId(Long id) {
+	Object[] array = new Object[3];
+	array[0] = findVouchersByClientId(id).size();
+	array[1] = Jpa.getManager()
+		.createNamedQuery("Bono.findAvailableVouchersByClientId",
+			Double.class)
+		.setParameter(1, id).getSingleResult();
+	array[2] = Jpa.getManager()
+		.createNamedQuery("Bono.findSpentVouchersByClientId",
+			Double.class)
+		.setParameter(1, id).getSingleResult();
+	return array;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findByClientId(Long id) {
-		return null;
-		// este metodo esta repetido, misma funcion en el
-		// findPaymentMeansByClientId
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findByClientId(java.lang.
+     * Long)
+     */
+    @Override
+    public List<MedioPago> findByClientId(Long id) {
+	return null;
+	// este metodo esta repetido, misma funcion en el
+	// findPaymentMeansByClientId
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findCreditCardByNumber(java.lang.String)
-	 */
-	@Override
-	public TarjetaCredito findCreditCardByNumber(String number) {
-		return Jpa.getManager().createNamedQuery("Tarjeta.findByCardNumber", TarjetaCredito.class)
-				.setParameter(1, number).getResultList().stream().findFirst().orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findCreditCardByNumber(java
+     * .lang.String)
+     */
+    @Override
+    public TarjetaCredito findCreditCardByNumber(String number) {
+	return Jpa.getManager()
+		.createNamedQuery("Tarjeta.findByCardNumber",
+			TarjetaCredito.class)
+		.setParameter(1, number).getResultList().stream().findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByClientId(Long id) {
-		return Jpa.getManager().createNamedQuery("MedioPago.findForClient", MedioPago.class).setParameter(1, id)
-				.getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByClientId(
+     * java.lang.Long)
+     */
+    @Override
+    public List<MedioPago> findPaymentMeansByClientId(Long id) {
+	return Jpa.getManager()
+		.createNamedQuery("MedioPago.findForClient", MedioPago.class)
+		.setParameter(1, id).getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId(java.lang.Long)
-	 */
-	@Override
-	public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
-		return Jpa.getManager().createNamedQuery("MedioPago.findPaymentMeansByInvoiceId", MedioPago.class)
-				.setParameter(1, idFactura).getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findPaymentMeansByInvoiceId
+     * (java.lang.Long)
+     */
+    @Override
+    public List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura) {
+	return Jpa.getManager()
+		.createNamedQuery("MedioPago.findPaymentMeansByInvoiceId",
+			MedioPago.class)
+		.setParameter(1, idFactura).getResultList();
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang.String)
-	 */
-	@Override
-	public Bono findVoucherByCode(String code) {
-		return Jpa.getManager().createNamedQuery("Bono.findVoucherByCode", Bono.class).setParameter(1, code)
-				.getResultList().stream().findFirst().orElse(null);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findVoucherByCode(java.lang
+     * .String)
+     */
+    @Override
+    public Bono findVoucherByCode(String code) {
+	return Jpa.getManager()
+		.createNamedQuery("Bono.findVoucherByCode", Bono.class)
+		.setParameter(1, code).getResultList().stream().findFirst()
+		.orElse(null);
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.MedioPagoRepository#findVouchersByClientId(java.lang.Long)
-	 */
-	@Override
-	public List<Bono> findVouchersByClientId(Long id) {
-		return Jpa.getManager().createNamedQuery("Bono.findBonoFromClient", Bono.class).setParameter(1, id)
-				.getResultList();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * uo.ri.business.repository.MedioPagoRepository#findVouchersByClientId(java
+     * .lang.Long)
+     */
+    @Override
+    public List<Bono> findVouchersByClientId(Long id) {
+	return Jpa.getManager()
+		.createNamedQuery("Bono.findBonoFromClient", Bono.class)
+		.setParameter(1, id).getResultList();
+    }
 
 }

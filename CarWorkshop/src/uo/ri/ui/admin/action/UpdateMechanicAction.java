@@ -38,18 +38,18 @@ import uo.ri.conf.ServicesFactory;
  */
 public class UpdateMechanicAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		Long mechanicId = Console.readLong( "Id del mecánico" );
-		String newMechanicName = Console.readString( "Nombre" );
-		String newMechanicSurname = Console.readString( "Apellidos" );
+	Long mechanicId = Console.readLong("Id del mecánico");
+	String newMechanicName = Console.readString("Nombre");
+	String newMechanicSurname = Console.readString("Apellidos");
 
-		// Updating the mechanic
-		AdminService admin = ServicesFactory.getAdminService();
-		admin.updateMechanic( mechanicId, newMechanicName, newMechanicSurname );
+	// Updating the mechanic
+	AdminService admin = ServicesFactory.getAdminService();
+	admin.updateMechanic(mechanicId, newMechanicName, newMechanicSurname);
 
-		Console.println( "Mecánico actualizado" );
-	}
+	Console.println("Mecánico actualizado");
+    }
 
 }

@@ -41,13 +41,15 @@ import uo.ri.model.Mecanico;
  */
 public class FindAllMechanics implements Command<List<MechanicDto>> {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	public List<MechanicDto> execute() {
-		MecanicoRepository repository = Factory.repository.forMechanic();
-		List<Mecanico> mechanics = repository.findAll();
-		return DtoAssembler.toMechanicDtoList(mechanics);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    public List<MechanicDto> execute() {
+	MecanicoRepository repository = Factory.repository.forMechanic();
+	List<Mecanico> mechanics = repository.findAll();
+	return DtoAssembler.toMechanicDtoList(mechanics);
+    }
 
 }

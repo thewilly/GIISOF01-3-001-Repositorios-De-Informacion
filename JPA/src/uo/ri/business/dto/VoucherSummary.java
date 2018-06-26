@@ -29,25 +29,25 @@ package uo.ri.business.dto;
  * @version 201806081225
  */
 public class VoucherSummary {
-	
-	/** The dni. */
-	public String dni;
-	
-	/** The emitted. */
-	public int emitted;
-	
-	/** The total amount. */
-	public double totalAmount;
-	
-	/** The available. */
-	public double available;
-	
-	/** The consumed. */
-	public double consumed;
-	
-	/** The name. */
-	public String name;
-	
-	/** The surname. */
-	public String surname;
+
+    /** The dni. */
+    public String dni;
+
+    /** The emitted. */
+    public int emitted;
+
+    /** The total amount. */
+    public double totalAmount;
+
+    /** The available. */
+    public double available;
+
+    /** The consumed. */
+    public double consumed;
+
+    /** The name. */
+    public String name;
+
+    /** The surname. */
+    public String surname;
 }

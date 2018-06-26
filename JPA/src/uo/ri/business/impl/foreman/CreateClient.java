@@ -46,72 +46,79 @@ import uo.ri.util.exception.Check;
  */
 public class CreateClient implements Command<Void> {
 
-	/** The client dto. */
-	private ClientDto clientDto;
-	
-	/** The recommender id. */
-	private Long recommenderId;
-	
-	/** The clients repository. */
-	private ClienteRepository clientsRepository = Factory.repository.forCliente();
-	
-	/** The client. */
-	private Cliente client;
+    /** The client dto. */
+    private ClientDto clientDto;
 
-	/**
-	 * Instantiates a new creates the client.
-	 *
-	 * @param client the client
-	 * @param recommenderId the recommender id
-	 */
-	public CreateClient(ClientDto client, Long recommenderId) {
-		this.clientDto = client;
-		this.recommenderId = recommenderId;
-	}
+    /** The recommender id. */
+    private Long recommenderId;
 
-	/**
-	 * This method adds a new recommendation from the id, to the client. And
-	 * checks if that id exists, if it does, the client will be added.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	private void addRecomendationAndClient() throws BusinessException {
-		if (recommenderId != null) {
-			Cliente recomendador = clientsRepository.findById(recommenderId);
-			Check.isNotNull(recomendador, "No existe el cliente recomendador");
-			clientsRepository.add(client);
-			RecomendacionRepository rp = Factory.repository.forRecomendacion();
-			Recomendacion r = new Recomendacion(recomendador, client);
-			rp.add(r);
-		} else {
-			clientsRepository.add(client);
-		}
-	}
+    /** The clients repository. */
+    private ClienteRepository clientsRepository = Factory.repository
+	    .forCliente();
 
-	/**
-	 * This method checks that the client to be added has a correct dni, which
-	 * is not in the system yet.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	private void assertNotRepeatedClient() throws BusinessException {
-		Cliente aux = clientsRepository.findByDni(client.getDni());
-		Check.isNull(aux, "Ya existe un cliente con ese dni");
-	}
+    /** The client. */
+    private Cliente client;
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public Void execute() throws BusinessException {
-		client = DtoAssembler.toEntity(clientDto);
-		assertNotRepeatedClient();
-		addRecomendationAndClient();
-		MedioPagoRepository mp = Factory.repository.forMedioPago();
-		Metalico metalico = new Metalico(client);
-		mp.add(metalico);
-		Association.Pagar.link(client, metalico);
-		return null;
+    /**
+     * Instantiates a new creates the client.
+     *
+     * @param client
+     *            the client
+     * @param recommenderId
+     *            the recommender id
+     */
+    public CreateClient(ClientDto client, Long recommenderId) {
+	this.clientDto = client;
+	this.recommenderId = recommenderId;
+    }
+
+    /**
+     * This method adds a new recommendation from the id, to the client. And
+     * checks if that id exists, if it does, the client will be added.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void addRecomendationAndClient() throws BusinessException {
+	if (recommenderId != null) {
+	    Cliente recomendador = clientsRepository.findById(recommenderId);
+	    Check.isNotNull(recomendador, "No existe el cliente recomendador");
+	    clientsRepository.add(client);
+	    RecomendacionRepository rp = Factory.repository.forRecomendacion();
+	    Recomendacion r = new Recomendacion(recomendador, client);
+	    rp.add(r);
+	} else {
+	    clientsRepository.add(client);
 	}
+    }
+
+    /**
+     * This method checks that the client to be added has a correct dni, which
+     * is not in the system yet.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertNotRepeatedClient() throws BusinessException {
+	Cliente aux = clientsRepository.findByDni(client.getDni());
+	Check.isNull(aux, "Ya existe un cliente con ese dni");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public Void execute() throws BusinessException {
+	client = DtoAssembler.toEntity(clientDto);
+	assertNotRepeatedClient();
+	addRecomendationAndClient();
+	MedioPagoRepository mp = Factory.repository.forMedioPago();
+	Metalico metalico = new Metalico(client);
+	mp.add(metalico);
+	Association.Pagar.link(client, metalico);
+	return null;
+    }
 
 }

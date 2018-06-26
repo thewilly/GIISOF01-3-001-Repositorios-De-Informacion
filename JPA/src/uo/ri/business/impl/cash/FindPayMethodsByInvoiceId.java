@@ -43,60 +43,72 @@ import uo.ri.util.exception.Check;
  * @since 201806032143
  * @formatter Oviedo Computing Community
  */
-public class FindPayMethodsByInvoiceId implements Command<List<PaymentMeanDto>> {
+public class FindPayMethodsByInvoiceId
+	implements Command<List<PaymentMeanDto>> {
 
-	/** The invoice id. */
-	private Long invoiceId;
-	
-	/** The invoices repository. */
-	private FacturaRepository invoicesRepository = Factory.repository.forFactura();
+    /** The invoice id. */
+    private Long invoiceId;
 
-	/**
-	 * Instantiates a new find pay methods by invoice id.
-	 *
-	 * @param invoiceId the invoice id
-	 */
-	public FindPayMethodsByInvoiceId(Long invoiceId) {
-		this.invoiceId = invoiceId;
+    /** The invoices repository. */
+    private FacturaRepository invoicesRepository = Factory.repository
+	    .forFactura();
+
+    /**
+     * Instantiates a new find pay methods by invoice id.
+     *
+     * @param invoiceId
+     *            the invoice id
+     */
+    public FindPayMethodsByInvoiceId(Long invoiceId) {
+	this.invoiceId = invoiceId;
+    }
+
+    /**
+     * This method checks that the invoice exists in the system.
+     *
+     * @param factura
+     *            the invoice
+     * @throws BusinessException
+     *             the business exception
+     */
+    private void assertInvoiceExists(Factura factura) throws BusinessException {
+	Check.isNotNull(factura, "La factura no existe");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public List<PaymentMeanDto> execute() throws BusinessException {
+	Factura factura = invoicesRepository.findById(invoiceId);
+	assertInvoiceExists(factura);
+	Set<Averia> averias = factura.getAverias();
+	Cliente cliente = getClientFromBreakdowns(averias);
+	List<PaymentMeanDto> mediosPago = Factory.service.forCash()
+		.findPaymentMeansByClientId(cliente.getId());
+	return mediosPago;
+    }
+
+    /**
+     * This method gets the client from all the breakdowns the invoice has
+     * associated to it.
+     *
+     * @param averias
+     *            the breakdowns
+     * @return the client associated to the first breakdown
+     * @throws BusinessException
+     *             the business exception
+     */
+    private Cliente getClientFromBreakdowns(Set<Averia> averias)
+	    throws BusinessException {
+	Check.isFalse(averias.isEmpty(),
+		"La factura no tiene averias asociadas");
+	for (Averia averia : averias) {
+	    return averia.getVehiculo().getCliente();
 	}
-
-	/**
-	 * This method checks that the invoice exists in the system.
-	 *
-	 * @param factura the invoice
-	 * @throws BusinessException the business exception
-	 */
-	private void assertInvoiceExists(Factura factura) throws BusinessException {
-		Check.isNotNull(factura, "La factura no existe");
-	}
-
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<PaymentMeanDto> execute() throws BusinessException {
-		Factura factura = invoicesRepository.findById(invoiceId);
-		assertInvoiceExists(factura);
-		Set<Averia> averias = factura.getAverias();
-		Cliente cliente = getClientFromBreakdowns(averias);
-		List<PaymentMeanDto> mediosPago = Factory.service.forCash().findPaymentMeansByClientId(cliente.getId());
-		return mediosPago;
-	}
-
-	/**
-	 * This method gets the client from all the breakdowns the invoice has
-	 * associated to it.
-	 *
-	 * @param averias the breakdowns
-	 * @return the client associated to the first breakdown
-	 * @throws BusinessException the business exception
-	 */
-	private Cliente getClientFromBreakdowns(Set<Averia> averias) throws BusinessException {
-		Check.isFalse(averias.isEmpty(), "La factura no tiene averias asociadas");
-		for (Averia averia : averias) {
-			return averia.getVehiculo().getCliente();
-		}
-		return null;
-	}
+	return null;
+    }
 
 }

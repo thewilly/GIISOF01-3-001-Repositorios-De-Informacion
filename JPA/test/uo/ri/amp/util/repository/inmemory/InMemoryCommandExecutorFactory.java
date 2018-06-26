@@ -30,12 +30,14 @@ import uo.ri.business.impl.CommandExecutor;
  */
 public class InMemoryCommandExecutorFactory implements CommandExecutorFactory {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.CommandExecutorFactory#forExecutor()
-	 */
-	@Override
-	public CommandExecutor forExecutor() {
-		return new InMemoryCommandExecutor();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.CommandExecutorFactory#forExecutor()
+     */
+    @Override
+    public CommandExecutor forExecutor() {
+	return new InMemoryCommandExecutor();
+    }
 
 }

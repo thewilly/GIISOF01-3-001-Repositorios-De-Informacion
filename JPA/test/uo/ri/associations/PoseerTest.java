@@ -34,7 +34,6 @@ import uo.ri.model.Cliente;
 import uo.ri.model.Vehiculo;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class PoseerTest.
  *
@@ -42,64 +41,67 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class PoseerTest {
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		Association.Poseer.link(cliente, vehiculo);
-	}
-	
-	/**
-	 * Test poseer add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPoseerAdd() throws BusinessException {
-		assertTrue( cliente.getVehiculos().contains( vehiculo ));
-		assertTrue( vehiculo.getCliente() == cliente );
-	}
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
 
-	/**
-	 * Test poseer remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPoseerRemove() throws BusinessException {
-		Association.Poseer.unlink(cliente, vehiculo);
+    /** The cliente. */
+    private Cliente cliente;
 
-		assertTrue( ! cliente.getVehiculos().contains( vehiculo ));
-		assertTrue( vehiculo.getCliente() == null );
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	Association.Poseer.link(cliente, vehiculo);
+    }
 
-	/**
-	 * Test safe return.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturn() throws BusinessException {
-		Set<Vehiculo> vehiculos = cliente.getVehiculos();
-		vehiculos.remove( vehiculo );
+    /**
+     * Test poseer add.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPoseerAdd() throws BusinessException {
+	assertTrue(cliente.getVehiculos().contains(vehiculo));
+	assertTrue(vehiculo.getCliente() == cliente);
+    }
 
-		assertTrue( vehiculos.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			cliente.getVehiculos().size() == 1
-		);
-	}
+    /**
+     * Test poseer remove.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPoseerRemove() throws BusinessException {
+	Association.Poseer.unlink(cliente, vehiculo);
 
+	assertTrue(!cliente.getVehiculos().contains(vehiculo));
+	assertTrue(vehiculo.getCliente() == null);
+    }
+
+    /**
+     * Test safe return.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturn() throws BusinessException {
+	Set<Vehiculo> vehiculos = cliente.getVehiculos();
+	vehiculos.remove(vehiculo);
+
+	assertTrue(vehiculos.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		cliente.getVehiculos().size() == 1);
+    }
 
 }

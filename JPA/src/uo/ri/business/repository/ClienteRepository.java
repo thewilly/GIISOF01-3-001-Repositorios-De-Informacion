@@ -36,34 +36,36 @@ import uo.ri.model.Cliente;
  */
 public interface ClienteRepository extends Repository<Cliente> {
 
-	/**
-	 * Find by dni.
-	 *
-	 * @param dni the dni
-	 * @return the cliente
-	 */
-	Cliente findByDni(String dni);
+    /**
+     * Find by dni.
+     *
+     * @param dni
+     *            the dni
+     * @return the cliente
+     */
+    Cliente findByDni(String dni);
 
-	/**
-	 * Find recomended by.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<Cliente> findRecomendedBy(Long id);
+    /**
+     * Find recomended by.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     */
+    List<Cliente> findRecomendedBy(Long id);
 
-	/**
-	 * Find with recomendations.
-	 *
-	 * @return the list
-	 */
-	List<Cliente> findWithRecomendations();
+    /**
+     * Find with recomendations.
+     *
+     * @return the list
+     */
+    List<Cliente> findWithRecomendations();
 
-	/**
-	 * Find with three unused breakdowns.
-	 *
-	 * @return the list
-	 */
-	List<Cliente> findWithThreeUnusedBreakdowns();
+    /**
+     * Find with three unused breakdowns.
+     *
+     * @return the list
+     */
+    List<Cliente> findWithThreeUnusedBreakdowns();
 
 }

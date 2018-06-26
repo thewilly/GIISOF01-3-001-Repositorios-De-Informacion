@@ -37,15 +37,18 @@ import uo.ri.ui.admin.action.ListBonosClientsAction;
  */
 public class BonosMenu extends BaseMenu {
 
-	/**
-	 * Instantiates a new bonos menu.
-	 */
-	public BonosMenu() {
-		menuOptions = new Object[][] { { "Administrador > Gestión de bonos", null },
+    /**
+     * Instantiates a new bonos menu.
+     */
+    public BonosMenu() {
+	menuOptions = new Object[][] {
+		{ "Administrador > Gestión de bonos", null },
 
-				{ "Generacion automática de bonos", GenerateVouchersAutomaticAction.class },
-				{ "Listado de bonos de un cliente", ListBonosClientsAction.class },
-				{ "Listado de todos los bonos", ListBonosAction.class }, };
-	}
+		{ "Generacion automática de bonos",
+			GenerateVouchersAutomaticAction.class },
+		{ "Listado de bonos de un cliente",
+			ListBonosClientsAction.class },
+		{ "Listado de todos los bonos", ListBonosAction.class }, };
+    }
 
 }

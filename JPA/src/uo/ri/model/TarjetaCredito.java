@@ -43,156 +43,170 @@ import uo.ri.util.exception.BusinessException;
 @DiscriminatorValue("TTarjetasCredito")
 public class TarjetaCredito extends MedioPago {
 
-	/** The numero. */
-	@Column(unique = true)
-	private String numero;
-	
-	/** The tipo. */
-	private String tipo;
-	
-	/** The validez. */
-	private Date validez;
+    /** The numero. */
+    @Column(unique = true)
+    private String numero;
 
-	/**
-	 * Instantiates a new tarjeta credito.
-	 */
-	TarjetaCredito() {
-	}
+    /** The tipo. */
+    private String tipo;
 
-	/**
-	 * Instantiates a new tarjeta credito.
-	 *
-	 * @param numero the numero
-	 */
-	public TarjetaCredito(String numero) {
-		super();
-		this.numero = numero;
-		this.validez = DateUtil.tomorrow();
-		this.tipo = "UNKNOWN";
-	}
+    /** The validez. */
+    private Date validez;
 
-	/**
-	 * Instantiates a new tarjeta credito.
-	 *
-	 * @param num the num
-	 * @param type the type
-	 * @param val the val
-	 */
-	public TarjetaCredito(String num, String type, Date val) {
-		this.numero = num;
-		this.tipo = type;
-		this.validez = (Date) val.clone();
-	}
+    /**
+     * Instantiates a new tarjeta credito.
+     */
+    TarjetaCredito() {
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.model.MedioPago#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TarjetaCredito other = (TarjetaCredito) obj;
-		if (numero == null) {
-			if (other.numero != null)
-				return false;
-		} else if (!numero.equals(other.numero))
-			return false;
-		return true;
-	}
+    /**
+     * Instantiates a new tarjeta credito.
+     *
+     * @param numero
+     *            the numero
+     */
+    public TarjetaCredito(String numero) {
+	super();
+	this.numero = numero;
+	this.validez = DateUtil.tomorrow();
+	this.tipo = "UNKNOWN";
+    }
 
-	/**
-	 * Gets the numero.
-	 *
-	 * @return the numero
-	 */
-	public String getNumero() {
-		return numero;
-	}
+    /**
+     * Instantiates a new tarjeta credito.
+     *
+     * @param num
+     *            the num
+     * @param type
+     *            the type
+     * @param val
+     *            the val
+     */
+    public TarjetaCredito(String num, String type, Date val) {
+	this.numero = num;
+	this.tipo = type;
+	this.validez = (Date) val.clone();
+    }
 
-	/**
-	 * Gets the tipo.
-	 *
-	 * @return the tipo
-	 */
-	public String getTipo() {
-		return tipo;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.model.MedioPago#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	TarjetaCredito other = (TarjetaCredito) obj;
+	if (numero == null) {
+	    if (other.numero != null)
+		return false;
+	} else if (!numero.equals(other.numero))
+	    return false;
+	return true;
+    }
 
-	/**
-	 * Gets the validez.
-	 *
-	 * @return the validez
-	 */
-	public Date getValidez() {
-		return (Date) validez.clone();
-	}
+    /**
+     * Gets the numero.
+     *
+     * @return the numero
+     */
+    public String getNumero() {
+	return numero;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.model.MedioPago#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		return result;
-	}
+    /**
+     * Gets the tipo.
+     *
+     * @return the tipo
+     */
+    public String getTipo() {
+	return tipo;
+    }
 
-	/**
-	 * This method checks if the validity of the credit card is still right.
-	 *
-	 * @return true if the validity of the card is okay, false otherwise
-	 */
-	public boolean isValidNow() {
-		return validez.after(DateUtil.today());
-	}
+    /**
+     * Gets the validez.
+     *
+     * @return the validez
+     */
+    public Date getValidez() {
+	return (Date) validez.clone();
+    }
 
-	/**
-	 * This method add to the accumulated money of the credit card the quantity
-	 * specified as a parameter. If the validity of the credit card is not right
-	 * anymore, an exception will be raised
-	 *
-	 * @param cantidad the quantity to be payed
-	 * @throws BusinessException the business exception
-	 */
-	@Override
-	public void pagar(double cantidad) throws BusinessException {
-		if (isValidNow()) {
-			super.acumulado += cantidad;
-		} else {
-			throw new BusinessException("La tarjeta está caducada");
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.model.MedioPago#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((numero == null) ? 0 : numero.hashCode());
+	return result;
+    }
 
-	/**
-	 * Sets the tipo.
-	 *
-	 * @param tipo the new tipo
-	 */
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+    /**
+     * This method checks if the validity of the credit card is still right.
+     *
+     * @return true if the validity of the card is okay, false otherwise
+     */
+    public boolean isValidNow() {
+	return validez.after(DateUtil.today());
+    }
 
-	/**
-	 * Sets the validez.
-	 *
-	 * @param validez the new validez
-	 */
-	public void setValidez(Date validez) {
-		this.validez = validez;
+    /**
+     * This method add to the accumulated money of the credit card the quantity
+     * specified as a parameter. If the validity of the credit card is not right
+     * anymore, an exception will be raised
+     *
+     * @param cantidad
+     *            the quantity to be payed
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Override
+    public void pagar(double cantidad) throws BusinessException {
+	if (isValidNow()) {
+	    super.acumulado += cantidad;
+	} else {
+	    throw new BusinessException("La tarjeta está caducada");
 	}
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "TarjetaCredito [numero=" + numero + ", tipo=" + tipo + ", validez=" + validez + ", acumulado="
-				+ acumulado + "]";
-	}
+    /**
+     * Sets the tipo.
+     *
+     * @param tipo
+     *            the new tipo
+     */
+    public void setTipo(String tipo) {
+	this.tipo = tipo;
+    }
+
+    /**
+     * Sets the validez.
+     *
+     * @param validez
+     *            the new validez
+     */
+    public void setValidez(Date validez) {
+	this.validez = validez;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "TarjetaCredito [numero=" + numero + ", tipo=" + tipo
+		+ ", validez=" + validez + ", acumulado=" + acumulado + "]";
+    }
 
 }

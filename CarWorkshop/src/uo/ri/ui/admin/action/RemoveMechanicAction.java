@@ -38,16 +38,16 @@ import uo.ri.conf.ServicesFactory;
  */
 public class RemoveMechanicAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
-		Long mechanicId = Console.readLong( "Id de mecánico" );
+    @Override
+    public void execute() throws BusinessException {
+	Long mechanicId = Console.readLong("Id de mecánico");
 
-		AdminService admin = ServicesFactory.getAdminService();
-		
-		// Removing the mechanic from the system.
-		admin.removeMechanic( mechanicId );
+	AdminService admin = ServicesFactory.getAdminService();
 
-		Console.println( "Se ha eliminado el mecánico" );
-	}
+	// Removing the mechanic from the system.
+	admin.removeMechanic(mechanicId);
+
+	Console.println("Se ha eliminado el mecánico");
+    }
 
 }

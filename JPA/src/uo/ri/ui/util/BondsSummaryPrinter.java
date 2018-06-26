@@ -34,29 +34,32 @@ import uo.ri.business.dto.VoucherSummary;
  * @version 201806081225
  */
 public class BondsSummaryPrinter implements Printer {
-	
-	/** The bonds. */
-	private List<VoucherSummary> bonds;
 
-	/**
-	 * Instantiates a new bonds summary printer.
-	 *
-	 * @param bonds the bonds
-	 */
-	public BondsSummaryPrinter( List<VoucherSummary> bonds ) {
-		this.bonds=bonds;
+    /** The bonds. */
+    private List<VoucherSummary> bonds;
+
+    /**
+     * Instantiates a new bonds summary printer.
+     *
+     * @param bonds
+     *            the bonds
+     */
+    public BondsSummaryPrinter(List<VoucherSummary> bonds) {
+	this.bonds = bonds;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	for (VoucherSummary bond : bonds) {
+	    Console.printf("\t%s %s %s %d %.2f %.2f %.2f\n", bond.dni,
+		    bond.name, bond.surname, bond.emitted, bond.available,
+		    bond.consumed, bond.totalAmount);
 	}
-	
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		for (VoucherSummary bond : bonds) {
-			Console.printf( "\t%s %s %s %d %.2f %.2f %.2f\n", bond.dni, bond.name, bond.surname,
-					bond.emitted, bond.available,
-					bond.consumed, bond.totalAmount );
-		}
-	}
+    }
 
 }

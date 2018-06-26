@@ -27,67 +27,67 @@ package uo.ri.business.repository;
  */
 public interface RepositoryFactory {
 
-	/**
-	 * For averia.
-	 *
-	 * @return the averia repository
-	 */
-	AveriaRepository forAveria();
+    /**
+     * For averia.
+     *
+     * @return the averia repository
+     */
+    AveriaRepository forAveria();
 
-	/**
-	 * For cargo.
-	 *
-	 * @return the cargo repository
-	 */
-	CargoRepository forCargo();
+    /**
+     * For cargo.
+     *
+     * @return the cargo repository
+     */
+    CargoRepository forCargo();
 
-	/**
-	 * For cliente.
-	 *
-	 * @return the cliente repository
-	 */
-	ClienteRepository forCliente();
+    /**
+     * For cliente.
+     *
+     * @return the cliente repository
+     */
+    ClienteRepository forCliente();
 
-	/**
-	 * For factura.
-	 *
-	 * @return the factura repository
-	 */
-	FacturaRepository forFactura();
+    /**
+     * For factura.
+     *
+     * @return the factura repository
+     */
+    FacturaRepository forFactura();
 
-	/**
-	 * For mechanic.
-	 *
-	 * @return the mecanico repository
-	 */
-	MecanicoRepository forMechanic();
+    /**
+     * For mechanic.
+     *
+     * @return the mecanico repository
+     */
+    MecanicoRepository forMechanic();
 
-	/**
-	 * For medio pago.
-	 *
-	 * @return the medio pago repository
-	 */
-	MedioPagoRepository forMedioPago();
+    /**
+     * For medio pago.
+     *
+     * @return the medio pago repository
+     */
+    MedioPagoRepository forMedioPago();
 
-	/**
-	 * For recomendacion.
-	 *
-	 * @return the recomendacion repository
-	 */
-	RecomendacionRepository forRecomendacion();
+    /**
+     * For recomendacion.
+     *
+     * @return the recomendacion repository
+     */
+    RecomendacionRepository forRecomendacion();
 
-	/**
-	 * For repuesto.
-	 *
-	 * @return the repuesto repository
-	 */
-	RepuestoRepository forRepuesto();
+    /**
+     * For repuesto.
+     *
+     * @return the repuesto repository
+     */
+    RepuestoRepository forRepuesto();
 
-	/**
-	 * For vehiculo.
-	 *
-	 * @return the vehiculo repository
-	 */
-	VehiculoRepository forVehiculo();
+    /**
+     * For vehiculo.
+     *
+     * @return the vehiculo repository
+     */
+    VehiculoRepository forVehiculo();
 
 }

@@ -29,37 +29,40 @@ import java.util.List;
  *
  * @author Guillermo Facundo Colunga
  * @version 201806081225
- * @param <T> the generic type
+ * @param <T>
+ *            the generic type
  */
 public interface Repository<T> {
-	
-	/**
-	 * Adds the.
-	 *
-	 * @param t the t
-	 */
-	void add(T t);
-	
-	/**
-	 * Find all.
-	 *
-	 * @return the list
-	 */
-	List<T> findAll();
-	
-	/**
-	 * Find by id.
-	 *
-	 * @param id the id
-	 * @return the t
-	 */
-	T findById(Long id);
-	
-	/**
-	 * Removes the.
-	 *
-	 * @param t the t
-	 */
-	void remove(T t);
-}
 
+    /**
+     * Adds the.
+     *
+     * @param t
+     *            the t
+     */
+    void add(T t);
+
+    /**
+     * Find all.
+     *
+     * @return the list
+     */
+    List<T> findAll();
+
+    /**
+     * Find by id.
+     *
+     * @param id
+     *            the id
+     * @return the t
+     */
+    T findById(Long id);
+
+    /**
+     * Removes the.
+     *
+     * @param t
+     *            the t
+     */
+    void remove(T t);
+}

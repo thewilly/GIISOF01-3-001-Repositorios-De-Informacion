@@ -37,7 +37,6 @@ import uo.ri.model.TipoVehiculo;
 import uo.ri.model.Vehiculo;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class AsignarTest.
  *
@@ -45,81 +44,85 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class AsignarTest {
-	
-	/** The mecanico. */
-	private Mecanico mecanico;
-	
-	/** The averia. */
-	private Averia averia;
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		Association.Poseer.link(cliente, vehiculo );
+    /** The mecanico. */
+    private Mecanico mecanico;
 
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
-		
-		averia = new Averia(vehiculo, "falla la junta la trocla");
+    /** The averia. */
+    private Averia averia;
 
-		mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
-		averia.assignTo(mecanico);
-	}
-	
-	/**
-	 * Test asignar linked.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAsignarLinked() throws BusinessException {
-		assertTrue( mecanico.getAsignadas().contains( averia ));
-		assertTrue( averia.getMecanico() == mecanico );
-	}
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
 
-	/**
-	 * Test asignar unlink.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testAsignarUnlink() throws BusinessException {
-		averia.desassign();
-		
-		assertTrue( ! mecanico.getAsignadas().contains( averia ));
-		assertTrue( mecanico.getAsignadas().size() == 0 );
-		assertTrue( averia.getMecanico() == null );
-	}
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
 
-	/**
-	 * Test safe return.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testSafeReturn() throws BusinessException {
-		Set<Averia> asignadas = mecanico.getAsignadas();
-		asignadas.remove( averia );
+    /** The cliente. */
+    private Cliente cliente;
 
-		assertTrue( asignadas.size() == 0 );
-		assertTrue( "Se debe retornar copia de la coleccion o hacerla de solo lectura", 
-			mecanico.getAsignadas().size() == 1
-		);
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	Association.Poseer.link(cliente, vehiculo);
+
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
+
+	averia = new Averia(vehiculo, "falla la junta la trocla");
+
+	mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
+	averia.assignTo(mecanico);
+    }
+
+    /**
+     * Test asignar linked.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAsignarLinked() throws BusinessException {
+	assertTrue(mecanico.getAsignadas().contains(averia));
+	assertTrue(averia.getMecanico() == mecanico);
+    }
+
+    /**
+     * Test asignar unlink.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testAsignarUnlink() throws BusinessException {
+	averia.desassign();
+
+	assertTrue(!mecanico.getAsignadas().contains(averia));
+	assertTrue(mecanico.getAsignadas().size() == 0);
+	assertTrue(averia.getMecanico() == null);
+    }
+
+    /**
+     * Test safe return.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testSafeReturn() throws BusinessException {
+	Set<Averia> asignadas = mecanico.getAsignadas();
+	asignadas.remove(averia);
+
+	assertTrue(asignadas.size() == 0);
+	assertTrue(
+		"Se debe retornar copia de la coleccion o hacerla de solo lectura",
+		mecanico.getAsignadas().size() == 1);
+    }
 
 }

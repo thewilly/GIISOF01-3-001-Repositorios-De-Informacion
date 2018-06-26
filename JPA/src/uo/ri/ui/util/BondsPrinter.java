@@ -34,36 +34,39 @@ import uo.ri.business.dto.VoucherDto;
  * @version 201806081225
  */
 public class BondsPrinter implements Printer {
-	
-	/** The bonds. */
-	protected List<VoucherDto> bonds;
-	
-	/**
-	 * Instantiates a new bonds printer.
-	 *
-	 * @param bonds the bonds
-	 */
-	public BondsPrinter(List<VoucherDto> bonds) {
-		this.bonds = bonds;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		double total = 0.0;
-		double totalConsumido = 0.0;
-		double totalDisponible = 0.0;
-		for (VoucherDto bond : bonds) {
-			totalConsumido += bond.accumulated;
-			totalDisponible += bond.available;
-			Console.printf( "\t%s %.2f %.2f %s\n", bond.code, bond.available, bond.accumulated,
-					bond.description );
-		}
-		total = totalConsumido + totalDisponible;
-		Console.printf( "\t%d %.2f %.2f %.2f", bonds.size(), total, totalConsumido,
-				totalDisponible );
+    /** The bonds. */
+    protected List<VoucherDto> bonds;
+
+    /**
+     * Instantiates a new bonds printer.
+     *
+     * @param bonds
+     *            the bonds
+     */
+    public BondsPrinter(List<VoucherDto> bonds) {
+	this.bonds = bonds;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	double total = 0.0;
+	double totalConsumido = 0.0;
+	double totalDisponible = 0.0;
+	for (VoucherDto bond : bonds) {
+	    totalConsumido += bond.accumulated;
+	    totalDisponible += bond.available;
+	    Console.printf("\t%s %.2f %.2f %s\n", bond.code, bond.available,
+		    bond.accumulated, bond.description);
 	}
+	total = totalConsumido + totalDisponible;
+	Console.printf("\t%d %.2f %.2f %.2f", bonds.size(), total,
+		totalConsumido, totalDisponible);
+    }
 
 }

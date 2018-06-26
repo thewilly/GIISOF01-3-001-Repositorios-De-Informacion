@@ -45,74 +45,78 @@ import uo.ri.util.exception.BusinessException;
  */
 public class UpdateClientTests extends BaseServiceTests {
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /**
+     * Sets the up.
+     *
+     * @throws Exception
+     *             the exception
+     */
+    @Before
+    public void setUp() throws Exception {
+    }
 
-	/**
-	 * El atributo dni no se actualiza aunque el dto lleve nuevo dni.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testDniDoesNotUpdate() throws BusinessException {
-		Cliente c = FixtureRepository.registerNewClient();
-		ClientDto dto = DtoAssembler.toDto( c );
-		String previousDni = c.getDni();
+    /**
+     * El atributo dni no se actualiza aunque el dto lleve nuevo dni.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testDniDoesNotUpdate() throws BusinessException {
+	Cliente c = FixtureRepository.registerNewClient();
+	ClientDto dto = DtoAssembler.toDto(c);
+	String previousDni = c.getDni();
 
-		dto.dni = "m-" + dto.dni; // <-- must be ignored
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.updateClient( dto );
-		
-		Cliente expected = FixtureRepository.findClientByDni( c.getDni() );
-		assertTrue( expected.getDni().equals( previousDni ));
-	}
-	
-	/**
-	 * Se actualiza el cliente con todos los campos del dto.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testUpdate() throws BusinessException {
-		Cliente c = FixtureRepository.registerNewClient();
-		ClientDto dto = DtoAssembler.toDto( c );
-		
-		dto.addressStreet = "m-" + dto.addressStreet;
-		dto.addressCity = "m-" + dto.addressCity;
-		dto.addressZipcode = "m-" + dto.addressZipcode;
-		dto.email = "m-" + dto.email;
-		dto.phone = "m-" + dto.phone;
-		dto.name = "m-" + dto.name;
-		dto.surname = "m-" + dto.surname;
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.updateClient( dto );
-		
-		Cliente expected = FixtureRepository.findClientByDni( c.getDni() );
-		assertSameData(dto, expected);
-	}
-	
-	/**
-	 * Si el cliente no existe salta una excepción.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test(expected = BusinessException.class)
-	public void testUpdateClientDoesNotExist() throws BusinessException {
-		ClientDto dto = Fixture.newClientDto();
-		Long DOES_NOT_EXIST = -12345L;
-		
-		dto.id = DOES_NOT_EXIST;
-		
-		ForemanService svc = Factory.service.forForeman();
-		svc.updateClient( dto );
-	}
+	dto.dni = "m-" + dto.dni; // <-- must be ignored
+
+	ForemanService svc = Factory.service.forForeman();
+	svc.updateClient(dto);
+
+	Cliente expected = FixtureRepository.findClientByDni(c.getDni());
+	assertTrue(expected.getDni().equals(previousDni));
+    }
+
+    /**
+     * Se actualiza el cliente con todos los campos del dto.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testUpdate() throws BusinessException {
+	Cliente c = FixtureRepository.registerNewClient();
+	ClientDto dto = DtoAssembler.toDto(c);
+
+	dto.addressStreet = "m-" + dto.addressStreet;
+	dto.addressCity = "m-" + dto.addressCity;
+	dto.addressZipcode = "m-" + dto.addressZipcode;
+	dto.email = "m-" + dto.email;
+	dto.phone = "m-" + dto.phone;
+	dto.name = "m-" + dto.name;
+	dto.surname = "m-" + dto.surname;
+
+	ForemanService svc = Factory.service.forForeman();
+	svc.updateClient(dto);
+
+	Cliente expected = FixtureRepository.findClientByDni(c.getDni());
+	assertSameData(dto, expected);
+    }
+
+    /**
+     * Si el cliente no existe salta una excepción.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test(expected = BusinessException.class)
+    public void testUpdateClientDoesNotExist() throws BusinessException {
+	ClientDto dto = Fixture.newClientDto();
+	Long DOES_NOT_EXIST = -12345L;
+
+	dto.id = DOES_NOT_EXIST;
+
+	ForemanService svc = Factory.service.forForeman();
+	svc.updateClient(dto);
+    }
 
 }

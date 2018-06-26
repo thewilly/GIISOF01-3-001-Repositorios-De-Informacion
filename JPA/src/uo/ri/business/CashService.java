@@ -40,85 +40,107 @@ import uo.ri.util.exception.BusinessException;
  */
 public interface CashService {
 
-	/**
-	 * Adds the card payment mean.
-	 *
-	 * @param card the card
-	 * @throws BusinessException the business exception
-	 */
-	void addCardPaymentMean(CardDto card) throws BusinessException;
+    /**
+     * Adds the card payment mean.
+     *
+     * @param card
+     *            the card
+     * @throws BusinessException
+     *             the business exception
+     */
+    void addCardPaymentMean(CardDto card) throws BusinessException;
 
-	/**
-	 * Adds the voucher payment mean.
-	 *
-	 * @param voucher the voucher
-	 * @throws BusinessException the business exception
-	 */
-	void addVoucherPaymentMean(VoucherDto voucher) throws BusinessException;
+    /**
+     * Adds the voucher payment mean.
+     *
+     * @param voucher
+     *            the voucher
+     * @throws BusinessException
+     *             the business exception
+     */
+    void addVoucherPaymentMean(VoucherDto voucher) throws BusinessException;
 
-	/**
-	 * Creates the invoice for.
-	 *
-	 * @param idsAveria a list if breakdown ids to be included in the invoice
-	 * @return a dto with the new generated invoice
-	 * @throws BusinessException the business exception
-	 */
-	InvoiceDto createInvoiceFor(List<Long> idsAveria) throws BusinessException;
+    /**
+     * Creates the invoice for.
+     *
+     * @param idsAveria
+     *            a list if breakdown ids to be included in the invoice
+     * @return a dto with the new generated invoice
+     * @throws BusinessException
+     *             the business exception
+     */
+    InvoiceDto createInvoiceFor(List<Long> idsAveria) throws BusinessException;
 
-	/**
-	 * Delete payment mean.
-	 *
-	 * @param id the id
-	 * @throws BusinessException the business exception
-	 */
-	void deletePaymentMean(Long id) throws BusinessException;
+    /**
+     * Delete payment mean.
+     *
+     * @param id
+     *            the id
+     * @throws BusinessException
+     *             the business exception
+     */
+    void deletePaymentMean(Long id) throws BusinessException;
 
-	/**
-	 * Find invoice by number.
-	 *
-	 * @param numeroFactura the numero factura
-	 * @return the invoice dto
-	 * @throws BusinessException the business exception
-	 */
-	InvoiceDto findInvoiceByNumber(Long numeroFactura) throws BusinessException;
+    /**
+     * Find invoice by number.
+     *
+     * @param numeroFactura
+     *            the numero factura
+     * @return the invoice dto
+     * @throws BusinessException
+     *             the business exception
+     */
+    InvoiceDto findInvoiceByNumber(Long numeroFactura) throws BusinessException;
 
-	/**
-	 * Find payment means by client id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<PaymentMeanDto> findPaymentMeansByClientId(Long id) throws BusinessException;
+    /**
+     * Find payment means by client id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<PaymentMeanDto> findPaymentMeansByClientId(Long id)
+	    throws BusinessException;
 
-	/**
-	 * Find payment means for invoice.
-	 *
-	 * @param idFactura the id factura
-	 * @return a list of payment mean dtos owned by the first breakdown's
-	 *         vehicle's owner
-	 * @throws BusinessException the business exception
-	 */
-	List<PaymentMeanDto> findPaymentMeansForInvoice(Long idFactura) throws BusinessException;
+    /**
+     * Find payment means for invoice.
+     *
+     * @param idFactura
+     *            the id factura
+     * @return a list of payment mean dtos owned by the first breakdown's
+     *         vehicle's owner
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<PaymentMeanDto> findPaymentMeansForInvoice(Long idFactura)
+	    throws BusinessException;
 
-	/**
-	 * Find repairs by client.
-	 *
-	 * @param dni the dni
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<FailureDto> findRepairsByClient(String dni) throws BusinessException;
+    /**
+     * Find repairs by client.
+     *
+     * @param dni
+     *            the dni
+     * @return the list
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<FailureDto> findRepairsByClient(String dni) throws BusinessException;
 
-	/**
-	 * Settles the invoice (liquida la factura) with the charges specified in
-	 * the cargos Map. The map's key is the payment mean id and the value is the
-	 * amount to be charged to this payment mean.
-	 *
-	 * @param idFactura the id factura
-	 * @param cargos the cargos
-	 * @return the invoice dto
-	 * @throws BusinessException the business exception
-	 */
-	InvoiceDto settleInvoice(Long idFactura, Map<Long, Double> cargos) throws BusinessException;
+    /**
+     * Settles the invoice (liquida la factura) with the charges specified in
+     * the cargos Map. The map's key is the payment mean id and the value is the
+     * amount to be charged to this payment mean.
+     *
+     * @param idFactura
+     *            the id factura
+     * @param cargos
+     *            the cargos
+     * @return the invoice dto
+     * @throws BusinessException
+     *             the business exception
+     */
+    InvoiceDto settleInvoice(Long idFactura, Map<Long, Double> cargos)
+	    throws BusinessException;
 }

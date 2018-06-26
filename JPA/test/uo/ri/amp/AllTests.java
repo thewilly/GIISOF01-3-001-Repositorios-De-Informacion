@@ -33,7 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({ uo.ri.amp.domain.AllTests.class, uo.ri.amp.service.AllTests.class })
+@SuiteClasses({ uo.ri.amp.domain.AllTests.class,
+	uo.ri.amp.service.AllTests.class })
 
 public class AllTests {
 

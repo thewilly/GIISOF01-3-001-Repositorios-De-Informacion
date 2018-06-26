@@ -29,11 +29,11 @@ package uo.ri.model.types;
  * @version 201806081225
  */
 public enum FacturaStatus {
-	
-	/** The sin abonar. */
-	SIN_ABONAR,
-	
-	/** The abonada. */
-	ABONADA
+
+    /** The sin abonar. */
+    SIN_ABONAR,
+
+    /** The abonada. */
+    ABONADA
 
 }

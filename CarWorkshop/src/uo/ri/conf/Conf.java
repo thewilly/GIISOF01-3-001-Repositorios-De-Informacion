@@ -36,42 +36,43 @@ import java.util.Properties;
  */
 public class Conf {
 
-	// SATATIC MEMBERS
+    // SATATIC MEMBERS
 
-	private static final String CONF_FILE = "configuration.properties";
+    private static final String CONF_FILE = "configuration.properties";
 
-	private static Conf instance;
+    private static Conf instance;
 
-	public static String get( String key ) {
-		return getInstance().getProperty( key );
+    public static String get(String key) {
+	return getInstance().getProperty(key);
+    }
+
+    private static Conf getInstance() {
+	if (instance == null) {
+	    instance = new Conf();
 	}
+	return instance;
+    }
 
-	private static Conf getInstance() {
-		if (instance == null) {
-			instance = new Conf();
-		}
-		return instance;
+    // NON-STATIC MEMEBERS
+
+    private Properties properties;
+
+    private Conf() {
+	properties = new Properties();
+	try {
+	    properties.load(
+		    Conf.class.getClassLoader().getResourceAsStream(CONF_FILE));
+	} catch (IOException e) {
+	    throw new RuntimeException("Properties file can not be loaded", e);
 	}
+    }
 
-	// NON-STATIC MEMEBERS
-
-	private Properties properties;
-
-	private Conf() {
-		properties = new Properties();
-		try {
-			properties.load( Conf.class.getClassLoader().getResourceAsStream( CONF_FILE ) );
-		} catch (IOException e) {
-			throw new RuntimeException( "Properties file can not be loaded", e );
-		}
+    private String getProperty(String key) {
+	String value = properties.getProperty(key);
+	if (value == null) {
+	    throw new RuntimeException("Properties not found in config file");
 	}
-
-	private String getProperty( String key ) {
-		String value = properties.getProperty( key );
-		if (value == null) {
-			throw new RuntimeException( "Properties not found in config file" );
-		}
-		return value;
-	}
+	return value;
+    }
 
 }

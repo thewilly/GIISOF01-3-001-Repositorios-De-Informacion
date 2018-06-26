@@ -38,15 +38,15 @@ import uo.ri.conf.ServicesFactory;
  */
 public class RemovePaymentMethodAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		Long paymentMethodId = Console.readLong( "Id medio de pago" );
-		CashService cash = ServicesFactory.getCashService();
-		
-		// Removing the payment method.
-		cash.removePaymentMethodById( paymentMethodId );
-		Console.println( "Se ha eliminado el medio de pago" );
-	}
+	Long paymentMethodId = Console.readLong("Id medio de pago");
+	CashService cash = ServicesFactory.getCashService();
+
+	// Removing the payment method.
+	cash.removePaymentMethodById(paymentMethodId);
+	Console.println("Se ha eliminado el medio de pago");
+    }
 
 }

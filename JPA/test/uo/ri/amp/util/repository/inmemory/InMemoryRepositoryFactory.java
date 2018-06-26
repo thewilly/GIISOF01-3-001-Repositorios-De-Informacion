@@ -38,99 +38,117 @@ import uo.ri.business.repository.VehiculoRepository;
  */
 public class InMemoryRepositoryFactory implements RepositoryFactory {
 
-	/** The clientes. */
-	private ClienteRepository clientes = new InMemoryClienteRepository();
-	
-	/** The medios pago. */
-	private MedioPagoRepository mediosPago = new InMemoryMediosPagoRepository();
-	
-	/** The facturas. */
-	private FacturaRepository facturas = new InMemoryFacturaRepository();
-	
-	/** The cargos. */
-	private CargoRepository cargos = new InMemoryCargoRepository();
-	
-	/** The recomendaciones. */
-	private RecomendacionRepository recomendaciones = new InMemoryRecomendacionRepository();
-	
-	/** The vehiculos. */
-	private VehiculoRepository vehiculos = new InMemoryVehiculoRepository();
-	
-	/** The averias. */
-	private AveriaRepository averias = new InMemoryAveriaRepository();
+    /** The clientes. */
+    private ClienteRepository clientes = new InMemoryClienteRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forAveria()
-	 */
-	@Override
-	public AveriaRepository forAveria() {
-		return averias;
-	}
+    /** The medios pago. */
+    private MedioPagoRepository mediosPago = new InMemoryMediosPagoRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCargo()
-	 */
-	@Override
-	public CargoRepository forCargo() {
-		return cargos;
-	}
+    /** The facturas. */
+    private FacturaRepository facturas = new InMemoryFacturaRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forCliente()
-	 */
-	@Override
-	public ClienteRepository forCliente() {
-		return clientes;
-	}
+    /** The cargos. */
+    private CargoRepository cargos = new InMemoryCargoRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forFactura()
-	 */
-	@Override
-	public FacturaRepository forFactura() {
-		return facturas;
-	}
+    /** The recomendaciones. */
+    private RecomendacionRepository recomendaciones = new InMemoryRecomendacionRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
-	 */
-	@Override
-	public MecanicoRepository forMechanic() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /** The vehiculos. */
+    private VehiculoRepository vehiculos = new InMemoryVehiculoRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
-	 */
-	@Override
-	public MedioPagoRepository forMedioPago() {
-		return mediosPago;
-	}
+    /** The averias. */
+    private AveriaRepository averias = new InMemoryAveriaRepository();
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRecomendacion()
-	 */
-	@Override
-	public RecomendacionRepository forRecomendacion() {
-		return recomendaciones;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forAveria()
+     */
+    @Override
+    public AveriaRepository forAveria() {
+	return averias;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
-	 */
-	@Override
-	public RepuestoRepository forRepuesto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forCargo()
+     */
+    @Override
+    public CargoRepository forCargo() {
+	return cargos;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.repository.RepositoryFactory#forVehiculo()
-	 */
-	@Override
-	public VehiculoRepository forVehiculo() {
-		return vehiculos;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forCliente()
+     */
+    @Override
+    public ClienteRepository forCliente() {
+	return clientes;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forFactura()
+     */
+    @Override
+    public FacturaRepository forFactura() {
+	return facturas;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forMechanic()
+     */
+    @Override
+    public MecanicoRepository forMechanic() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forMedioPago()
+     */
+    @Override
+    public MedioPagoRepository forMedioPago() {
+	return mediosPago;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forRecomendacion()
+     */
+    @Override
+    public RecomendacionRepository forRecomendacion() {
+	return recomendaciones;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forRepuesto()
+     */
+    @Override
+    public RepuestoRepository forRepuesto() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.repository.RepositoryFactory#forVehiculo()
+     */
+    @Override
+    public VehiculoRepository forVehiculo() {
+	return vehiculos;
+    }
 
 }

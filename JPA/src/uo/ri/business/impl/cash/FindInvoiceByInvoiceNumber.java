@@ -40,30 +40,33 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FindInvoiceByInvoiceNumber implements Command<InvoiceDto> {
 
-	/** The invoice number. */
-	private Long invoiceNumber;
+    /** The invoice number. */
+    private Long invoiceNumber;
 
-	/**
-	 * Instantiates a new find invoice by invoice number.
-	 *
-	 * @param invoiceNumber the invoice number
-	 */
-	public FindInvoiceByInvoiceNumber(Long invoiceNumber) {
-		this.invoiceNumber = invoiceNumber;
-	}
+    /**
+     * Instantiates a new find invoice by invoice number.
+     *
+     * @param invoiceNumber
+     *            the invoice number
+     */
+    public FindInvoiceByInvoiceNumber(Long invoiceNumber) {
+	this.invoiceNumber = invoiceNumber;
+    }
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public InvoiceDto execute() throws BusinessException {
-		FacturaRepository fp = Factory.repository.forFactura();
-		Factura factura = fp.findByNumber(invoiceNumber);
-		if (factura == null) {
-			return null;
-		} else {
-			return DtoAssembler.toDto(factura);
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public InvoiceDto execute() throws BusinessException {
+	FacturaRepository fp = Factory.repository.forFactura();
+	Factura factura = fp.findByNumber(invoiceNumber);
+	if (factura == null) {
+	    return null;
+	} else {
+	    return DtoAssembler.toDto(factura);
 	}
+    }
 
 }

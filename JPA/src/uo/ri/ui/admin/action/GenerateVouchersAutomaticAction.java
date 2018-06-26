@@ -38,14 +38,16 @@ import uo.ri.util.exception.BusinessException;
  */
 public class GenerateVouchersAutomaticAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		AdminService admin = Factory.service.forAdmin();
-		int qty = admin.generateVouchers();
-		Console.println(qty + " bonos generados");
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	AdminService admin = Factory.service.forAdmin();
+	int qty = admin.generateVouchers();
+	Console.println(qty + " bonos generados");
+    }
 
 }

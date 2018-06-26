@@ -41,49 +41,55 @@ import uo.ri.persistence.PaymentMethodsGateway;
  */
 public class CreatePMBond {
 
-	private Long bondId;
-	private String bondDescription;
-	private double availableAmount;
+    private Long bondId;
+    private String bondDescription;
+    private double availableAmount;
 
-	/**
-	 * Creates a bond with the given data.
-	 * 
-	 * @param bondId is the unique id for the bond.
-	 * @param bondDescription is the description of the bond.
-	 * @param availableAmount is the available amount in the bond.
-	 */
-	public CreatePMBond( Long bondId, String bondDescription, double availableAmount ) {
-		this.bondId = bondId;
-		this.bondDescription = bondDescription;
-		this.availableAmount = availableAmount;
+    /**
+     * Creates a bond with the given data.
+     * 
+     * @param bondId
+     *            is the unique id for the bond.
+     * @param bondDescription
+     *            is the description of the bond.
+     * @param availableAmount
+     *            is the available amount in the bond.
+     */
+    public CreatePMBond(Long bondId, String bondDescription,
+	    double availableAmount) {
+	this.bondId = bondId;
+	this.bondDescription = bondDescription;
+	this.availableAmount = availableAmount;
+    }
+
+    /**
+     * Creates the bond with the given data.
+     * 
+     * @throws BusinessException
+     *             if an error success during the execution of the method.
+     */
+    public void execute() throws BusinessException {
+
+	Connection connection = null;
+
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    PaymentMethodsGateway paymentMethodsGW = PersistenceFactory
+		    .getPaymentMethodsGateway();
+	    paymentMethodsGW.setConnection(connection);
+
+	    // Creating the bond.
+	    paymentMethodsGW.createBond(bondId, availableAmount,
+		    bondDescription);
+	} catch (SQLException e) {
+	    throw new RuntimeException();
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * Creates the bond with the given data.
-	 * 
-	 * @throws BusinessException if an error success during the execution of the
-	 *             method.
-	 */
-	public void execute() throws BusinessException {
-
-		Connection connection = null;
-
-		try {
-			// Getting the connection.
-			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			PaymentMethodsGateway paymentMethodsGW = PersistenceFactory.getPaymentMethodsGateway();
-			paymentMethodsGW.setConnection( connection );
-
-			// Creating the bond.
-			paymentMethodsGW.createBond( bondId, availableAmount, bondDescription );
-		} catch (SQLException e) {
-			throw new RuntimeException();
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 
 }

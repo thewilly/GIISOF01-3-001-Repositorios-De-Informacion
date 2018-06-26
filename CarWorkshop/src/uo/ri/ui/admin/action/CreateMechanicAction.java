@@ -38,18 +38,18 @@ import uo.ri.conf.ServicesFactory;
  */
 public class CreateMechanicAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		// Ask the used for data.
-		String name = Console.readString( "Nombre" );
-		String surname = Console.readString( "Apellidos" );
+	// Ask the used for data.
+	String name = Console.readString("Nombre");
+	String surname = Console.readString("Apellidos");
 
-		// Call to the corresponding service.
-		AdminService adminService = ServicesFactory.getAdminService();
-		adminService.createMechanic( name, surname );
+	// Call to the corresponding service.
+	AdminService adminService = ServicesFactory.getAdminService();
+	adminService.createMechanic(name, surname);
 
-		// Show the result
-		Console.println( "Nuevo mecánico añadido" );
-	}
+	// Show the result
+	Console.println("Nuevo mecánico añadido");
+    }
 }

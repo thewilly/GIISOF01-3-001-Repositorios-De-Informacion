@@ -39,15 +39,17 @@ import uo.ri.ui.util.PaymentMethodsPrinter;
  */
 public class FindAllPaymentMethodsByClienIdAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
-		Long clientId = Console.readLong( "Id cliente" );
-		Console.println( "\nListado de medios de pago de cliente con id: " + clientId + "\n" );
-		CashService cashService = ServicesFactory.getCashService();
+    @Override
+    public void execute() throws BusinessException {
+	Long clientId = Console.readLong("Id cliente");
+	Console.println("\nListado de medios de pago de cliente con id: "
+		+ clientId + "\n");
+	CashService cashService = ServicesFactory.getCashService();
 
-		// Finding all the payment methods for the given client id and printing
-		// them.
-		new PaymentMethodsPrinter( cashService.findAllPaymentMethodsByClientId( clientId ) );
-	}
+	// Finding all the payment methods for the given client id and printing
+	// them.
+	new PaymentMethodsPrinter(
+		cashService.findAllPaymentMethodsByClientId(clientId));
+    }
 
 }

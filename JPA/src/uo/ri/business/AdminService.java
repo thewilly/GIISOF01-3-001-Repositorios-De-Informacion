@@ -37,70 +37,83 @@ import uo.ri.util.exception.BusinessException;
  */
 public interface AdminService {
 
-	/**
-	 * Adds the mechanic.
-	 *
-	 * @param mecanico the mecanico
-	 * @throws BusinessException the business exception
-	 */
-	void addMechanic(MechanicDto mecanico) throws BusinessException;
+    /**
+     * Adds the mechanic.
+     *
+     * @param mecanico
+     *            the mecanico
+     * @throws BusinessException
+     *             the business exception
+     */
+    void addMechanic(MechanicDto mecanico) throws BusinessException;
 
-	/**
-	 * Delete mechanic.
-	 *
-	 * @param idMecanico the id mecanico
-	 * @throws BusinessException the business exception
-	 */
-	void deleteMechanic(Long idMecanico) throws BusinessException;
+    /**
+     * Delete mechanic.
+     *
+     * @param idMecanico
+     *            the id mecanico
+     * @throws BusinessException
+     *             the business exception
+     */
+    void deleteMechanic(Long idMecanico) throws BusinessException;
 
-	/**
-	 * Find all mechanics.
-	 *
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<MechanicDto> findAllMechanics() throws BusinessException;
+    /**
+     * Find all mechanics.
+     *
+     * @return the list
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<MechanicDto> findAllMechanics() throws BusinessException;
 
-	/**
-	 * Find mechanic by id.
-	 *
-	 * @param id the id
-	 * @return the mechanic dto
-	 * @throws BusinessException the business exception
-	 */
-	MechanicDto findMechanicById(Long id) throws BusinessException;
+    /**
+     * Find mechanic by id.
+     *
+     * @param id
+     *            the id
+     * @return the mechanic dto
+     * @throws BusinessException
+     *             the business exception
+     */
+    MechanicDto findMechanicById(Long id) throws BusinessException;
 
-	/**
-	 * Find vouchers by client id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 * @throws BusinessException the business exception
-	 */
-	List<VoucherDto> findVouchersByClientId(Long id) throws BusinessException;
+    /**
+     * Find vouchers by client id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<VoucherDto> findVouchersByClientId(Long id) throws BusinessException;
 
-	/**
-	 * Generate vouchers.
-	 *
-	 * @return the int
-	 * @throws BusinessException the business exception
-	 */
-	int generateVouchers() throws BusinessException;
+    /**
+     * Generate vouchers.
+     *
+     * @return the int
+     * @throws BusinessException
+     *             the business exception
+     */
+    int generateVouchers() throws BusinessException;
 
-	/**
-	 * Gets the voucher summary.
-	 *
-	 * @return the voucher summary
-	 * @throws BusinessException the business exception
-	 */
-	List<VoucherSummary> getVoucherSummary() throws BusinessException;
+    /**
+     * Gets the voucher summary.
+     *
+     * @return the voucher summary
+     * @throws BusinessException
+     *             the business exception
+     */
+    List<VoucherSummary> getVoucherSummary() throws BusinessException;
 
-	/**
-	 * Update mechanic.
-	 *
-	 * @param mecanico the mecanico
-	 * @throws BusinessException the business exception
-	 */
-	void updateMechanic(MechanicDto mecanico) throws BusinessException;
+    /**
+     * Update mechanic.
+     *
+     * @param mecanico
+     *            the mecanico
+     * @throws BusinessException
+     *             the business exception
+     */
+    void updateMechanic(MechanicDto mecanico) throws BusinessException;
 
 }

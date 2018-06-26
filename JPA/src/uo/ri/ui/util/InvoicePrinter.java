@@ -32,34 +32,37 @@ import uo.ri.business.dto.InvoiceDto;
  * @version 201806081225
  */
 public class InvoicePrinter implements Printer {
-	
-	/** The invoice. */
-	private InvoiceDto invoice;
-	
-	/**
-	 * Instantiates a new invoice printer.
-	 *
-	 * @param invoice the invoice
-	 */
-	public InvoicePrinter(InvoiceDto invoice) {
-		this.invoice = invoice;
-	}
 
-	/* (non-Javadoc)
-	 * @see uo.ri.ui.util.Printer#print()
-	 */
-	@Override
-	public void print() {
-		double importeConIVa = invoice.total;
-		double iva = invoice.taxes;
-		double importeSinIva = importeConIVa / ( 1 + iva / 100 );
+    /** The invoice. */
+    private InvoiceDto invoice;
 
-		Console.printf( "Factura nº: %d\n", invoice.number );
-		Console.printf( "\tFecha: %1$td/%1$tm/%1$tY\n", invoice.date );
-		Console.printf( "\tTotal: %.2f €\n", importeSinIva );
-		Console.printf( "\tIva: %.1f %% \n", invoice.taxes );
-		Console.printf( "\tTotal con IVA: %.2f €\n", invoice.total );
-		Console.printf( "\tEstado: %s\n", invoice.status );
-	}
+    /**
+     * Instantiates a new invoice printer.
+     *
+     * @param invoice
+     *            the invoice
+     */
+    public InvoicePrinter(InvoiceDto invoice) {
+	this.invoice = invoice;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.ui.util.Printer#print()
+     */
+    @Override
+    public void print() {
+	double importeConIVa = invoice.total;
+	double iva = invoice.taxes;
+	double importeSinIva = importeConIVa / (1 + iva / 100);
+
+	Console.printf("Factura nº: %d\n", invoice.number);
+	Console.printf("\tFecha: %1$td/%1$tm/%1$tY\n", invoice.date);
+	Console.printf("\tTotal: %.2f €\n", importeSinIva);
+	Console.printf("\tIva: %.1f %% \n", invoice.taxes);
+	Console.printf("\tTotal con IVA: %.2f €\n", invoice.total);
+	Console.printf("\tEstado: %s\n", invoice.status);
+    }
 
 }

@@ -36,62 +36,69 @@ import uo.ri.model.TarjetaCredito;
  */
 public interface MedioPagoRepository extends Repository<MedioPago> {
 
-	/**
-	 * Returns an Object[] with three values - Object[0] an integer with the
-	 * number of vouchers the client has - Object[1] a double with the total
-	 * amount available in all the client's vouchers - Object[2] a double with
-	 * the amount already consumed.
-	 *
-	 * @param id the id
-	 * @return the object[]
-	 */
-	Object[] findAggregateVoucherDataByClientId(Long id);
+    /**
+     * Returns an Object[] with three values - Object[0] an integer with the
+     * number of vouchers the client has - Object[1] a double with the total
+     * amount available in all the client's vouchers - Object[2] a double with
+     * the amount already consumed.
+     *
+     * @param id
+     *            the id
+     * @return the object[]
+     */
+    Object[] findAggregateVoucherDataByClientId(Long id);
 
-	/**
-	 * Find by client id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<MedioPago> findByClientId(Long id);
+    /**
+     * Find by client id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     */
+    List<MedioPago> findByClientId(Long id);
 
-	/**
-	 * Find credit card by number.
-	 *
-	 * @param number the number
-	 * @return the tarjeta credito
-	 */
-	TarjetaCredito findCreditCardByNumber(String number);
+    /**
+     * Find credit card by number.
+     *
+     * @param number
+     *            the number
+     * @return the tarjeta credito
+     */
+    TarjetaCredito findCreditCardByNumber(String number);
 
-	/**
-	 * Find payment means by client id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<MedioPago> findPaymentMeansByClientId(Long id);
+    /**
+     * Find payment means by client id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     */
+    List<MedioPago> findPaymentMeansByClientId(Long id);
 
-	/**
-	 * Find payment means by invoice id.
-	 *
-	 * @param idFactura the id factura
-	 * @return the list
-	 */
-	List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura);
+    /**
+     * Find payment means by invoice id.
+     *
+     * @param idFactura
+     *            the id factura
+     * @return the list
+     */
+    List<MedioPago> findPaymentMeansByInvoiceId(Long idFactura);
 
-	/**
-	 * Find voucher by code.
-	 *
-	 * @param code the code
-	 * @return the bono
-	 */
-	Bono findVoucherByCode(String code);
+    /**
+     * Find voucher by code.
+     *
+     * @param code
+     *            the code
+     * @return the bono
+     */
+    Bono findVoucherByCode(String code);
 
-	/**
-	 * Find vouchers by client id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<Bono> findVouchersByClientId(Long id);
+    /**
+     * Find vouchers by client id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     */
+    List<Bono> findVouchersByClientId(Long id);
 }

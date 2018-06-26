@@ -32,6 +32,7 @@ import uo.ri.persistence.jpa.util.BaseRepository;
  * @author Guillermo Facundo Colunga
  * @version 201806081225
  */
-public class VehiculoJpaRepository extends BaseRepository<Vehiculo> implements VehiculoRepository {
+public class VehiculoJpaRepository extends BaseRepository<Vehiculo>
+	implements VehiculoRepository {
 
 }

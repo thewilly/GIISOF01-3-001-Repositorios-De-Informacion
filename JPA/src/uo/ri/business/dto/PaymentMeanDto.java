@@ -29,13 +29,13 @@ package uo.ri.business.dto;
  * @version 201806081225
  */
 public abstract class PaymentMeanDto {
-	
-	/** The id. */
-	public Long id;
-	
-	/** The client id. */
-	public Long clientId;
-	
-	/** The accumulated. */
-	public Double accumulated;
+
+    /** The id. */
+    public Long id;
+
+    /** The client id. */
+    public Long clientId;
+
+    /** The accumulated. */
+    public Double accumulated;
 }

@@ -38,14 +38,14 @@ import uo.ri.conf.ServicesFactory;
  */
 public class GenerateBondByRecomendationAction implements Action {
 
-	@Override
-	public void execute() throws BusinessException {
+    @Override
+    public void execute() throws BusinessException {
 
-		AdminService admin = ServicesFactory.getAdminService();
+	AdminService admin = ServicesFactory.getAdminService();
 
-		// Generating the corresponding bonds.
-		admin.generateBonosByRecomendation();
-		Console.println( "\nBonos generados\n" );
-	}
+	// Generating the corresponding bonds.
+	admin.generateBonosByRecomendation();
+	Console.println("\nBonos generados\n");
+    }
 
 }

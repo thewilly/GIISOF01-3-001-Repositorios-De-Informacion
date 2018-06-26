@@ -43,16 +43,18 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ListMediosPagoFromClientAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		Long id = Console.readLong("Id cliente");
-		CashService cs = Factory.service.forCash();
-		List<PaymentMeanDto> list = cs.findPaymentMeansByClientId(id);
-		Console.println("\nListado de medios de pago de cliente con id: " + id);
-		new AbstractPrinter( new PaymentMethodPrinter( list ) ).print();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	Long id = Console.readLong("Id cliente");
+	CashService cs = Factory.service.forCash();
+	List<PaymentMeanDto> list = cs.findPaymentMeansByClientId(id);
+	Console.println("\nListado de medios de pago de cliente con id: " + id);
+	new AbstractPrinter(new PaymentMethodPrinter(list)).print();
+    }
 
 }

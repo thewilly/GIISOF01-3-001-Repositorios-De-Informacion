@@ -42,7 +42,6 @@ import uo.ri.model.TipoVehiculo;
 import uo.ri.model.Vehiculo;
 import uo.ri.util.exception.BusinessException;
 
-
 /**
  * The Class PagarTest.
  *
@@ -50,132 +49,138 @@ import uo.ri.util.exception.BusinessException;
  * @version 201806081225
  */
 public class PagarTest {
-	
-	/** The mecanico. */
-	private Mecanico mecanico;
-	
-	/** The averia. */
-	private Averia averia;
-	
-	/** The intervencion. */
-	private Intervencion intervencion;
-	
-	/** The repuesto. */
-	private Repuesto repuesto;
-	
-	/** The sustitucion. */
-	private Sustitucion sustitucion;
-	
-	/** The vehiculo. */
-	private Vehiculo vehiculo;
-	
-	/** The tipo vehiculo. */
-	private TipoVehiculo tipoVehiculo;
-	
-	/** The cliente. */
-	private Cliente cliente;
-	
-	/** The factura. */
-	private Factura factura;
-	
-	/** The metalico. */
-	private Metalico metalico;
-	
-	/** The cargo. */
-	private Cargo cargo;
 
-	/**
-	 * Sets the up.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Before
-	public void setUp() throws BusinessException {
-		cliente = new Cliente("dni-cliente", "nombre", "apellidos");
-		vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
-		Association.Poseer.link(cliente, vehiculo );
+    /** The mecanico. */
+    private Mecanico mecanico;
 
-		tipoVehiculo = new TipoVehiculo("coche", 50.0);
-		Association.Clasificar.link(tipoVehiculo, vehiculo);
-		
-		averia = new Averia(vehiculo, "falla la junta la trocla");
-		mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
-		averia.assignTo(mecanico);
-	
-		intervencion = new Intervencion(mecanico, averia);
-		intervencion.setMinutos(60);
-		
-		repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
-		sustitucion = new Sustitucion(repuesto, intervencion);
-		sustitucion.setCantidad(2);
-		
-		averia.markAsFinished();
+    /** The averia. */
+    private Averia averia;
 
-		factura = new Factura(0L, DateUtil.today());
-		factura.addAveria(averia);
-		
-		metalico = new Metalico( cliente );
-		cargo = new Cargo(factura, metalico, 100.0);
-	}
-	
-	/**
-	 * Test cargar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargarAdd() throws BusinessException {
-		assertTrue( metalico.getCargos().contains( cargo ));
-		assertTrue( factura.getCargos().contains( cargo ));
-		
-		assertTrue( cargo.getFactura() == factura );
-		assertTrue( cargo.getMedioPago() == metalico );
-		
-		assertTrue( metalico.getAcumulado() == 100.0 );
-	}
+    /** The intervencion. */
+    private Intervencion intervencion;
 
-	/**
-	 * Test cargar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testCargarRemove() throws BusinessException {
-		cargo.rewind();  // removes this charge: unlink from Invoice and PaymentMean
-		
-		assertTrue( ! metalico.getCargos().contains( cargo ));
-		assertTrue( metalico.getCargos().size() == 0 );
+    /** The repuesto. */
+    private Repuesto repuesto;
 
-		assertTrue( ! factura.getCargos().contains( cargo ));
-		assertTrue( metalico.getCargos().size() == 0 );
-		
-		assertTrue( cargo.getFactura() == null );
-		assertTrue( cargo.getMedioPago() == null );
-	}
+    /** The sustitucion. */
+    private Sustitucion sustitucion;
 
-	/**
-	 * Test pagar add.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagarAdd() throws BusinessException {
-		assertTrue( cliente.getMediosPago().contains( metalico ));
-		assertTrue( metalico.getCliente() == cliente );
-	}
+    /** The vehiculo. */
+    private Vehiculo vehiculo;
 
-	/**
-	 * Test pagar remove.
-	 *
-	 * @throws BusinessException the business exception
-	 */
-	@Test
-	public void testPagarRemove() throws BusinessException {
-		Association.Pagar.unlink(cliente, metalico);
-		
-		assertTrue( ! cliente.getMediosPago().contains( metalico ));
-		assertTrue( cliente.getMediosPago().size() == 0 );
-		assertTrue( metalico.getCliente() == null );
-	}
+    /** The tipo vehiculo. */
+    private TipoVehiculo tipoVehiculo;
+
+    /** The cliente. */
+    private Cliente cliente;
+
+    /** The factura. */
+    private Factura factura;
+
+    /** The metalico. */
+    private Metalico metalico;
+
+    /** The cargo. */
+    private Cargo cargo;
+
+    /**
+     * Sets the up.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Before
+    public void setUp() throws BusinessException {
+	cliente = new Cliente("dni-cliente", "nombre", "apellidos");
+	vehiculo = new Vehiculo("1234 GJI", "seat", "ibiza");
+	Association.Poseer.link(cliente, vehiculo);
+
+	tipoVehiculo = new TipoVehiculo("coche", 50.0);
+	Association.Clasificar.link(tipoVehiculo, vehiculo);
+
+	averia = new Averia(vehiculo, "falla la junta la trocla");
+	mecanico = new Mecanico("dni-mecanico", "nombre", "apellidos");
+	averia.assignTo(mecanico);
+
+	intervencion = new Intervencion(mecanico, averia);
+	intervencion.setMinutos(60);
+
+	repuesto = new Repuesto("R1001", "junta la trocla", 100.0);
+	sustitucion = new Sustitucion(repuesto, intervencion);
+	sustitucion.setCantidad(2);
+
+	averia.markAsFinished();
+
+	factura = new Factura(0L, DateUtil.today());
+	factura.addAveria(averia);
+
+	metalico = new Metalico(cliente);
+	cargo = new Cargo(factura, metalico, 100.0);
+    }
+
+    /**
+     * Test cargar add.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testCargarAdd() throws BusinessException {
+	assertTrue(metalico.getCargos().contains(cargo));
+	assertTrue(factura.getCargos().contains(cargo));
+
+	assertTrue(cargo.getFactura() == factura);
+	assertTrue(cargo.getMedioPago() == metalico);
+
+	assertTrue(metalico.getAcumulado() == 100.0);
+    }
+
+    /**
+     * Test cargar remove.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testCargarRemove() throws BusinessException {
+	cargo.rewind(); // removes this charge: unlink from Invoice and
+			// PaymentMean
+
+	assertTrue(!metalico.getCargos().contains(cargo));
+	assertTrue(metalico.getCargos().size() == 0);
+
+	assertTrue(!factura.getCargos().contains(cargo));
+	assertTrue(metalico.getCargos().size() == 0);
+
+	assertTrue(cargo.getFactura() == null);
+	assertTrue(cargo.getMedioPago() == null);
+    }
+
+    /**
+     * Test pagar add.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagarAdd() throws BusinessException {
+	assertTrue(cliente.getMediosPago().contains(metalico));
+	assertTrue(metalico.getCliente() == cliente);
+    }
+
+    /**
+     * Test pagar remove.
+     *
+     * @throws BusinessException
+     *             the business exception
+     */
+    @Test
+    public void testPagarRemove() throws BusinessException {
+	Association.Pagar.unlink(cliente, metalico);
+
+	assertTrue(!cliente.getMediosPago().contains(metalico));
+	assertTrue(cliente.getMediosPago().size() == 0);
+	assertTrue(metalico.getCliente() == null);
+    }
 
 }

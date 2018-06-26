@@ -29,13 +29,13 @@ package uo.ri.business.dto;
  * @version 201806081225
  */
 public class VoucherDto extends PaymentMeanDto {
-	
-	/** The code. */
-	public String code;
-	
-	/** The description. */
-	public String description;
-	
-	/** The available. */
-	public Double available;
+
+    /** The code. */
+    public String code;
+
+    /** The description. */
+    public String description;
+
+    /** The available. */
+    public Double available;
 }

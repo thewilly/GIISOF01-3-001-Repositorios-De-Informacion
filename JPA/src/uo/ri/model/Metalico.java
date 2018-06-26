@@ -37,29 +37,31 @@ import javax.persistence.Table;
 @DiscriminatorValue("TMetalicos")
 public class Metalico extends MedioPago {
 
-	/**
-	 * Instantiates a new metalico.
-	 */
-	Metalico() {
-	}
+    /**
+     * Instantiates a new metalico.
+     */
+    Metalico() {
+    }
 
-	/**
-	 * Instantiates a new metalico.
-	 *
-	 * @param cliente the cliente
-	 */
-	public Metalico(Cliente cliente) {
-		Association.Pagar.link(cliente, this);
-	}
+    /**
+     * Instantiates a new metalico.
+     *
+     * @param cliente
+     *            the cliente
+     */
+    public Metalico(Cliente cliente) {
+	Association.Pagar.link(cliente, this);
+    }
 
-	/**
-	 * This method add a charge in the accumulated money of the payment method.
-	 *
-	 * @param cantidad the quantity to be payed
-	 */
-	@Override
-	public void pagar(double cantidad) {
-		super.acumulado += cantidad;
-	}
+    /**
+     * This method add a charge in the accumulated money of the payment method.
+     *
+     * @param cantidad
+     *            the quantity to be payed
+     */
+    @Override
+    public void pagar(double cantidad) {
+	super.acumulado += cantidad;
+    }
 
 }

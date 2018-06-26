@@ -37,17 +37,17 @@ import uo.ri.business.impl.CashServiceImpl;
  */
 public class ServicesFactory {
 
-	/**
-	 * @return a new service for the administrator user.
-	 */
-	public static AdminService getAdminService() {
-		return new AdminServiceImpl();
-	}
+    /**
+     * @return a new service for the administrator user.
+     */
+    public static AdminService getAdminService() {
+	return new AdminServiceImpl();
+    }
 
-	/**
-	 * @return a new service for the cashier user.
-	 */
-	public static CashService getCashService() {
-		return new CashServiceImpl();
-	}
+    /**
+     * @return a new service for the cashier user.
+     */
+    public static CashService getCashService() {
+	return new CashServiceImpl();
+    }
 }

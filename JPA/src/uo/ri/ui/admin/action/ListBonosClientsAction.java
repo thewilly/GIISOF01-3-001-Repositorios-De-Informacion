@@ -43,15 +43,17 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ListBonosClientsAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		Long id = Console.readLong("Id");
-		AdminService as = Factory.service.forAdmin();
-		List<VoucherDto> list = as.findVouchersByClientId(id);
-		Console.println("Listado de bonos de cliente con id: " + id + "\n");
-		new AbstractPrinter( new BondsPrinter( list ) ).print();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	Long id = Console.readLong("Id");
+	AdminService as = Factory.service.forAdmin();
+	List<VoucherDto> list = as.findVouchersByClientId(id);
+	Console.println("Listado de bonos de cliente con id: " + id + "\n");
+	new AbstractPrinter(new BondsPrinter(list)).print();
+    }
 }

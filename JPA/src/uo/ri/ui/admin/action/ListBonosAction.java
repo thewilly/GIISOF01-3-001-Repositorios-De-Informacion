@@ -43,14 +43,16 @@ import uo.ri.util.exception.BusinessException;
  */
 public class ListBonosAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
-		Console.println("Listado de bonos");
-		AdminService admin = Factory.service.forAdmin();
-		List<VoucherSummary> list = admin.getVoucherSummary();
-		new AbstractPrinter( new BondsSummaryPrinter( list ) );
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
+	Console.println("Listado de bonos");
+	AdminService admin = Factory.service.forAdmin();
+	List<VoucherSummary> list = admin.getVoucherSummary();
+	new AbstractPrinter(new BondsSummaryPrinter(list));
+    }
 }

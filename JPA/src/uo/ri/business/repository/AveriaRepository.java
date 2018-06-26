@@ -36,27 +36,30 @@ import uo.ri.model.Averia;
  */
 public interface AveriaRepository extends Repository<Averia> {
 
-	/**
-	 * Find by id's.
-	 *
-	 * @param failuresIds the id's averia
-	 * @return the list
-	 */
-	List<Averia> findByIds(List<Long> failuresIds);
+    /**
+     * Find by id's.
+     *
+     * @param failuresIds
+     *            the id's averia
+     * @return the list
+     */
+    List<Averia> findByIds(List<Long> failuresIds);
 
-	/**
-	 * Find no facturadas by dni.
-	 *
-	 * @param dni the dni
-	 * @return the list
-	 */
-	List<Averia> findNoFacturadasByDni(String dni);
+    /**
+     * Find no facturadas by dni.
+     *
+     * @param dni
+     *            the dni
+     * @return the list
+     */
+    List<Averia> findNoFacturadasByDni(String dni);
 
-	/**
-	 * Find with unused bono 3 by cliente id.
-	 *
-	 * @param id the id
-	 * @return the list
-	 */
-	List<Averia> findWithUnusedBono3ByClienteId(Long id);
+    /**
+     * Find with unused bono 3 by cliente id.
+     *
+     * @param id
+     *            the id
+     * @return the list
+     */
+    List<Averia> findWithUnusedBono3ByClienteId(Long id);
 }

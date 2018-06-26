@@ -48,463 +48,484 @@ import uo.ri.model.types.Address;
 @Table(name = "TClientes")
 public class Cliente {
 
-	/** The id. */
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	/** The dni. */
-	@Column(unique = true)
-	private String dni;
-	
-	/** The nombre. */
-	private String nombre;
-	
-	/** The apellidos. */
-	private String apellidos;
-	
-	/** The email. */
-	private String email;
-	
-	/** The phone. */
-	private String phone;
-	
-	/** The address. */
-	private Address address;
+    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	/** The vehiculos. */
-	@OneToMany(mappedBy = "cliente")
-	private Set<Vehiculo> vehiculos = new HashSet<>();
-	
-	/** The medios pago. */
-	@OneToMany(mappedBy = "cliente")
-	private Set<MedioPago> mediosPago = new HashSet<>();
+    /** The dni. */
+    @Column(unique = true)
+    private String dni;
 
-	/** The recomendador. */
-	@OneToOne
-	private Recomendacion recomendador;
-	
-	/** The recomendados. */
-	@OneToMany(mappedBy = "recomendador")
-	private Set<Recomendacion> recomendados = new HashSet<>();
+    /** The nombre. */
+    private String nombre;
 
-	/**
-	 * Instantiates a new cliente.
-	 */
-	Cliente() {
+    /** The apellidos. */
+    private String apellidos;
+
+    /** The email. */
+    private String email;
+
+    /** The phone. */
+    private String phone;
+
+    /** The address. */
+    private Address address;
+
+    /** The vehiculos. */
+    @OneToMany(mappedBy = "cliente")
+    private Set<Vehiculo> vehiculos = new HashSet<>();
+
+    /** The medios pago. */
+    @OneToMany(mappedBy = "cliente")
+    private Set<MedioPago> mediosPago = new HashSet<>();
+
+    /** The recomendador. */
+    @OneToOne
+    private Recomendacion recomendador;
+
+    /** The recomendados. */
+    @OneToMany(mappedBy = "recomendador")
+    private Set<Recomendacion> recomendados = new HashSet<>();
+
+    /**
+     * Instantiates a new cliente.
+     */
+    Cliente() {
+    }
+
+    /**
+     * Instantiates a new cliente.
+     *
+     * @param dni
+     *            the dni
+     */
+    public Cliente(String dni) {
+	super();
+	this.dni = dni;
+    }
+
+    /**
+     * Instantiates a new cliente.
+     *
+     * @param DNI
+     *            the dni
+     * @param nombre
+     *            the nombre
+     * @param apellidos
+     *            the apellidos
+     */
+    public Cliente(String DNI, String nombre, String apellidos) {
+	this(DNI);
+	this.nombre = nombre;
+	this.apellidos = apellidos;
+    }
+
+    /**
+     * Gets the medios pago.
+     *
+     * @return the sets the
+     */
+    Set<MedioPago> _getMediosPago() {
+	return mediosPago;
+    }
+
+    /**
+     * Gets the recomendador.
+     *
+     * @return the recomendacion
+     */
+    Recomendacion _getRecomendador() {
+	return recomendador;
+    }
+
+    /**
+     * Gets the recomendados.
+     *
+     * @return the sets the
+     */
+    Set<Recomendacion> _getRecomendados() {
+	return recomendados;
+    }
+
+    /**
+     * Gets the vehiculos.
+     *
+     * @return the sets the
+     */
+    Set<Vehiculo> _getVehiculos() {
+	return vehiculos;
+    }
+
+    /**
+     * Sets the recomendador.
+     *
+     * @param recomendador
+     *            the recomendador
+     */
+    void _setRecomendador(Recomendacion recomendador) {
+	this.recomendador = recomendador;
+    }
+
+    /**
+     * This method checks if the client has at least 3 breakdowns that have been
+     * payed.
+     *
+     * @return true if it has 3 breakdowns at least, false otherwise
+     */
+    public boolean elegibleBonoPorAverias() {
+	if (numberOfVoucherForBreakdowns() > 0) {
+	    return true;
 	}
+	return false;
+    }
 
-	/**
-	 * Instantiates a new cliente.
-	 *
-	 * @param dni the dni
-	 */
-	public Cliente(String dni) {
-		super();
-		this.dni = dni;
+    /**
+     * This method checks if the client can have a new voucher for having at
+     * least one invoice which total amount is over 500 euro.
+     *
+     * @return true if it is fulfilled, false otherwise
+     */
+    public boolean elegibleBonoPorFactura500() {
+	if (numberOfVoucherForInvoice() > 0) {
+	    return true;
 	}
+	return false;
+    }
 
-	/**
-	 * Instantiates a new cliente.
-	 *
-	 * @param DNI the dni
-	 * @param nombre the nombre
-	 * @param apellidos the apellidos
-	 */
-	public Cliente(String DNI, String nombre, String apellidos) {
-		this(DNI);
-		this.nombre = nombre;
-		this.apellidos = apellidos;
+    /**
+     * This method checks if the client is proper to have a voucher for it
+     * recommendations. For this, it has to have vehicles in the garage, as well
+     * as breakdowns and at least 3 recommendations.
+     * 
+     * @return true if all the conditions are fulfilled, false otherwise
+     */
+    public boolean elegibleBonoPorRecomendaciones() {
+	if (vehiculos.size() == 0 || !hasFailures() || !hasRecommended(3)) {
+	    return false;
 	}
+	return true;
+    }
 
-	/**
-	 * Gets the medios pago.
-	 *
-	 * @return the sets the
-	 */
-	Set<MedioPago> _getMediosPago() {
-		return mediosPago;
-	}
-
-	/**
-	 * Gets the recomendador.
-	 *
-	 * @return the recomendacion
-	 */
-	Recomendacion _getRecomendador() {
-		return recomendador;
-	}
-
-	/**
-	 * Gets the recomendados.
-	 *
-	 * @return the sets the
-	 */
-	Set<Recomendacion> _getRecomendados() {
-		return recomendados;
-	}
-
-	/**
-	 * Gets the vehiculos.
-	 *
-	 * @return the sets the
-	 */
-	Set<Vehiculo> _getVehiculos() {
-		return vehiculos;
-	}
-
-	/**
-	 * Sets the recomendador.
-	 *
-	 * @param recomendador the recomendador
-	 */
-	void _setRecomendador(Recomendacion recomendador) {
-		this.recomendador = recomendador;
-	}
-
-	/**
-	 * This method checks if the client has at least 3 breakdowns that have been
-	 * payed.
-	 *
-	 * @return true if it has 3 breakdowns at least, false otherwise
-	 */
-	public boolean elegibleBonoPorAverias() {
-		if (numberOfVoucherForBreakdowns() > 0) {
-			return true;
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Cliente other = (Cliente) obj;
+	if (dni == null) {
+	    if (other.dni != null)
 		return false;
-	}
+	} else if (!dni.equals(other.dni))
+	    return false;
+	return true;
+    }
 
-	/**
-	 * This method checks if the client can have a new voucher for having at
-	 * least one invoice which total amount is over 500 euro.
-	 *
-	 * @return true if it is fulfilled, false otherwise
-	 */
-	public boolean elegibleBonoPorFactura500() {
-		if (numberOfVoucherForInvoice() > 0) {
-			return true;
-		}
-		return false;
-	}
+    /**
+     * Gets the address.
+     *
+     * @return the address
+     */
+    public Address getAddress() {
+	return address;
+    }
 
-	/**
-	 * This method checks if the client is proper to have a voucher for it
-	 * recommendations. For this, it has to have vehicles in the garage, as well
-	 * as breakdowns and at least 3 recommendations.
-	 * 
-	 * @return true if all the conditions are fulfilled, false otherwise
-	 */
-	public boolean elegibleBonoPorRecomendaciones() {
-		if (vehiculos.size() == 0 || !hasFailures() || !hasRecommended(3)) {
-			return false;
+    /**
+     * Gets the apellidos.
+     *
+     * @return the apellidos
+     */
+    public String getApellidos() {
+	return apellidos;
+    }
+
+    /**
+     * This method returns a list containing all the breakdowns of the vehicles
+     * of the current client, that can be chosen for a special voucher.
+     *
+     * @return the list containing all the breakdowns
+     */
+    public List<Averia> getAveriasBono3NoUsadas() {
+	List<Averia> averias = new ArrayList<>();
+	for (Vehiculo vehiculo : vehiculos) {
+	    for (Averia averia : vehiculo.getAverias()) {
+		if (averia.esElegibleParaBono3()) {
+		    averias.add(averia);
 		}
+	    }
+	}
+	return averias;
+    }
+
+    /**
+     * Gets the dni.
+     *
+     * @return the dni
+     */
+    public String getDni() {
+	return dni;
+    }
+
+    /**
+     * Gets the email.
+     *
+     * @return the email
+     */
+    public String getEmail() {
+	return email;
+    }
+
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
+    public Long getId() {
+	return id;
+    }
+
+    /**
+     * Gets the medios pago.
+     *
+     * @return the medios pago
+     */
+    public Set<MedioPago> getMediosPago() {
+	return new HashSet<>(mediosPago);
+    }
+
+    /**
+     * Gets the nombre.
+     *
+     * @return the nombre
+     */
+    public String getNombre() {
+	return nombre;
+    }
+
+    /**
+     * Gets the phone.
+     *
+     * @return the phone
+     */
+    public String getPhone() {
+	return phone;
+    }
+
+    /**
+     * Gets the recomendaciones hechas.
+     *
+     * @return the recomendaciones hechas
+     */
+    public Set<Recomendacion> getRecomendacionesHechas() {
+	return new HashSet<>(recomendados);
+    }
+
+    /**
+     * Gets the recomendacion recibida.
+     *
+     * @return the recomendacion recibida
+     */
+    public Recomendacion getRecomendacionRecibida() {
+	return recomendador;
+    }
+
+    /**
+     * Gets the vehiculos.
+     *
+     * @return the vehiculos
+     */
+    public Set<Vehiculo> getVehiculos() {
+	return new HashSet<>(vehiculos);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((dni == null) ? 0 : dni.hashCode());
+	return result;
+    }
+
+    /**
+     * This method checks if the client has any vehicle with at least one
+     * breakdown.
+     *
+     * @return true if any vehicle has any breakdown, false otherwise
+     */
+    private boolean hasFailures() {
+	for (Vehiculo vehiculo : vehiculos) {
+	    if (vehiculo.getNumAverias() > 0) {
 		return true;
+	    }
 	}
+	return false;
+    }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cliente other = (Cliente) obj;
-		if (dni == null) {
-			if (other.dni != null)
-				return false;
-		} else if (!dni.equals(other.dni))
-			return false;
-		return true;
-	}
-
-	/**
-	 * Gets the address.
-	 *
-	 * @return the address
-	 */
-	public Address getAddress() {
-		return address;
-	}
-
-	/**
-	 * Gets the apellidos.
-	 *
-	 * @return the apellidos
-	 */
-	public String getApellidos() {
-		return apellidos;
-	}
-
-	/**
-	 * This method returns a list containing all the breakdowns of the vehicles
-	 * of the current client, that can be chosen for a special voucher.
-	 *
-	 * @return the list containing all the breakdowns
-	 */
-	public List<Averia> getAveriasBono3NoUsadas() {
-		List<Averia> averias = new ArrayList<>();
-		for (Vehiculo vehiculo : vehiculos) {
-			for (Averia averia : vehiculo.getAverias()) {
-				if (averia.esElegibleParaBono3()) {
-					averias.add(averia);
-				}
-			}
+    /**
+     * This method checks if the client has recommended at least 3 clients that
+     * must have done any kind of reparation in the garage.
+     *
+     * @return true if it has recommended 3 other clients at least with the
+     *         conditions explained, false otherwise
+     */
+    private boolean hasRecommended(int recommendedClients) {
+	int count = 0;
+	if (recomendados.size() >= recommendedClients) {
+	    for (Recomendacion recomendacion : recomendados) {
+		if (recomendacion.getRecomendado().vehiculos.size() > 0
+			&& recomendacion.getRecomendado().hasFailures()
+			&& !recomendacion.isUsada()) {
+		    count++;
 		}
-		return averias;
+	    }
 	}
 
-	/**
-	 * Gets the dni.
-	 *
-	 * @return the dni
-	 */
-	public String getDni() {
-		return dni;
+	if (count >= recommendedClients) {
+	    return true;
 	}
+	return false;
+    }
 
-	/**
-	 * Gets the email.
-	 *
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Gets the medios pago.
-	 *
-	 * @return the medios pago
-	 */
-	public Set<MedioPago> getMediosPago() {
-		return new HashSet<>(mediosPago);
-	}
-
-	/**
-	 * Gets the nombre.
-	 *
-	 * @return the nombre
-	 */
-	public String getNombre() {
-		return nombre;
-	}
-
-	/**
-	 * Gets the phone.
-	 *
-	 * @return the phone
-	 */
-	public String getPhone() {
-		return phone;
-	}
-
-	/**
-	 * Gets the recomendaciones hechas.
-	 *
-	 * @return the recomendaciones hechas
-	 */
-	public Set<Recomendacion> getRecomendacionesHechas() {
-		return new HashSet<>(recomendados);
-	}
-
-	/**
-	 * Gets the recomendacion recibida.
-	 *
-	 * @return the recomendacion recibida
-	 */
-	public Recomendacion getRecomendacionRecibida() {
-		return recomendador;
-	}
-
-	/**
-	 * Gets the vehiculos.
-	 *
-	 * @return the vehiculos
-	 */
-	public Set<Vehiculo> getVehiculos() {
-		return new HashSet<>(vehiculos);
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((dni == null) ? 0 : dni.hashCode());
-		return result;
-	}
-
-	/**
-	 * This method checks if the client has any vehicle with at least one
-	 * breakdown.
-	 *
-	 * @return true if any vehicle has any breakdown, false otherwise
-	 */
-	private boolean hasFailures() {
-		for (Vehiculo vehiculo : vehiculos) {
-			if (vehiculo.getNumAverias() > 0) {
-				return true;
-			}
+    /**
+     * This method returns the total number of vouchers depending on the number
+     * of breakdowns that have been payed and not used for creating another.
+     *
+     * @return the number of vouchers
+     */
+    public int numberOfVoucherForBreakdowns() {
+	int numAv = 0;
+	for (Vehiculo vehiculo : vehiculos) {
+	    Set<Averia> averias = vehiculo.getAverias();
+	    for (Averia averia : averias) {
+		if (averia.getFactura() != null
+			&& averia.getFactura().isSettled()
+			&& !averia.isUsadaBono3()) {
+		    numAv++;
 		}
-		return false;
+	    }
 	}
+	if (numAv < 3) {
+	    return 0;
+	}
+	return numAv / 3;
+    }
 
-	/**
-	 * This method checks if the client has recommended at least 3 clients that
-	 * must have done any kind of reparation in the garage.
-	 *
-	 * @return true if it has recommended 3 other clients at least with the
-	 *         conditions explained, false otherwise
-	 */
-	private boolean hasRecommended(int recommendedClients) {
-		int count = 0;
-		if (recomendados.size() >= recommendedClients) {
-			for (Recomendacion recomendacion : recomendados) {
-				if (recomendacion.getRecomendado().vehiculos.size() > 0
-						&& recomendacion.getRecomendado().hasFailures() && !recomendacion.isUsada()) {
-					count++;
-				}
-			}
+    /**
+     * This method returns the number of vouchers that can be created depending
+     * on the number of invoice that have a total amount that is over 500 euro.
+     *
+     * @return the number of vouchers
+     */
+    public int numberOfVoucherForInvoice() {
+	int num = 0;
+	List<Long> ids = new ArrayList<>();
+	for (Vehiculo vehiculo : vehiculos) {
+	    Set<Averia> averias = vehiculo.getAverias();
+	    for (Averia averia : averias) {
+		if (averia.getFactura() != null
+			&& averia.getFactura().puedeGenerarBono500()) {
+		    Long id = averia.getFactura().getId();
+		    if (!ids.contains(id)) {
+			num++;
+			ids.add(averia.getFactura().getId());
+		    }
 		}
-
-		if (count >= recommendedClients) {
-			return true;
-		}
-		return false;
+	    }
 	}
+	return num;
+    }
 
-	/**
-	 * This method returns the total number of vouchers depending on the number
-	 * of breakdowns that have been payed and not used for creating another.
-	 *
-	 * @return the number of vouchers
-	 */
-	public int numberOfVoucherForBreakdowns() {
-		int numAv = 0;
-		for (Vehiculo vehiculo : vehiculos) {
-			Set<Averia> averias = vehiculo.getAverias();
-			for (Averia averia : averias) {
-				if (averia.getFactura() != null && averia.getFactura().isSettled() && !averia.isUsadaBono3()) {
-					numAv++;
-				}
-			}
-		}
-		if (numAv < 3) {
-			return 0;
-		}
-		return numAv / 3;
+    /**
+     * This method returns the total number of vouchers depending on the number
+     * of recommendations not used for creating another.
+     *
+     * @return the number of vouchers
+     */
+    public int numberOfVoucherForRecomendations() {
+	int recommendations = 0;
+	for (Recomendacion recomendacion : recomendados) {
+	    if (!recomendacion.isUsada()) {
+		recommendations++;
+	    }
 	}
+	if (recommendations < 3) {
+	    return 0;
+	}
+	return recommendations / 3;
+    }
 
-	/**
-	 * This method returns the number of vouchers that can be created depending
-	 * on the number of invoice that have a total amount that is over 500 euro.
-	 *
-	 * @return the number of vouchers
-	 */
-	public int numberOfVoucherForInvoice() {
-		int num = 0;
-		List<Long> ids = new ArrayList<>();
-		for (Vehiculo vehiculo : vehiculos) {
-			Set<Averia> averias = vehiculo.getAverias();
-			for (Averia averia : averias) {
-				if (averia.getFactura() != null && averia.getFactura().puedeGenerarBono500()) {
-					Long id = averia.getFactura().getId();
-					if (!ids.contains(id)) {
-						num++;
-						ids.add(averia.getFactura().getId());
-					}
-				}
-			}
-		}
-		return num;
-	}
+    /**
+     * Sets the address.
+     *
+     * @param address
+     *            the new address
+     */
+    public void setAddress(Address address) {
+	this.address = address;
+    }
 
-	/**
-	 * This method returns the total number of vouchers depending on the number
-	 * of recommendations not used for creating another.
-	 *
-	 * @return the number of vouchers
-	 */
-	public int numberOfVoucherForRecomendations() {
-		int recommendations = 0;
-		for (Recomendacion recomendacion : recomendados) {
-			if (!recomendacion.isUsada()) {
-				recommendations++;
-			}
-		}
-		if (recommendations < 3) {
-			return 0;
-		}
-		return recommendations / 3;
-	}
+    /**
+     * Sets the apellidos.
+     *
+     * @param apellidos
+     *            the new apellidos
+     */
+    public void setApellidos(String apellidos) {
+	this.apellidos = apellidos;
+    }
 
-	/**
-	 * Sets the address.
-	 *
-	 * @param address the new address
-	 */
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    /**
+     * Sets the email.
+     *
+     * @param string
+     *            the new email
+     */
+    public void setEmail(String string) {
+	this.email = string;
+    }
 
-	/**
-	 * Sets the apellidos.
-	 *
-	 * @param apellidos the new apellidos
-	 */
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
-	}
+    /**
+     * Sets the nombre.
+     *
+     * @param nombre
+     *            the new nombre
+     */
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
 
-	/**
-	 * Sets the email.
-	 *
-	 * @param string the new email
-	 */
-	public void setEmail(String string) {
-		this.email = string;
-	}
+    /**
+     * Sets the phone.
+     *
+     * @param string
+     *            the new phone
+     */
+    public void setPhone(String string) {
+	this.phone = string;
+    }
 
-	/**
-	 * Sets the nombre.
-	 *
-	 * @param nombre the new nombre
-	 */
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	/**
-	 * Sets the phone.
-	 *
-	 * @param string the new phone
-	 */
-	public void setPhone(String string) {
-		this.phone = string;
-	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Cliente [dni=" + dni + ", nombre=" + nombre + ", apellidos=" + apellidos + ", address=" + address + "]";
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	return "Cliente [dni=" + dni + ", nombre=" + nombre + ", apellidos="
+		+ apellidos + ", address=" + address + "]";
+    }
 
 }

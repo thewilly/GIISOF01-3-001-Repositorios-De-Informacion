@@ -33,11 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @version 201806081225
  */
 @RunWith(Suite.class)
-@SuiteClasses({
-	uo.ri.associations.AllTests.class,
-	uo.ri.domain.AllTests.class,
-	uo.ri.persistence.PersistenceTest.class,
-	uo.ri.amp.AllTests.class
+@SuiteClasses({ uo.ri.associations.AllTests.class, uo.ri.domain.AllTests.class,
+	uo.ri.persistence.PersistenceTest.class, uo.ri.amp.AllTests.class
 
 })
 public class AllTests {

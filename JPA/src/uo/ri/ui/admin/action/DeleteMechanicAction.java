@@ -38,18 +38,20 @@ import uo.ri.util.exception.BusinessException;
  */
 public class DeleteMechanicAction implements Action {
 
-	/* (non-Javadoc)
-	 * @see alb.util.menu.Action#execute()
-	 */
-	@Override
-	public void execute() throws BusinessException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see alb.util.menu.Action#execute()
+     */
+    @Override
+    public void execute() throws BusinessException {
 
-		Long idMecanico = Console.readLong("Id de mecánico");
+	Long idMecanico = Console.readLong("Id de mecánico");
 
-		AdminService as = Factory.service.forAdmin();
-		as.deleteMechanic(idMecanico);
+	AdminService as = Factory.service.forAdmin();
+	as.deleteMechanic(idMecanico);
 
-		Console.println("Se ha eliminado el mecánico");
-	}
+	Console.println("Se ha eliminado el mecánico");
+    }
 
 }

@@ -42,14 +42,16 @@ import uo.ri.util.exception.BusinessException;
  */
 public class FindAllClients implements Command<List<ClientDto>> {
 
-	/* (non-Javadoc)
-	 * @see uo.ri.business.impl.Command#execute()
-	 */
-	@Override
-	public List<ClientDto> execute() throws BusinessException {
-		ClienteRepository clientsRepository = Factory.repository.forCliente();
-		List<Cliente> clients = clientsRepository.findAll();
-		return DtoAssembler.toClientDtoList(clients);
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see uo.ri.business.impl.Command#execute()
+     */
+    @Override
+    public List<ClientDto> execute() throws BusinessException {
+	ClienteRepository clientsRepository = Factory.repository.forCliente();
+	List<Cliente> clients = clientsRepository.findAll();
+	return DtoAssembler.toClientDtoList(clients);
+    }
 
 }

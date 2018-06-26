@@ -46,42 +46,43 @@ import uo.ri.persistence.MechanicsGateway;
  */
 public class FindAllMechanics {
 
-	/**
-	 * Return the a list containing all the mechanics data that is contained in
-	 * the persistence layer.
-	 * 
-	 * @return a list a list containing all the mechanics data that is contained
-	 *         in the persistence layer.
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public List<Map<String, Object>> execute() {
+    /**
+     * Return the a list containing all the mechanics data that is contained in
+     * the persistence layer.
+     * 
+     * @return a list a list containing all the mechanics data that is contained
+     *         in the persistence layer.
+     * @throws BusinessException
+     *             if any error occurs during the execution of the method.
+     */
+    public List<Map<String, Object>> execute() {
 
-		// Instantiate the result object and initialize it to avoid future null
-		// pointers.
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+	// Instantiate the result object and initialize it to avoid future null
+	// pointers.
+	List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-		Connection connection = null;
+	Connection connection = null;
 
-		try {
-			// Getting the connection.
-			connection = getConnection();
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
 
-			// Creating the gateway and setting the connection.
-			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
-			mechanicsGW.setConnection( connection );
+	    // Creating the gateway and setting the connection.
+	    MechanicsGateway mechanicsGW = PersistenceFactory
+		    .getMechanicsGateway();
+	    mechanicsGW.setConnection(connection);
 
-			// Invoke the findAllMechanics method from the gateway to get all
-			// the mechanics.
-			result = mechanicsGW.findAll();
+	    // Invoke the findAllMechanics method from the gateway to get all
+	    // the mechanics.
+	    result = mechanicsGW.findAll();
 
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-
-		return result;
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
+
+	return result;
+    }
 }

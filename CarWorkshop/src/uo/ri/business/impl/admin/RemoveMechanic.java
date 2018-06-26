@@ -42,44 +42,46 @@ import uo.ri.persistence.MechanicsGateway;
  */
 public class RemoveMechanic {
 
-	private long mechanicId;
+    private long mechanicId;
 
-	/**
-	 * For the given id of an existing mechanic will remove it from the
-	 * persistence.
-	 * 
-	 * @param mechanicId is the id of the mechanic we want to remove.
-	 */
-	public RemoveMechanic( long id ) {
-		this.mechanicId = id;
+    /**
+     * For the given id of an existing mechanic will remove it from the
+     * persistence.
+     * 
+     * @param mechanicId
+     *            is the id of the mechanic we want to remove.
+     */
+    public RemoveMechanic(long id) {
+	this.mechanicId = id;
+    }
+
+    /**
+     * Will execute the removal of the mechanic whose id was set in the
+     * constructor.
+     * 
+     * @throws BusinessException
+     *             if any error occurs during the execution of the method.
+     */
+    public void execute() throws BusinessException {
+	Connection connection = null;
+
+	try {
+	    // Getting the connection.
+	    connection = getConnection();
+
+	    // Creating the gateway and setting the connection.
+	    MechanicsGateway mechanicsGW = PersistenceFactory
+		    .getMechanicsGateway();
+	    mechanicsGW.setConnection(connection);
+
+	    // Invoke the save method to persist the data.
+	    mechanicsGW.remove(mechanicId);
+
+	} catch (SQLException e) {
+	    throw new RuntimeException(e);
+	} finally {
+	    // Closing the connection.
+	    close(connection);
 	}
-
-	/**
-	 * Will execute the removal of the mechanic whose id was set in the
-	 * constructor.
-	 * 
-	 * @throws BusinessException if any error occurs during the execution of the
-	 *             method.
-	 */
-	public void execute() throws BusinessException {
-		Connection connection = null;
-
-		try {
-			// Getting the connection.
-			connection = getConnection();
-
-			// Creating the gateway and setting the connection.
-			MechanicsGateway mechanicsGW = PersistenceFactory.getMechanicsGateway();
-			mechanicsGW.setConnection( connection );
-
-			// Invoke the save method to persist the data.
-			mechanicsGW.remove( mechanicId );
-
-		} catch (SQLException e) {
-			throw new RuntimeException( e );
-		} finally {
-			// Closing the connection.
-			close( connection );
-		}
-	}
+    }
 }
